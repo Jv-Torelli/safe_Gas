@@ -1,0 +1,25 @@
+Linux comandos - Entregável SO
+sudo adduser grupo04 (adiciona um novo usuário na máquina virtual, o nome do usuário NÃO pode ter maiúsculo)
+sudo passwd grupo04 (altera a senha do novo usuário)
+su grupo04 (muda de utilizador temporariamente)
+-- Troca de usuário
+
+-- No usuário criado
+mkdir Projeto
+cd Projeto
+touch grupo04.txt (cria um arquivo de texto chamado grupo04)
+nano grupo04.txt (edita o arquivo (ctrl o + enter + ctrl x))
+
+Projeto de Pi em desenvolvimento
+
+Tema: Monitoramento de vazamento de gás em condomínios residenciais
+Integrantes:
+- Ana Karoline
+- Camila Jodai
+- Caroline Soares
+- Guilherme Mendes
+- João Lucas
+- Letícia Rodrigues
+- Rayssa Casagrande
+
+cat grupo04.txt (descreve o que foi escrito dentro do arquivo)

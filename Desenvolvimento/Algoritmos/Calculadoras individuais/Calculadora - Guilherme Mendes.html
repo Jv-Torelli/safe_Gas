@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Financeira</title>
+</head>
+<body style="background-color:rgb(250, 235, 215)">
+<h1 style="color: red;" >Safe Gas Company</h1>
+    <h2 style="color:darkslategrey;">Calculadora Financeira <br>
+        Vazamento de Gás</h2>
+
+    Quantos apartamentos por andar? 
+    <input type="number" id="input_ap" style="background-color:darkgray;" ><br><br>
+
+    Quantos andares? 
+    <input type="number" id="input_andar" style="background-color:darkgray;" ><br><br>
+
+    Quantos metros possui(m²):
+    <input type="number" id="input_area" style="background-color:darkgray;" > <br><br>
+
+    Altura do ambiente em metros :
+    <input type="number" id="input_altura" style="background-color:darkgray;"><br><br>
+
+    Preço do gás (R$ por kg):
+    <input type="number" id="input_preco" style="background-color:darkgray;"> <br><br>
+
+
+    Concentração de gás (ppm):
+    <input type="text" id="input_concentracao"style="background-color:darkgray;" ><br><br>
+    <button onclick="calcularVazamento()" style="background-color: darkgray;">Calcular</button>
+    <div id="div_mensagem"></div> 
+        
+</body>
+
+<script>
+    function calcularVazamento() {
+     
+    var ap = Number(input_ap.value);
+    var andar = Number(input_andar.value);
+    var area = Number(input_area.value);
+    var altura = Number(input_altura.value);
+    var preco = Number(input_preco.value);
+    var concentracao = Number(input_concentracao.value); 
+        
+        var qtdap = ap * andar
+        var areaTotal = area * altura;
+        var densidade = (concentracao * 58) / 24.45;
+        var massaGas = densidade * areaTotal / 1000; 
+        var custoVazamento = (massaGas / 1000) * preco;  
+        
+
+        div_mensagem.innerHTML = ` <br> <b style="color: dimgrey;">
+        Seu condominio possui <b style="color: red;">${ap} apartamentos e ${andar} andares</b>, tendo um total de <b style="color: red;">${qtdap} apartamentos por andares
+        </b> . <br>
+        <b style="color: dimgrey;">
+            Cada apartamento, tem uma  <b style="color: red;"> área de  ${area} m² e de altura ${altura} m</b>, com total de 
+            <b style="color: red;">${areaTotal} m</b> . <br>
+            <b style="color: dimgrey;">E com uma densidade: <b style="color: red;">${densidade.toFixed(2)} mg/m³</b> .<br>
+                                    <b style="color: dimgrey;"> Massa total: <b style="color: red;">${massaGas.toFixed(2)} g.</b> <br>
+                                    <b style="color: dimgrey;"> Custo estimado do vazamento:  <b style="color: red;">R$ ${areaTotal * qtdap *custoVazamento.toFixed(2) }.</b> `;
+    }
+</script>

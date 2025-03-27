@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Risco de Gás</title>
+</head>
+<body>
+    <h1>Calculadora de Risco e Perda Financeira Safe Gás Company</h1>
+
+    <h2>Cálculo de Concentração de Gás</h2>
+    <p>Área do imóvel (m²):</p>
+    <input type="number" id="input_area"><br><br>
+    <button onclick="calcularPPM()">Calcular PPM</button>
+    <div id="div_ppm"></div><br><br>
+    
+    <h2>Perda Financeira</h2>
+    <p>Custo médio da reconstrução do condomínio (R$):</p>
+    <input type="number" id="input_custo"><br><br>
+    <p>Número de apartamentos atingidos:</p>
+    <input type="number" id="input_apt"><br><br>
+    <p>Valor médio de um apartamento:</p>
+    <input type="number" id="input_valor"><br><br>
+    <button onclick="CalcularPerda()">Calcular Perda</button><br>
+
+    <br><br><div id="div_perda"></div><br><br>
+
+</body>
+</html>
+<script>
+    function calcularPPM(){
+        var area = Number(input_area.value)
+        
+        if(isNaN(area)){
+            if (area <= 0) {
+                div_ppm.innerHTML = `Insira um valor válido para a área.`
+            }
+        } 
+        var alturaPadrao = 2.7; 
+        var volume = area * alturaPadrao;
+        var concentracaoPadrao = 0.0005;
+        var ppm = (concentracaoPadrao * 1000000) * volume;
+
+        if (ppm > 100000){
+            div_ppm.innerHTML = `Alerta ${ppm.toFixed(2)} ppm - Risco de asfixia! (letal)`;
+        }
+        if (ppm > 50000){
+            div_ppm.innerHTML = `Perigoso: ${ppm.toFixed(2)} ppm - Risco de combustão!`;
+        }
+        if (ppm >= 5000){
+            div_ppm.innerHTML = `Atenção: ${ppm.toFixed(2)} ppm - Monitoramento necessário`;
+        }
+
+        div_ppm.innerHTML = `Seguro: ${ppm.toFixed(2)} ppm`;
+        
+    }
+
+    function CalcularPerda(){
+        var custoCondominio = Number(input_custo.value);
+        var apartamentos = Number(input_apt.value);
+        var valorApt = Number(input_valor.value);
+        
+        if(isNaN(custoCondominio)){
+            if(isNaN(apartamentos)){
+                if(isNaN(valorApt)){
+                    if (custoCondominio <=0){
+                        if (apartamentos <= 0) {
+                            if (valorApt <= 0) {
+                                div_perda.innerHTML = `"Insira valores válidos."`
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        var taxaIndenizacao = 0.5;
+        var indenizacaoPorApartamento = valorApt * taxaIndenizacao;
+        var perdaTotal = custoCondominio + (apartamentos * indenizacaoPorApartamento);
+
+        div_perda.innerHTML = `Custo total do acidente: R$ ${perdaTotal.toFixed(2)}<br>
+        Indenização por apartamento: R$ ${indenizacaoPorApartamento.toFixed(2)}`;
+    }   
+</script>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Financeiro</title>
+</head>
+<body>
+    <h2>Simulação Financeira para Condomínios</h2>
+    Informe o nome do condomínio:
+    <input id="input_nome" type="text">
+    <br><br>
+    Informe quantos apartamentos em um prédio:
+    <input id="input_aps" type="number">
+    <br><br>
+    Qual o valor estimado de um apartamento em reais:
+    <input id="input_imovel" type="number">
+    <br><br>
+    Possui seguro contra incêndio?
+    <br>
+    <select id="select_seguro">
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+    </select>
+    
+    <br><br>
+    <button onclick="calcular()">Calcular Riscos e Economia</button>
+    <div id="div_mensagem"></div>
+</body>
+</html>
+<script>
+    function calcular() {
+        var nome = input_nome.value;
+        var qtdAps = Number(input_aps.value);
+        var valorImovel = Number(input_imovel.value);
+        var seguro = select_seguro.value;
+        var valorPerdaEstimada = 0;
+
+
+        if (seguro == "sim") {
+            valorPerdaEstimada = (valorImovel * qtdAps) - (40000 * qtdAps);
+            div_mensagem.innerHTML  = `<p>Olá Condomínio <b>${nome}</b>,</p>
+                <p>Considerando que seu prédio possui <b>${qtdAps}</b> apartamentos e que cada unidade tem um valor estimado de <b>R$${valorImovel}</b>, o valor total dos imóveis em um prédio é de <b>R$${valorImovel * qtdAps}</b>.</p>
+                <p>Como vocês possuem seguro contra incêndio e a cobertura média dos planos básicos é de <b>R$40.000</b> por apartamento, a seguradora cobriria um total de <b>R$${40000 * qtdAps}</b>.</p>
+                <p>Dessa forma, estimamos que, em caso de incêndio, a perda financeira para o condomínio seria de aproximadamente <b>R$${valorPerdaEstimada}</b>.</p>
+            `;
+
+
+            //40.000 reais é a média da cobertura dos planos de seguro incendio (plano básico)
+            //https://pagbank.com.br/conta-digital/seguros-e-saude/seguro-residencia?utm_source=chatgpt.com
+            //https://www.bv.com.br/seguro/seguro-residencial
+        } else {
+            valorPerdaEstimada = valorImovel * qtdAps;
+            div_mensagem.innerHTML  = `
+                <p>Olá Condomínio <b>${nome}</b>,</p>
+                <p>Como seu prédio possui <b>${qtdAps}</b> apartamentos e cada unidade tem um valor estimado de <b>R$${valorImovel}</b>, o valor total dos imóveis é de <b>R$${valorImovel * qtdAps}</b>.</p>
+                <p>Sem um seguro contra incêndio, esse seria o prejuízo total estimado em caso de incêndio <b>R$${valorPerdaEstimada}</b>.</p>
+            `;
+        }
+        
+        var vidas = qtdAps * 2; // Supondo que cada apartamento more em média duas pessoas
+
+        div_mensagem.innerHTML  += ` 
+            <p>Além disso, considerando que cada apartamento morem duas pessoas, cerca de <b>${vidas}</b> vidas poderiam ser impactadas com o incêndio.</p>
+            <b><p style = "color:green">Com a solução da Safe Gas Company para o seu condomínio, ajudamos você a economizar e a proteger vidas..</p></b>
+        `;
+    }
+</script>
