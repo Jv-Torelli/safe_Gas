@@ -1,15 +1,5 @@
-# repositorioPi_Grupo06
+<img width="600" align="left" src="https://github.com/Jv-Torelli/safe_Gas/blob/main/Documenta%C3%A7%C3%A3o/TI/Safe%20Gas%20Company%20(1).png"/>
+🌟 Sobre o Projeto
 
-*Apresentação Sprint*
+**GasSafe** é um sistema avançado de monitoramento de vazamentos de gás desenvolvido especialmente para **condomínios residenciais**. Utilizando sensores de última geração, o sistema monitora em tempo real os níveis de gás nas áreas comuns e individuais, garantindo a segurança dos moradores e prevenindo acidentes. Todos os dados são apresentados de forma clara e acessível em **dashboards** no site institucional, permitindo acompanhamento constante e alertas rápidos em casos de anomalias.
 
--Linkar Informações.
--Deixar mais fluido.
--Usar o slide de apoio, não utilizar "esse é o nosso banco", "Agora esse é o nosso Planner", "Voltando agora para o PowerPoint".
--Slide legível (Pensar no CLIENTE)
--Guia do slide prestar mais atenção
--!!!VENDER!!!
---!!  O  !!
---!PROJETO!
--Vicios de linguagem evitar.
--Usar o tempo verbal correto
--Aproveitar as oportunidades.
