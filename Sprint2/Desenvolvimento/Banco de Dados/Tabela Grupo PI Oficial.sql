@@ -45,12 +45,18 @@ CREATE TABLE medicao (
 idMedicao INT PRIMARY KEY AUTO_INCREMENT,
 dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
 concentracaoGases INT NOT NULL,
-	CONSTRAINT ckTaxa 
-		CHECK (concentracaoGases IN (5,10,20)),
-fkSensor INT,
 CONSTRAINT fkSensor FOREIGN KEY (fkSensor) references sensor(idSensor),
 fkAlerta INT,
 CONSTRAINT fkAlerta FOREIGN KEY (fkAlerta) references alerta(idAlerta)
+);
+
+CREATE TABLE contato(
+idContato INT PRIMARY KEY auto_increment,
+assunto VARCHAR(40),
+email VARCHAR(80),
+mensagem VARCHAR(200),
+fkUsuario INT,
+CONSTRAINT fkUsuario FOREIGN KEY (fkUsuario) references usuario(idUsuario)
 );
 
 

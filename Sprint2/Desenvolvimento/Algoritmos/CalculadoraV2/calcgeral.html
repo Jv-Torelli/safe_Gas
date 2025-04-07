@@ -1,0 +1,170 @@
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora SGC</title>
+</head>
+
+<body style="background-color: rgb(247, 246, 246);">
+
+    <h1 style="color: rgb(32, 140, 86);" >SGC Safe Gas Company</h1>
+    <h2 style="color: rgb(32, 140, 86);" >Simulador Financeiro <br> Vazamento de gás</h2>
+
+    Informe o nome do edifício:
+    <input type="text" id="input_nome" style="background-color:rgb(217, 245, 231)" placeholder="Ex: Quinta Do Sol">
+    <br><br>
+
+    Informe quantos apartamentos são por andar:
+    <input type="number" id="input_aptos"  style="background-color:rgb(217, 245, 231)"placeholder="Ex: 5">
+    <br><br>
+    Informe a quantidade de andares:
+    <input type="number" id="input_andares" style="background-color:rgb(217, 245, 231)" placeholder="Ex: 10">
+    <br><br>
+
+    <h2 style="color: rgb(32, 140, 86)">Cálculo de Gás no ambiente</h2>
+
+    Informe quantos metros cada apartamento possui(m²):
+    <input type="number" id="input_metros" style="background-color:rgb(217, 245, 231)" placeholder="Ex: 55">
+    <br><br>
+
+    Informe a altura do apartamento(m):
+    <input type="text" id="input_altura" style="background-color:rgb(217, 245, 231)" placeholder="Ex: 2.7">
+    <br><br>
+
+    <h2 style="color: rgb(32, 140, 86)">Cálculo de Perda Financeira</h2>
+
+    Qual o valor estimado de um apartamento em reais:
+    <input id="input_imovel" type="number" style="background-color:rgb(217, 245, 231)">
+    <br><br>
+
+    Houve vazamento de gás <br> <select style="background-color:rgb(217, 245, 231)" id="select_vazamento">
+        <option value="Sim">Sim</option>
+        <option value="Nâo">Não</option>
+    </select> <br>
+    Quantos andares foram afetados?:
+   <input type="text" id="input_and_afetados" style="background-color:rgb(217, 245, 231)" placeholder="Ex: 3"><br><br>
+Possui seguro contra incêndio?</b><br>
+    <select style="background-color:rgb(217, 245, 231)" id="select_seguro">
+        <option>Sim</option>
+        <option>Não</option>
+    </select>
+    
+    
+    <br><br>
+
+    <button onclick="calcularVazamento()"style="background-color: rgb(32, 140, 86); color: white;">Calcular</button>
+    <br><br>
+
+    <div id="mensagem"></div>
+
+</body>
+
+</html>
+
+<script>
+
+    function calcularVazamento() {
+        // a linha abaixo limpa a div para que os valores não se repitam e acabem confundindo
+        mensagem.innerHTML = '';
+
+        // Incialmente pegamos os valores das inputs pelos seus ids
+        var nome = input_nome.value;
+        var apto = Number(input_aptos.value);
+        var andares = Number(input_andares.value);
+        var altura = Number(input_altura.value);
+        var metros = Number(input_metros.value);
+        var vazamento = select_vazamento.value;
+        var seguro = select_seguro.value;
+        var valorImovel = Number(input_imovel.value);
+        var andaresAfetados = Number(input_and_afetados.value);
+
+        //Em seguida damos continuidade realizando cálculos referentes ao modelo do negócio, a quantidade de aptos e o valor da perda estimada.
+        var totalApto = andares * apto;
+        var valorPerdaEstimada = 0;
+        var totalAfetados = andaresAfetados * apto;
+        var reconstrucaoMetro = 150000;
+
+        // começamos verificando se possui ou não seguro
+
+        if (seguro == 'Sim') {
+            if (andares > 0) {
+            if (apto > 0) {
+                if(metros > 0){
+                    var totalImoveis = valorImovel * totalApto;
+                    var seguroTotalApto = 40000 * totalApto; 
+                    var valorAfetados = totalAfetados * valorImovel;
+                    valorPerdaEstimada = (valorImovel * totalApto) - seguroTotalApto;
+
+                    mensagem.innerHTML += `<p>Olá Condomínio <b>${nome}</b>,</p>
+                    <p>Considerando que seu prédio possui <b>${totalApto}</b> apartamentos e que cada unidade tem um valor estimado de <b style= "color: green">R$${valorImovel}</b>, o valor total dos imóveis em um prédio é de <b style= "color: green">R$${totalImoveis}</b>.</p>
+                    <p>Como vocês possuem seguro contra incêndio e a cobertura média dos planos básicos é de <b>R$40000</b> por apartamento, a seguradora cobriria um total de <b>R$${seguroTotalApto}</b>.</p>
+                    <p>Dessa forma, estimamos que, em caso de incêndio, a perda financeira para o condomínio seria de aproximadamente <b style= "color: red">R$${valorPerdaEstimada - valorAfetados}</b> levando em conta os <b style= "color: red"> ${andaresAfetados} andares </b> afetados.</p><br><br>`;
+                }
+            }
+        }else{
+            mensagem.innerHTML = `Insira valores válidos!`
+        }
+        } else {
+            valorPerdaEstimada = valorImovel * totalApto;
+            mensagem.innerHTML += `
+                    <p>Olá Condomínio <b>${nome}</b>,</p>
+                    <p>Como seu prédio possui <b>${totalApto}</b> apartamentos e cada unidade tem um valor estimado de <b>R$${valorImovel}</b>, o valor total dos imóveis é de <b>R$${valorImovel * totalApto}</b>.</p>
+                    <p>Sem um seguro contra incêndio, esse seria o prejuízo total estimado em caso de incêndio <b style= "color: red">R$${valorPerdaEstimada}</b>.</p>`;
+        }
+
+        // Calculamos o volume do ambiente multiplicando metro quadrado x altura e inserimos no calculo seguinte para descobrir o ppm padrão para a base dos cálculos de vazamento para mostrar categoria de riscos.
+ 
+        var volumeAr = metros * altura;
+        var volumeGas = 0.001;
+        var ppm = ((volumeGas / volumeAr) * 1000000).toFixed(3);
+        var categoria = '';
+
+        if (vazamento == 'não') {
+            mensagem.innerHTML += categoria + `<p><b>Categoria de riscos em ppm :</b> <br>
+                    Seguro: ppm < 1.000 <br>
+                    Atenção: 1.000 ≤ ppm < 18.000 (Limite Inferior de Explosividade - LIE) <br>
+                    Risco de Asfixia: 18.000 ≤ ppm < 50.000 (concentração de Gás desloca oxigênio) <br>
+                    Risco de Explosão: 50.000 ≤ ppm < 95.000 (Limite Superior de Explosividade - LSE) <br><br>
+                    Referências: https://lelambiental.com.br/artigos-tecnicos/deteccao-de-gases/<br>
+                    <br>
+                    https://www.gov.br/anp/pt-br
+                    </p>`
+        } else {
+            // Verificamos se o ppm está na categoria segura  
+            if (ppm < 1.000) {
+                categoria += "<b style= 'color: green;'>Seguro:</b> A concentração de Gás está em níveis seguros, sem risco imediato.<br>";
+            } else {
+                categoria += '<b style= "color: orange;">Atenção:</b>A concentração de Gás está em níveis elevados, é necessário monitoramento constante.<br>';
+            }
+            // Verificamos se há risco de asfixia ou não com base na quantidade de ppm de Gás no ambiente
+            if (ppm >= 18.000) {
+                if (ppm < 50.000) {
+                    categoria += '<b style= "color: orange;">Risco de Asfixia:</b> A concentração de Gás é alta o suficiente para deslocar oxigênio no ar, o ambiente precisa de ventilação.<br>'
+                }
+            } else {
+                categoria += '<b style= "color: green;">Sem risco de asfixia:</b> A concentração de Gás está abaixo dos níveis críticos para asfixia.<br>';
+            }
+            // Verificamos se há risco de explosão levando em conta o máximo de ppm de Gás que é de 9,5% no ambiente ou 95.000 ppm
+            if (ppm >= 18.000) {
+                if (ppm < 95.000) {
+                    categoria += '<b style= "color: red;">Risco de Explosão:</b> A concentração de Gás está dentro da faixa explosiva. Evacuação imediata necessária!<br>';
+                }
+            } else {
+                categoria += '<b style= "color: green;">Sem risco de explosão:</b> A concentração de Gás está abaixo do limite inferior de explosividade (LIE).<br>';
+            }
+
+            // Mostramos então as categorias de riscos e a categoria atual com base no tamanho do apartamento, volume e volume de gás que vazou, bem como as referências desses cálculos.
+            mensagem.innerHTML += categoria + `<p><b>Categoria de riscos em ppm :</b> <br>
+                    Seguro: ppm < 1.000 <br>
+                    Atenção: 1.000 ≤ ppm < 18.000 (Limite Inferior de Explosividade - LIE) <br>
+                    Risco de Asfixia: 18.000 ≤ ppm < 50.000 (concentração de Gás desloca oxigênio) <br>
+                    Risco de Explosão: 50.000 ≤ ppm < 95.000 (Limite Superior de Explosividade - LSE) <br><br>
+                    Referências: https://lelambiental.com.br/artigos-tecnicos/deteccao-de-gases/ <br>
+                    https://www.gov.br/anp/pt-br
+                    </p>`
+        }
+
+    }
+</script>
