@@ -95,7 +95,7 @@ const servidor = (
         console.log(`API executada com sucesso na porta ${SERVIDOR_PORTA}`);
     });
 
-    // define os endpoints da API para cada tipo de sensor
+    // define os endpoints da API para cada tipo de sensorGI
     app.get('/sensores/analogico', (_, response) => {
         return response.json(valoresSensorAnalogico);
     });
