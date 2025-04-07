@@ -13,24 +13,28 @@ email VARCHAR(40),
 senha CHAR(8) NOT NULL
 );
 
-CREATE TABLE usuario (
-idUsuario INT PRIMARY KEY AUTO_INCREMENT,
-cnpj CHAR(14) UNIQUE NOT NULL,
-senha VARCHAR(8) NOT NULL,
-fkCondominio INT,
-CONSTRAINT fkCondominio FOREIGN KEY (fkCondominio) references condominio(idCondominio)
+CREATE TABLE apartamento(
+idApartamento INT PRIMARY KEY auto_increment,
+nomeCondomino VARCHAR(45),
+numApartamento VARCHAR(5),
+metragem INT, 
+andar INT,
+fkCondomino INT,
+CONSTRAINT fkCondomino FOREIGN KEY (fkCondomino) references apartamento(idApartamento),
+fkCadastroCondominio INT,
+CONSTRAINT fkCadastroCondominio FOREIGN KEY (fkCadastroCondominio) references condominio(condominio)
 );
+
 
 CREATE TABLE sensor (
 idSensor INT PRIMARY KEY auto_increment,
 nome VARCHAR(25) NOT NULL,
 tipo VARCHAR(30) NOT NULL,
-apartamento VARCHAR(5) NOT NULL,
 statusSensor VARCHAR(15),
 	CONSTRAINT ckSensor 
 		CHECK (statusSensor IN ('Ativo', 'Inativo')),
-fkCondominioSensor INT,
-CONSTRAINT fkCondominioSensor FOREIGN KEY (fkCondominioSensor) references condominio(idCondominio)
+fkApartamento INT,
+CONSTRAINT fkApartamento FOREIGN KEY (fkApartamento) references apartamento(idApartamento)
 );
 
 
@@ -38,17 +42,15 @@ CREATE TABLE alerta(
 idAlerta INT PRIMARY KEY auto_increment,
 statusAlerta VARCHAR(30),
 	CONSTRAINT ckStatus
-		CHECK (statusAlerta IN ('Normal', 'Atenção', 'Crítico'))
+		CHECK (statusAlerta IN ('Normal', 'Atenção', 'Crítico')),
+fkSensor INT,
+CONSTRAINT fkSensor FOREIGN KEY (fkSensor) references sensor(idSensor)
 );
 
 CREATE TABLE medicao (
 idMedicao INT PRIMARY KEY AUTO_INCREMENT,
 dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
-concentracaoGases FLOAT NOT NULL,
-fksensor INT,
-CONSTRAINT fkSensor FOREIGN KEY (fkSensor) references sensor(idSensor),
-fkAlerta INT,
-CONSTRAINT fkAlerta FOREIGN KEY (fkAlerta) references alerta(idAlerta)
+concentracaoGases FLOAT NOT NULL
 );
 
 CREATE TABLE contato(
@@ -56,8 +58,8 @@ idContato INT PRIMARY KEY auto_increment,
 assunto VARCHAR(40),
 email VARCHAR(80),
 mensagem VARCHAR(200),
-fkUsuario INT,
-CONSTRAINT fkUsuario FOREIGN KEY (fkUsuario) references usuario(idUsuario)
+fkCondominio INT,
+CONSTRAINT fkCondominio FOREIGN KEY (fkCondominio) references condominio(idCondominio)
 );
 
 
