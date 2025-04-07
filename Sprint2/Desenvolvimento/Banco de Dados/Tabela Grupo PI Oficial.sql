@@ -45,6 +45,7 @@ CREATE TABLE medicao (
 idMedicao INT PRIMARY KEY AUTO_INCREMENT,
 dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
 concentracaoGases FLOAT NOT NULL,
+fksensor INT,
 CONSTRAINT fkSensor FOREIGN KEY (fkSensor) references sensor(idSensor),
 fkAlerta INT,
 CONSTRAINT fkAlerta FOREIGN KEY (fkAlerta) references alerta(idAlerta)
