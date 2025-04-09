@@ -389,6 +389,8 @@ section {
     padding: 23px 10%;
     height: 100%;
     width: 100%;
+    border-radius: 20px;
+    background-color: #7cb0634a;
 }
 
 
@@ -549,11 +551,10 @@ section {
 
 .headerProjeto {
     display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
-    width: 20rem;
-
+    width: 100%;
 }
 
 .cardsContainer {
@@ -635,8 +636,7 @@ section {
 .titleServico {
     font-size: 35pt;
     color: black;
-    margin-left: 350px;
-    width: 400px;
+    width: 100%;
 }
 
 .card-img-servico {
@@ -657,6 +657,10 @@ footer.text-center {
     color: black;
     font-family: Arial, sans-serif;
     padding: 20px 0;
+}
+
+.ServicosContainer {
+    text-align: center;
 }
 
 .container.pt-4 {
