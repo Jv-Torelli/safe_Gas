@@ -270,7 +270,7 @@ section {
     display: none;
 }
 
-.containerLogin{
+.containerLogin {
     display: flex;
     width: 100%;
     align-items: center;
@@ -279,34 +279,34 @@ section {
     margin-bottom: 80px;
 }
 
-.containerInputs{
+.containerInputs {
     display: flex;
     margin: 0;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     flex-direction: column;
     margin-top: 160px;
-    width: 400px;
-    height: 400px;
+    width: 600px;
+    height: 600px;
     border: solid 2.5px #7CB063;
     border-radius: 7px;
 }
 
-.containerInputs img{
-    margin-top: 30px;
+.containerInputs img {
     width: 45%;
-    height: 20%;
-    border-bottom: solid 1px #047240;
+    height: auto;
 }
 
-.containerInputs input{
+.containerInputs input {
     margin: 10px;
     padding: 4px;
     padding-left: 30px;
     border-radius: 7px;
-    background-color: gray;
+    background-color: #E4E3E3;
     border: none;
     margin-bottom: 25px;
+    width: 55%;
+    height: 40px;
 }
 
 
@@ -318,19 +318,19 @@ section {
     background-repeat: no-repeat;
     background-position: 10px center;
     background-size: 16px;
-  }
+}
 
 
 .empresa {
     background-image: url('https://cdn-icons-png.flaticon.com/512/1077/1077063.png');
 }
-  
+
 
 .cadeado {
     background-image: url('https://cdn-icons-png.flaticon.com/512/3064/3064197.png');
 }
 
-.containerInputs h2{
+.containerInputs h2 {
     font-size: 28px;
     color: black;
     font-weight: 600;
@@ -338,7 +338,7 @@ section {
 }
 
 .btnEntrar {
-    height: 35px;
+    height: 40px;
     padding: 12px 50px;
     border: none;
     outline: none;

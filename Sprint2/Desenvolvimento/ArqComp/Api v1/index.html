@@ -5,442 +5,108 @@
     <title>Graphics</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<style>
-    * {
-        font-family: Arial, Helvetica, sans-serif;
-    }
-
-    .main {
-        display: flex;
-        flex-direction: row;
-        height: 100%;
-        justify-content: space-around;
-    }
-
-    .containerDadosDiv {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        width: 70%;
-    }
-
-    .containerCard {
-        height: 160px;
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
-
-    .notificacoesDiv {
-        width: 25%;
-        background: #506D96;
-        padding: 1%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        overflow: scroll;
-        overflow-x: hidden;
-        border-radius: 6px;
-        max-height: 75%;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    body {
-        height: 900px;
-        overflow: hidden;
-    }
-
-    .cardsDiv {
-        background-color: white;
-        height: 80%;
-        width: 20%;
-        border-radius: 7px;
-        border-left: black solid 6px;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .graficosDiv {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        height: 50%;
-        align-items: center;
-    }
-
-    .GraficosDeBarraDiv,
-    .GraficosDeLinhasDiv {
-        width: 45%;
-        height: 80%;
-        background-color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-        font-size: 10px;
-    }
-
-    .graficosDiv canvas {
-        width: 90% !important;
-        height: 80% !important;
-    }
-
-    .cardNotificacoes {
-        width: 99%;
-        min-height: 100px;
-        border-bottom: 1px solid white;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-    }
-
-    .sensoresDiv {
-        height: 100%;
-        width: 100%;
-        background: darkblue;
-        border-radius: 6px;
-        overflow-y: scroll;
-        max-height: 200px;
-    }
-
-    .containerSensores {
-        height: 250px;
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
-
-    .tituloCard {
-        display: flex;
-        justify-content: center;
-        height: 35%;
-        font-size: 10px;
-        align-items: center;
-    }
-
-    .nivelCard {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 64%;
-
-    }
-
-    .statusCard {
-        background: green;
-        border-radius: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 70%;
-        font-size: 10px;
-        color: white;
-    }
-
-    thead {
-        background: red;
-        color: white;
-    }
-
-    table {
-        width: 100%;
-        background: white;
-        padding: 10px;
-
-    }
-
-    tr {
-        height: 50px;
-        text-align: center;
-    }
-
-    td {
-        border: 1px solid black;
-        transition: 0.2s;
-    }
-
-    #btn_Sensor:hover {
-        background-color: black;
-        color: white;
-    }
-
-    #TituloNotificacoes {
-        width: 100%;
-        min-height: 60px;
-        border-bottom: 1px solid white;
-        border-top: 1px solid white;
-        color: white;
-        display: flex;
-        justify-content: center;
-    }
-
-    .iconNotificacoes img {
-        height: 50px;
-    }
-
-    .statusNotificacoes {
-        display: flex;
-        text-align: center;
-        width: 200px;
-    }
-</style>
 
 <body>
-    <div class="containerCard">
-        <div class="cardsDiv">
-            <div class="tituloCard">
-                <h2>Nível Atual de Gás (%)</h2>
-            </div>
-            <div class="nivelCard">
-                <h1>10%</h1>
-            </div>
+
+    <h1>Graphics</h1>
+    <div style="display: flex;">
+        <div style="width: 50%;">
+            <canvas id="sensorAnalogico"></canvas>
         </div>
-        <div class="cardsDiv">
-            <div class="tituloCard">
-                <h2>Status do Sensor </h2>
-            </div>
-            <div class="nivelCard">
-                <div class="statusCard">
-                    <h1>SEGURO</h1>
-                </div>
-            </div>
-        </div>
-        <div class="cardsDiv">
-            <div class="tituloCard">
-                <h2>Última Ocorrência Crítica</h2>
-            </div>
-            <div class="nivelCard">
-                <h1>10%</h1>
-            </div>
-        </div>
-        <div class="cardsDiv">
-            <div class="tituloCard">
-                <h2>Média de Gás nas Últimas 24h (%)</h2>
-            </div>
-            <div class="nivelCard">
-                <h1>10%</h1>
-            </div>
+        <div style="width: 50%;">
+            <canvas id="sensorDigital"></canvas>
         </div>
     </div>
 
-    <div class="main">
-        <div class="containerDadosDiv">
+    <script>
+        var sensorAnalogico = new Chart(document.getElementById('sensorAnalogico').getContext('2d'), {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Analogico',
+                    borderColor: '#63B1BC',
+                    backgroundColor: '#ED145B'
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '(%)'
+                        },
+                        beginAtZero: true,
+                    },
+                },
+            }
+        });
 
-            <div class="graficosDiv">
-                <div class="GraficosDeBarraDiv">
-                    <h1>Quantidade de Vazamentos por Mês</h1>
-                    <canvas id="sensorBarra"></canvas>
-                </div>
+        var sensorDigital = new Chart(document.getElementById('sensorDigital').getContext('2d'), {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Digital',
+                    borderColor: '#63B1BC',
+                    backgroundColor: '#0762C8'
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '(0-1)'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
 
-                <div class="GraficosDeLinhasDiv">
-                    <h1>Nivel de Gás</h1>
-                    <canvas id="sensorAnalogico"></canvas>
-                </div>
-            </div>
-            <div class="containerSensores">
-                <div class="sensoresDiv">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Sensor</th>
-                                <th>Apartamento</th>
-                                <th>Status</th>
-                                <th>Última Atualização</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>123A</td>
-                                <td>Seguro</td>
-                                <td>12/10/2024</td>
-                            </tr>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>--%</td>
-                                <td>--</td>
-                                <td>--</td>
-                            </tr>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>--%</td>
-                                <td>--</td>
-                                <td>--</td>
-                            </tr>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>--%</td>
-                                <td>--</td>
-                                <td>--</td>
-                            </tr>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>--%</td>
-                                <td>--</td>
-                                <td>--</td>
-                            </tr>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>--%</td>
-                                <td>--</td>
-                                <td>--</td>
-                            </tr>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>--%</td>
-                                <td>--</td>
-                                <td>--</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="notificacoesDiv">
-            <div class="cardNotificacoes" id="TituloNotificacoes">
-                <h3> Notificações </h3>
-            </div>
-            <div class="cardNotificacoes">
-                <div class="iconNotificacoes">
-                    <img src="./imgs/iconGreen.png" alt="">
-                </div>
-                <div class="statusNotificacoes">
-                    <h3>Nivel de gás adequado</h3>
-                </div>
-            </div>
-            <div class="cardNotificacoes">
-                <div class="iconNotificacoes">
-                    <img src="./imgs/iconYellow.png" alt="">
-                </div>
-                <div class="statusNotificacoes">
-                    <h3>Nível de gás elevado! Atenção!</h3>
-                </div>
-            </div>
-            <div class="cardNotificacoes">
-                <div class="iconNotificacoes">
-                    <img src="./imgs/iconRed.png" alt="">
-                </div>
-                <div class="statusNotificacoes">
-                    <h3>Perigo! Vazamento detectado!</h3>
-                </div>
-            </div>
+        var paginacao = {};
+        var tempo = {};
 
-        </div>
-    </div>
+        function obterDados(grafico, endpoint) {
+            fetch('http://localhost:3300/sensores/' + endpoint)
+                .then(response => response.json())
+                .then(valores => {
+                    if (paginacao[endpoint] == null) {
+                        paginacao[endpoint] = 0;
+                    }
+                    if (tempo[endpoint] == null) {
+                        tempo[endpoint] = 0;
+                    }
+
+                    var ultimaPaginacao = paginacao[endpoint];
+                    paginacao[endpoint] = valores.length;
+                    valores = valores.slice(ultimaPaginacao);
+
+                    valores.forEach((valor) => {
+                        if (grafico.data.labels.length == 10 && grafico.data.datasets[0].data.length == 10) {
+                            grafico.data.labels.shift();
+                            grafico.data.datasets[0].data.shift();
+                        }
+
+                        grafico.data.labels.push(tempo[endpoint]++);
+                        grafico.data.datasets[0].data.push(parseFloat(valor));
+                        grafico.update();
+                    });
+                })
+                .catch(error => console.error('Erro ao obter dados:', error));
+        }
+
+        setInterval(() => {
+            obterDados(sensorAnalogico, 'analogico');
+            obterDados(sensorDigital, 'digital');
+        }, 1000);
+
+    </script>
 </body>
 
 </html>
-<script>
-    var sensorAnalogico = new Chart(document.getElementById('sensorAnalogico').getContext('2d'), {
-        type: 'line',
-        data: {
-            datasets: [{
-                label: 'Analogico',
-                borderColor: '#63B1BC',
-                backgroundColor: '#ED145B'
-            }]
-        },
-        options: {
-            scales: {
-                x: {
-                    beginAtZero: true
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: '(%)'
-                    },
-                    beginAtZero: true,
-                },
-            },
-        }
-    });
-
-    var sensorDigital = new Chart(document.getElementById('sensorDigital').getContext('2d'), {
-        type: 'line',
-        data: {
-            datasets: [{
-                label: 'Digital',
-                borderColor: '#63B1BC',
-                backgroundColor: '#0762C8'
-            }]
-        },
-        options: {
-            scales: {
-                x: {
-                    beginAtZero: true
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: '(0-1)'
-                    },
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    var paginacao = {};
-    var tempo = {};
-
-    function obterDados(grafico, endpoint) {
-        fetch('http://localhost:3300/sensores/' + endpoint)
-            .then(response => response.json())
-            .then(valores => {
-                if (paginacao[endpoint] == null) {
-                    paginacao[endpoint] = 0;
-                }
-                if (tempo[endpoint] == null) {
-                    tempo[endpoint] = 0;
-                }
-
-                var ultimaPaginacao = paginacao[endpoint];
-                paginacao[endpoint] = valores.length;
-                valores = valores.slice(ultimaPaginacao);
-
-                valores.forEach((valor) => {
-                    if (grafico.data.labels.length == 10 && grafico.data.datasets[0].data.length == 10) {
-                        grafico.data.labels.shift();
-                        grafico.data.datasets[0].data.shift();
-                    }
-
-                    grafico.data.labels.push(tempo[endpoint]++);
-                    grafico.data.datasets[0].data.push(parseFloat(valor));
-                    grafico.update();
-                });
-            })
-            .catch(error => console.error('Erro ao obter dados:', error));
-    }
-
-    setInterval(() => {
-        obterDados(sensorAnalogico, 'analogico');
-        obterDados(sensorDigital, 'digital');
-    }, 1000);
-
-    var sensorBarra = new Chart(document.getElementById('sensorBarra').getContext('2d'), {
-        type: 'bar',
-        data: {
-            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-            datasets: [{
-                label: 'Barras',
-                backgroundColor: '#4CAF50',
-                borderColor: '#388E3C',
-                borderWidth: 1,
-                data: Array.from({ length: 5 }, () => Math.random())
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-</script>

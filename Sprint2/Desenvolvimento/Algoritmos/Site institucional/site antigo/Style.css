@@ -93,6 +93,8 @@ section {
     padding-top: 100px;
 }
 
+
+
 #logo {
     height: 45px;
     width: auto;
@@ -234,7 +236,7 @@ section {
     align-items: center;
     justify-content: space-evenly;
     transition: 0.5s;
-    
+
 }
 
 .btnLogin:hover {
@@ -246,13 +248,13 @@ section {
 #btnRegister {
     background: none;
     color: black;
-    
+
 }
 
 #btnRegister:hover {
     background-color: #7CB063;
     color: white;
-    
+
 }
 
 .btnsNav {
@@ -324,7 +326,6 @@ section {
     font-size: 40px;
     color: #ffffff;
     text-align: end;
-    margin-bottom: 50px;
 }
 
 
@@ -338,17 +339,13 @@ section {
 
 }
 
-img, svg {
-    vertical-align: middle;
-    width: 200px;
-    height: 100px;
-}
 
-.imgSobre{
-    width: 200px;
+.imgSobre {
+    width: 50%;
     vertical-align: middle;
-    height: 100px;
-    margin-top: 30px;
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 
@@ -361,7 +358,8 @@ img, svg {
     margin-left: 40px;
     margin-bottom: 20px;
 }
-.desc{
+
+.desc {
     color: #ffffff;
     font-size: 20px;
     text-align: end;
@@ -377,12 +375,11 @@ img, svg {
     height: 600px;
 }
 
-.div_Sobre{
-   background: #F1EFEC;
-   height: 400px;
-   width: 1100px;
-   border-radius: 30px;
-   margin-left: 140px;
+.div_Sobre {
+    background: #F1EFEC;
+    height: 100%;
+    width: 85%;
+    border-radius: 30px;
 }
 
 .mainSobre {
@@ -390,9 +387,8 @@ img, svg {
     align-items: center;
     justify-content: space-between;
     padding: 23px 10%;
-    visibility: hidden;
-    margin-top: 20px;
-
+    height: 100%;
+    width: 100%;
 }
 
 
@@ -417,6 +413,8 @@ img, svg {
     max-width: 40rem;
     gap: 2rem;
     color: #049494;
+    text-align: left;
+    font-size: 20px;
 }
 
 
@@ -467,7 +465,7 @@ img, svg {
     background-color: #7CB063;
     padding: 40px;
     border-radius: 8px;
-    box-shadow: 0 0 15px #00b894;
+    box-shadow: 0 0 15px #0000005d;
 }
 
 .form .form-group {
@@ -601,7 +599,7 @@ img, svg {
 
 /* serviços */
 
-#cardServico{
+#cardServico {
     box-shadow: none;
 }
 
@@ -701,6 +699,8 @@ footer.text-center {
 
 .sobre {
     text-align: right;
+    display: flex;
+    justify-content: center;
 }
 
 .sobre a {

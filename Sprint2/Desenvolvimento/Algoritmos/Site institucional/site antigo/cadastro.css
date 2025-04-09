@@ -269,7 +269,7 @@ section {
     display: none;
 }
 
-.containerCadastro{
+.containerCadastro {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -279,7 +279,7 @@ section {
     margin-bottom: 80px;
 }
 
-.containerCadastroFeito{
+.containerCadastroFeito {
     display: flex;
     margin: 0;
     align-items: center;
@@ -295,7 +295,7 @@ section {
     width: 600px;
 }
 
-.btnFazerLogin{
+.btnFazerLogin {
     height: 35px;
     padding: 20px 50px;
     border: solid 1px white;
@@ -312,19 +312,20 @@ section {
     margin-top: 10px;
 }
 
-.containerCadastroFeito h2{
+.containerCadastroFeito h2 {
     color: white;
     font-size: 42px;
     text-align: center;
 }
 
-.containerCadastroFeito h3{
+.containerCadastroFeito h3 {
     color: white;
     font-size: 28px;
     text-align: center;
+    font-weight: 200;
 }
 
-.containerInputs{
+.containerInputs {
     display: flex;
     margin: 0;
     align-items: center;
@@ -341,13 +342,13 @@ section {
 }
 
 
-.containerInputs input{
+.containerInputs input {
     margin: 5px;
     padding: 4px;
     width: 320px;
     padding-left: 30px;
     border-radius: 7px;
-    background-color: gray;
+    background-color: #E4E3E3;
     border: none;
     margin-bottom: 25px;
 }
@@ -361,42 +362,49 @@ section {
     background-repeat: no-repeat;
     background-position: 10px center;
     background-size: 16px;
-  }
+}
 
 
 .nome {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/1077/1077114.png'); /* user */
-  }
-  
-  .logradouro {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/484/484167.png'); /* house */
-  }
-  
-  .cep {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/857/857681.png'); /* receipt/zip */
-  }
-  
-  .numero {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/1041/1041916.png'); /* numbers */
-  }
-  
-  .empresa {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/684/684908.png'); /* document */
-  }
-  
-  .email {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/732/732200.png'); /* email */
-  }
-  
-  .cadeado {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/3064/3064155.png'); /* lock */
-  }
-  
-  .input-icon:not(:placeholder-shown) {
-    background-image: none;
-  }
+    background-image: url('https://cdn-icons-png.flaticon.com/512/1077/1077114.png');
+    /* user */
+}
 
-.containerInputs h2{
+.logradouro {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/484/484167.png');
+    /* house */
+}
+
+.cep {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/857/857681.png');
+    /* receipt/zip */
+}
+
+.numero {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/1041/1041916.png');
+    /* numbers */
+}
+
+.empresa {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/684/684908.png');
+    /* document */
+}
+
+.email {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/732/732200.png');
+    /* email */
+}
+
+.cadeado {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/3064/3064155.png');
+    /* lock */
+}
+
+.input-icon:not(:placeholder-shown) {
+    background-image: none;
+}
+
+.containerInputs h2 {
     font-size: 28px;
     color: #7CB063;
     font-weight: 600;

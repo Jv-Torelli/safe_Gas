@@ -108,6 +108,8 @@ concentracaoGases AS 'Concentração de Gases',
 statusAlerta AS 'Status'
 FROM medicao;
 
+select * from medicao;
+
 SELECT * FROM condominio WHERE logradouro LIKE '%L%';
 
 SELECT * FROM sensor WHERE statusSensor NOT LIKE 'Inativo';
@@ -119,3 +121,5 @@ SELECT * FROM medicao WHERE concentracaoGases <= 10;
 SELECT * FROM condominio WHERE logradouro LIKE '%T%' OR logradouro LIKE '%M%';
 
 SELECT nome AS 'Nome', CONCAT(logradouro, ', ', numero) AS 'Endereço Completo', cep AS 'CEP' FROM condominio;
+
+update medicao SET concentracaoGases = 200 where idMedicao = 1;
