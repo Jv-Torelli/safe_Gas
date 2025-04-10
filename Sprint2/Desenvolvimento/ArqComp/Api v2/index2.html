@@ -357,32 +357,6 @@
             },
         }
     });
-
-    var sensorDigital = new Chart(document.getElementById('sensorDigital').getContext('2d'), {
-        type: 'line',
-        data: {
-            datasets: [{
-                label: 'Digital',
-                borderColor: '#63B1BC',
-                backgroundColor: '#0762C8'
-            }]
-        },
-        options: {
-            scales: {
-                x: {
-                    beginAtZero: true
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: '(0-1)'
-                    },
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
     var paginacao = {};
     var tempo = {};
 
@@ -419,6 +393,9 @@
         obterDados(sensorAnalogico, 'analogico');
         obterDados(sensorDigital, 'digital');
     }, 1000);
+
+
+    // barras
 
     var sensorBarra = new Chart(document.getElementById('sensorBarra').getContext('2d'), {
         type: 'bar',
