@@ -79,52 +79,53 @@
 
     }
 
-    function calcularVazamento() {
-        // a linha abaixo limpa a div para que os valores não se repitam e acabem confundindo
-        mensagem.innerHTML = '';
+function calcularVazamento() {
+    // a linha abaixo limpa a div para que os valores não se repitam e acabem confundindo
+    mensagem.innerHTML = '';
 
-        // Incialmente pegamos os valores das inputs pelos seus ids
-        var apto = Number(input_aptos.value);
-        var andares = Number(input_andares.value);
-        var altura = Number(input_altura.value);
-        var metros = Number(input_metros.value);
-        var vazamento = select_vazamento.value;
-        var valorImovel = Number(input_imovel.value);
-        var andaresAfetados = Number(input_and_afetados.value);
+    // Incialmente pegamos os valores das inputs pelos seus ids
+    var apto = Number(input_aptos.value);
+    var andares = Number(input_andares.value);
+    var altura = Number(input_altura.value);
+    var metros = Number(input_metros.value);
+    var vazamento = select_vazamento.value;
+    var valorImovel = Number(input_imovel.value);
+    var andaresAfetados = Number(input_and_afetados.value);
 
-        //Em seguida damos continuidade realizando cálculos referentes ao modelo do negócio, a quantidade de aptos e o valor da perda estimada.
-        var totalApto = andares * apto;
-        var valorPerdaEstimada = 0;
-        var totalAfetados = andaresAfetados * apto;
-        var reconstrucaoMetro = 150000;
-        var totalImoveis = valorImovel * totalApto;
+    //Em seguida damos continuidade realizando cálculos referentes ao modelo do negócio, a quantidade de aptos e o valor da perda estimada.
+    var totalApto = andares * apto;
+    var valorPerdaEstimada = 0;
+    var totalAfetados = andaresAfetados * apto;
+    var reconstrucaoMetro = 150000;
+    var valorReconstrucao = totalAfetados * reconstrucaoMetro;
+    var totalImoveis = valorImovel * totalApto;
+   
 
-        // começamos verificando se possui ou não seguro
-        if (vazamento == "Sim") {
-            if (andares > 0) {
-                if (apto > 0) {
-                    if (metros > 0) {
-                        var qtdAptosAfetados = apto * andaresAfetados;
-                        var valorAfetados = totalAfetados * valorImovel;
-                        valorPerdaEstimada = valorImovel * totalApto;
+    // começamos verificando se possui ou não seguro
+    if(vazamento == "Sim"){
+        if (andares > 0) {
+        if (apto > 0) {
+            if(metros > 0){
+                var qtdAptosAfetados = apto * andaresAfetados;
+                var valorTotalAfetados = valorImovel * totalAfetados
 
-                        mensagem.innerHTML += `
-                    <p>Considerando que seu prédio possui <b>${totalApto}</b> apartamentos e que cada unidade tem um valor estimado de <b style= "color: green">R$${valorImovel}</b>, o valor total dos imóveis em um prédio é de <b style= "color: green">R$${totalImoveis}</b>.</p>
-                    <p>Dessa forma, estima-se que, em caso de incêndio, a perda financeira para o condomínio seria de aproximadamente <b style= "color: red">R$${valorPerdaEstimada - valorAfetados}</b> levando em conta os <b style= "color: red"> ${andaresAfetados} andares </b> afetados. <br> E um total de <b style= "color: red"> ${qtdAptosAfetados} apartamentos afetados. </b></p><br><br>`;
-                    }
-                }
+                mensagem.innerHTML += `
+                <p>Considerando que seu prédio possui <b>${totalApto}</b> apartamentos e que cada unidade tem um valor estimado de <b style= "color: green">R$${valorImovel}</b>, o valor total dos imóveis em um prédio é de <b style= "color: green">R$${totalImoveis}</b>.</p>
+                <p>Dessa forma, estima-se que, em caso de incêndio, a perda financeira para o condomínio seria de aproximadamente <b style= "color: red">R$${valorTotalAfetados}</b> levando em conta os <b style= "color: red"> ${andaresAfetados} andares </b> afetados. <br> E um total de <b style= "color: red"> ${qtdAptosAfetados} apartamentos afetados. </b></p><br><br>`;
             }
-        }
-        if (vazamento == "Não") {
-            if (andares > 0) {
-                if (apto > 0) {
-                    if (metros > 0) {
-                        mensagem.innerHTML = `Se não houve vazamento, seu patrimonio de ${totalImoveis} baseado na quantidade de ${totalApto} apartamentos distribuídos em ${andares} andares está seguro! Fique de olho.`
-                    }
-                }
-            }
-
-
-        }
     }
+}
+}
+    if(vazamento == "Não"){
+        if (andares > 0) {
+        if (apto > 0) {
+            if(metros > 0){
+                mensagem.innerHTML = `Se não houve vazamento, seu patrimonio de ${totalImoveis} baseado na quantidade de ${totalApto} apartamentos distribuídos em ${andares} andares está seguro! Fique de olho.`
+            }
+    }
+}
+                     
+            
+}
+}
 </script>
