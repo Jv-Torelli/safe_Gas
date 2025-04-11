@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+
+* {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* body */
+body {
+    animation: light-to-dark 0.3s ease-in-out;
+    height: 1000px;
+    overflow: hidden;
+    background-color: #7CB063;
+}
+
+/* div para alinhar os conteiners */
+.containerDivs {
+    font-family: "Roboto", sans-serif;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+/* container dos input */
+.containerCalc {
+    height: 722px;
+    width: 672px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    border: solid 1px black;
+    justify-content: center;
+    text-align: left;
+    align-items: flex-start;
+    padding-left: 30px;
+}
+
+
+/* titulo da div inputs */
+.containerCalc h1 {
+    font-weight: 600;
+    font-size: 40px;
+}
+
+/* textos acima dos inputs */
+.containerCalc p {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+/* divInput */
+.CampoInput {
+    width: 90%;
+}
+
+/* input style */
+.CampoInput input {
+    height: 55px;
+    border-radius: 15px;
+    border: 1px solid black;
+    width: 100%;
+    background: #f2f2f2;
+    padding: 15px;
+    font-size: 20px;
+}
+
+/* select */
+
+#select_vazamento {
+    height: 40px;
+    border-radius: 15px;
+    border: 1px solid black;
+    width: 100px;
+    background: #f2f2f2;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Butão inputs calc */
+#button_calcu {
+    height: 60px;
+    width: 90%;
+    border-radius: 15px;
+    background: #7CB063;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 22px;
+    text-align: center;
+}
+
+/* Container dos Resutados */
+
+.containerCalcResultado {
+    height: 722px;
+    width: 672px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    border: solid 1px black;
+    justify-content: space-evenly;
+    text-align: left;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+}
+
+/* definir bolinhas */
+.bolinhas {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+/* cor */
+#n1 {
+    background-color: #E5C17B;
+}
+
+#n2 {
+    background-color: #8257AD;
+
+}
+
+#n3 {
+    background-color: #A783AF;
+
+}
+
+#n4 {
+    background-color: #BD878B;
+
+}
+
+.ContainerBolinhasResultado {
+    width: 100%;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* alinhas campos resultados */
+.campoResultado {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 30px;
+}
+
+/* bolinha e text */
+.resultadoRowLeft {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Texto Topo Resultado */
+
+.mensagemTopo p {
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+    font-family: "Roboto";
+}
+
+/* icons e msg Resultado */
+.iconResultado {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.iconTexto {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.iconsRow {
+    width: 100%;
+}
+
+/* Impacto */
+
+.PerdaDiv {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.PerdaDiv h1 {
+    font-weight: 600;
+    font-size: 40px;
+    color: #FF0000;
+}
+
+span {
+    color: #000000;
+}
+
+/* Como funciona Titulo */
+.TituloComoFunciona {
+    background: green;
+    color: white;
+    font-size: 15px;
+    text-align: center;
+    padding: 10px;
+}
+
+/* fotter */
+.foote {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
