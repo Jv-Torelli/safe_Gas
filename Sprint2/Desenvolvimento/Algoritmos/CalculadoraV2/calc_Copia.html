@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Calculadora SGC</title>
+</head>
+
+<body>
+
+
+    <div class="containerCalc">
+        <div class="containerCadastroFeito">
+    <h1>SGC Safe Gas Company</h1>
+    <h2>Simulador Financeiro <br> Vazamento de gás</h2>
+
+    Informe quantos apartamentos são por andar:
+    <input type="number" id="input_aptos" placeholder="Ex: 5">
+    <br><br>
+    Informe a quantidade de andares:
+    <input type="number" id="input_andares" placeholder="Ex: 10">
+    <br><br>
+
+    <h2>Cálculo de Gás no ambiente</h2>
+
+    Informe quantos metros cada apartamento possui(m²):
+    <input type="number" id="input_metros" placeholder="Ex: 55">
+    <br><br>
+
+    Informe a altura do apartamento(m):
+    <input type="text" id="input_altura" placeholder="Ex: 2.7">
+    <br><br>
+
+    <h2>Cálculo de Perda Financeira</h2>
+
+    Qual o valor estimado de um apartamento em reais:
+    <input id="input_imovel" type="number">
+    <br><br>
+
+    Houve vazamento de gás <br> <select id="select_vazamento">
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
+    </select> <br>
+    Quantos andares foram afetados?:
+   <input type="text" id="input_and_afetados" placeholder="Ex: 3"><br><br>
+    
+    
+    <br><br>
+
+    <button onclick="calcularVazamento()">Calcular</button>
+    <br><br>
+</div>
+</div>
+
+    <div id="mensagem"></div>
+
+</body>
+
+</html>
+
+<script>
+
+    function calcularVazamento() {
+        // a linha abaixo limpa a div para que os valores não se repitam e acabem confundindo
+        mensagem.innerHTML = '';
+
+        // Incialmente pegamos os valores das inputs pelos seus ids
+        var apto = Number(input_aptos.value);
+        var andares = Number(input_andares.value);
+        var altura = Number(input_altura.value);
+        var metros = Number(input_metros.value);
+        var vazamento = select_vazamento.value;
+        var valorImovel = Number(input_imovel.value);
+        var andaresAfetados = Number(input_and_afetados.value);
+
+        //Em seguida damos continuidade realizando cálculos referentes ao modelo do negócio, a quantidade de aptos e o valor da perda estimada.
+        var totalApto = andares * apto;
+        var valorPerdaEstimada = 0;
+        var totalAfetados = andaresAfetados * apto;
+        var reconstrucaoMetro = 150000;
+        var totalImoveis = valorImovel * totalApto;
+
+        // começamos verificando se possui ou não seguro
+        if(vazamento == "Sim"){
+            if (andares > 0) {
+            if (apto > 0) {
+                if(metros > 0){
+                    var qtdAptosAfetados = apto * andaresAfetados;
+                    var valorAfetados = totalAfetados * valorImovel;
+                    valorPerdaEstimada = valorImovel * totalApto;
+
+                    mensagem.innerHTML += `
+                    <p>Considerando que seu prédio possui <b>${totalApto}</b> apartamentos e que cada unidade tem um valor estimado de <b style= "color: green">R$${valorImovel}</b>, o valor total dos imóveis em um prédio é de <b style= "color: green">R$${totalImoveis}</b>.</p>
+                    <p>Dessa forma, estima-se que, em caso de incêndio, a perda financeira para o condomínio seria de aproximadamente <b style= "color: red">R$${valorPerdaEstimada - valorAfetados}</b> levando em conta os <b style= "color: red"> ${andaresAfetados} andares </b> afetados. <br> E um total de <b style= "color: red"> ${qtdAptosAfetados} apartamentos afetados. </b></p><br><br>`;
+                }
+        }
+    }
+}
+        if(vazamento == "Não"){
+            if (andares > 0) {
+            if (apto > 0) {
+                if(metros > 0){
+                    mensagem.innerHTML = `Se não houve vazamento, seu patrimonio de ${totalImoveis} baseado na quantidade de ${totalApto} apartamentos distribuídos em ${andares} andares está seguro! Fique de olho.`
+                }
+        }
+    }
+                         
+                
+    }
+}
+</script>
