@@ -270,42 +270,43 @@ section {
     display: none;
 }
 
-.containerLogin{
+.containerLogin {
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: center;
     margin: 0;
+    margin-bottom: 80px;
 }
 
-.containerInputs{
+.containerInputs {
     display: flex;
     margin: 0;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     flex-direction: column;
     margin-top: 160px;
-    width: 400px;
-    height: 400px;
+    width: 600px;
+    height: 600px;
     border: solid 2.5px #7CB063;
     border-radius: 7px;
 }
 
-.containerInputs img{
-    margin-top: 30px;
+.containerInputs img {
     width: 45%;
-    height: 20%;
-    border-bottom: solid 1px #047240;
+    height: auto;
 }
 
-.containerInputs input{
+.containerInputs input {
     margin: 10px;
     padding: 4px;
     padding-left: 30px;
     border-radius: 7px;
-    background-color: gray;
+    background-color: #E4E3E3;
     border: none;
     margin-bottom: 25px;
+    width: 55%;
+    height: 40px;
 }
 
 
@@ -317,19 +318,19 @@ section {
     background-repeat: no-repeat;
     background-position: 10px center;
     background-size: 16px;
-  }
+}
 
 
 .empresa {
     background-image: url('https://cdn-icons-png.flaticon.com/512/1077/1077063.png');
 }
-  
+
 
 .cadeado {
     background-image: url('https://cdn-icons-png.flaticon.com/512/3064/3064197.png');
 }
 
-.containerInputs h2{
+.containerInputs h2 {
     font-size: 28px;
     color: black;
     font-weight: 600;
@@ -337,7 +338,7 @@ section {
 }
 
 .btnEntrar {
-    height: 35px;
+    height: 40px;
     padding: 12px 50px;
     border: none;
     outline: none;
@@ -361,57 +362,58 @@ section {
 }
 
 
-
-#cardServico{
-    box-shadow: none;
-}
-
-#Servicos {
-    padding: 23px 10%;
-    background-repeat: no-repeat;
-    width: 100%;
-    background-size: cover;
-}
-
-.headerProjeto {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    flex-direction: column;
-    width: 20rem;
-
-}
-
-.servicosContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 40px;
-    box-shadow: 0px 0px 12px -6px black;
-    border-radius: 15px;
-}
-
-.descServico {
-    color: #262626;
-    margin-bottom: 5%;
-    font-size: 10pt;
-
-}
-
-.titleServico {
-    font-size: 45pt;
+footer.text-center {
+    background-color: #7CB063;
     color: black;
+    font-family: Arial, sans-serif;
+    padding: 20px 0;
 }
 
-.card-img-servico {
-    height: 132px;
-    width: 132px;
+.container.pt-4 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+    margin: auto;
+    padding-bottom: 10px;
+    border-bottom: 2px solid black;
 }
 
-.cardHeaderServico {
+.mb-4 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 50px;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+.mb-4 a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
     display: flex;
     align-items: center;
-    padding: 23px;
-    gap: 16px;
-    justify-content: center;
+    gap: 8px;
+}
+
+.mb-4 i {
+    font-size: 20px;
+}
+
+.text-center.p-3 {
+    background-color: transparent;
+    font-size: 12px;
+    text-align: center;
+}
+
+.sobre {
+    text-align: right;
+}
+
+.sobre a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
 }

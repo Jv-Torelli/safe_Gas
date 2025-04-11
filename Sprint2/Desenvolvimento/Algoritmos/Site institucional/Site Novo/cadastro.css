@@ -269,16 +269,17 @@ section {
     display: none;
 }
 
-.containerCadastro{
+.containerCadastro {
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0;
     padding: 10px;
     background-color: transparent;
+    margin-bottom: 80px;
 }
 
-.containerCadastroFeito{
+.containerCadastroFeito {
     display: flex;
     margin: 0;
     align-items: center;
@@ -294,7 +295,7 @@ section {
     width: 600px;
 }
 
-.btnFazerLogin{
+.btnFazerLogin {
     height: 35px;
     padding: 20px 50px;
     border: solid 1px white;
@@ -311,19 +312,20 @@ section {
     margin-top: 10px;
 }
 
-.containerCadastroFeito h2{
+.containerCadastroFeito h2 {
     color: white;
     font-size: 42px;
     text-align: center;
 }
 
-.containerCadastroFeito h3{
+.containerCadastroFeito h3 {
     color: white;
     font-size: 28px;
     text-align: center;
+    font-weight: 200;
 }
 
-.containerInputs{
+.containerInputs {
     display: flex;
     margin: 0;
     align-items: center;
@@ -340,13 +342,13 @@ section {
 }
 
 
-.containerInputs input{
+.containerInputs input {
     margin: 5px;
     padding: 4px;
     width: 320px;
     padding-left: 30px;
     border-radius: 7px;
-    background-color: gray;
+    background-color: #E4E3E3;
     border: none;
     margin-bottom: 25px;
 }
@@ -360,42 +362,49 @@ section {
     background-repeat: no-repeat;
     background-position: 10px center;
     background-size: 16px;
-  }
+}
 
 
 .nome {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/1077/1077114.png'); /* user */
-  }
-  
-  .logradouro {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/484/484167.png'); /* house */
-  }
-  
-  .cep {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/857/857681.png'); /* receipt/zip */
-  }
-  
-  .numero {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/1041/1041916.png'); /* numbers */
-  }
-  
-  .empresa {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/684/684908.png'); /* document */
-  }
-  
-  .email {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/732/732200.png'); /* email */
-  }
-  
-  .cadeado {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/3064/3064155.png'); /* lock */
-  }
-  
-  .input-icon:not(:placeholder-shown) {
-    background-image: none;
-  }
+    background-image: url('https://cdn-icons-png.flaticon.com/512/1077/1077114.png');
+    /* user */
+}
 
-.containerInputs h2{
+.logradouro {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/484/484167.png');
+    /* house */
+}
+
+.cep {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/857/857681.png');
+    /* receipt/zip */
+}
+
+.numero {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/1041/1041916.png');
+    /* numbers */
+}
+
+.empresa {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/684/684908.png');
+    /* document */
+}
+
+.email {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/732/732200.png');
+    /* email */
+}
+
+.cadeado {
+    background-image: url('https://cdn-icons-png.flaticon.com/512/3064/3064155.png');
+    /* lock */
+}
+
+.input-icon:not(:placeholder-shown) {
+    background-image: none;
+}
+
+.containerInputs h2 {
     font-size: 28px;
     color: #7CB063;
     font-weight: 600;
@@ -429,56 +438,58 @@ section {
 
 
 
-#cardServico{
-    box-shadow: none;
-}
-
-#Servicos {
-    padding: 23px 10%;
-    background-repeat: no-repeat;
-    width: 100%;
-    background-size: cover;
-}
-
-.headerProjeto {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    flex-direction: column;
-    width: 20rem;
-
-}
-
-.servicosContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 40px;
-    box-shadow: 0px 0px 12px -6px black;
-    border-radius: 15px;
-}
-
-.descServico {
-    color: #262626;
-    margin-bottom: 5%;
-    font-size: 10pt;
-
-}
-
-.titleServico {
-    font-size: 45pt;
+footer.text-center {
+    background-color: #7CB063;
     color: black;
+    font-family: Arial, sans-serif;
+    padding: 20px 0;
 }
 
-.card-img-servico {
-    height: 132px;
-    width: 132px;
+.container.pt-4 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+    margin: auto;
+    padding-bottom: 10px;
+    border-bottom: 2px solid black;
 }
 
-.cardHeaderServico {
+.mb-4 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 50px;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+.mb-4 a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
     display: flex;
     align-items: center;
-    padding: 23px;
-    gap: 16px;
-    justify-content: center;
+    gap: 8px;
+}
+
+.mb-4 i {
+    font-size: 20px;
+}
+
+.text-center.p-3 {
+    background-color: transparent;
+    font-size: 12px;
+    text-align: center;
+}
+
+.sobre {
+    text-align: right;
+}
+
+.sobre a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
 }
