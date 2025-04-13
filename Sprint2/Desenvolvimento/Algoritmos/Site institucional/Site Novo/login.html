@@ -93,10 +93,12 @@
 
             <h2>BEM-VINDO DE VOLTA!</h2>
 
-            <input class="input-icon empresa" type="text" placeholder="CNPJ" name="cnpj" required>
-            <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" required>
+            <input class="input-icon empresa" type="text" placeholder="email" name="email" id="input_email" required>
+            <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" id="input_senha" required>
 
-            <button class="btnEntrar">Entrar</button>
+            <button class="btnEntrar" onclick="login()">Entrar</button> <br>
+
+            <div id="msg"></div>
 
         </div>
     </div>
@@ -117,3 +119,25 @@
     
 </body>
 </html>
+
+<script>
+    function login() {
+      var emailCorreto = "safegas@gmail.com";
+      var senhaCorreta = "@123";
+
+      var email = input_email.value.trim();
+      var senha = input_senha.value.trim();
+      
+
+      if (email === emailCorreto && senha === senhaCorreta) {
+        msg.innerHTML = "<span style= 'color: green;'>Login bem-sucedido!</span>";
+        
+        setTimeout(function(){
+            window.location.href = "dashboard.html";
+        }, 1500);
+        
+      } else {
+        msg.innerHTML = "<span style= 'color: red;'>Email ou senha incorretos.</span>";
+      }
+    }
+  </script>

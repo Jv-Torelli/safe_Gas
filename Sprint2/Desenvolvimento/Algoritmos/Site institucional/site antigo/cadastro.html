@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <script src="https://unpkg.com/scrollreveal"></script>
     <link rel="icon" href="./img/miniLogo.png">
 </head>
+
 <body>
 
     <header>
@@ -20,7 +22,7 @@
             <ul class="navLinks">
 
                 <li class="navLink ativa">
-                    <a href="./index.html">Home</a>
+                    <a href="../Site Novo/index.html#home">Home</a>
                 </li>
 
                 <li class="navLink">
@@ -32,7 +34,7 @@
                 </li>
 
                 <li class="navLink">
-                    <a href="#parceiros">Simulador</a>
+                    <a href="./calc_Atualizada.html">Simulador</a>
                 </li>
 
                 <li class="navLink">
@@ -45,7 +47,7 @@
             <div class="btnsNav">
                 <button class="btnLogin" id="btnRegister"> Registrar</button>
                 <a href="login.html">
-                <button class="btnLogin">Entrar</button>
+                    <button class="btnLogin">Entrar</button>
                 </a>
             </div>
 
@@ -53,10 +55,10 @@
             <button id="btnMobile">
                 <i class="fa-solid fa-bars"></i>
             </button>
-        </nav>   <!-- fim da Divisão da navbar Desktop -->
+        </nav> <!-- fim da Divisão da navbar Desktop -->
 
 
-        <div id="navM">  <!-- fim da Divisão da navbar Mobile -->
+        <div id="navM"> <!-- fim da Divisão da navbar Mobile -->
             <ul class="navLinksMobile">
                 <li class="navLink ativa">
                     <a href="#home">Home</a>
@@ -86,13 +88,13 @@
 
     <div class="containerCadastro">
         <div class="containerCadastroFeito">
-        <h2>BEM VINDO DE VOLTA!</h2>
+            <h2>BEM VINDO DE VOLTA!</h2>
 
-        <h3>Para continuar conectado <br>
-        conosco, faça login com <br>
-        suas informações.</h3> 
+            <h3>Para continuar conectado <br>
+                conosco, faça login com <br>
+                suas informações.</h3>
 
-        <button class="btnFazerLogin">ENTRAR</button>
+            <button class="btnFazerLogin">ENTRAR</button>
 
         </div>
         <div class="containerInputs">
@@ -100,39 +102,76 @@
 
             <input class="input-icon nome" type="text" placeholder="Nome" name="nome" required>
             <input class="input-icon logradouro" type="text" placeholder="Logradouro" name="logradouro" required>
-            <input class="input-icon cep" type="text" placeholder="CEP" name="cep" required>
+            <input class="input-icon cep" type="text" placeholder="CEP" name="cep" id="input_cep" required>
             <input class="input-icon numero" type="text" placeholder="Número" name="numero" required>
-            <input class="input-icon empresa" type="text" placeholder="CNPJ" name="cnpj" required>
-            <input class="input-icon email" type="email" placeholder="E-mail" name="email" required>
-            <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" required>
+            <input class="input-icon empresa" type="text" placeholder="CNPJ" name="cnpj" id="input_cnpj" required>
+            <input class="input-icon email" type="email" placeholder="E-mail" name="email" id="input_email" required>
+            <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" id="input_senha" required>
 
 
-            <button class="btnEntrar">CADASTRAR</button>
+            <button class="btnEntrar" onclick="cadastro()">CADASTRAR</button>
 
         </div>
     </div>
 
-    <footer class="text-center">
+
+    <footer class="text-center ">
         <!-- Grid container -->
-         <div style="border-bottom: 1px solid black;width: 100%;"><img src="img/logoFooter.png" alt="" style="margin-right: 1000px;"></div>
-        <div class="container pt-4">
-            <!-- Seção de Contato -->
-            <section class="mb-4">
-                <a><i class="normal" style="font-size: 18px; font-weight: 500; margin-right: 7px; top: -50px;">TECNOLOGIA QUE PROTEGE, SEGURANÇA QUE CONFORTA</i></a>
-                <a href="#!" role="button"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="mailto:safegascompany@sptech.school"><i class="fas fa-envelope"></i> safegascompany@sptech.school</a>
-                <a href="tel:+551140028922"><i class="fas fa-phone"></i> (11) 4002-8922</a>
-                <a href="#!"><i class="fas fa-map-marker-alt"></i> Rua Haddock Lobo, 595 - São Paulo - SP</a>
-            </section>
-        </div>
+
         <!-- Grid container -->
-    
+
         <!-- Copyright -->
-        <div class="text-center p-3">
-            <p style="margin-left: 900px; font-size: 15px;">© Safe Gas Company. Todos os direitos reservados.</p>
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2024 Copyright: SafeGas
         </div>
         <!-- Copyright -->
     </footer>
-    
+    <!-- Footer -->
+
 </body>
+
 </html>
+
+
+<script>
+    function cadastro(){
+        var emailCorreto = `safegas@gmail.com`;
+        var senhaCorreta = `@123`;
+
+        var cep = input_cep.value.trim();
+        var cnpj= input_cnpj.value.trim();
+        var email = input_email.value.trim();
+        var senha = input_senha.value.trim();
+
+         // Validação de CEP
+         if (cep.length !== 8 || isNaN(cep)) {
+            alert("O CEP deve conter exatamente 8 números.");
+            return;
+        }
+
+        // Validação de CNPJ
+        if (cnpj.length !== 14 || isNaN(cnpj)) {
+            alert("O CNPJ deve conter exatamente 14 números.");
+            return;
+        }
+
+        // Validação de caracteres especiais no email
+        if (!email.includes("@") || !email.includes(".")) {
+            alert("E-mail inválido! Deve conter '@' e '.'");
+            return;
+        }
+
+        if(email === emailCorreto && senha === senhaCorreta){  
+        alert(`Cadastro realizado com sucesso!`)
+
+        setTimeout(function(){
+        window.location.href = "login.html";
+        }, 1500);
+
+        }else{
+            alert(`Email ou senha incorretos!`);
+        }
+
+
+    }
+</script>

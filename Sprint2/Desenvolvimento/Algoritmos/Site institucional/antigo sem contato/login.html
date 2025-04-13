@@ -20,7 +20,7 @@
             <ul class="navLinks">
 
                 <li class="navLink ativa">
-                    <a href="./index.html">Home</a>
+                    <a href="../Site Novo/index.html#home">Home</a>
                 </li>
 
                 <li class="navLink">
@@ -32,7 +32,7 @@
                 </li>
 
                 <li class="navLink">
-                    <a href="#parceiros">Simulador</a>
+                    <a href="./calc_Atualizada.html">Simulador</a>
                 </li>
 
                 <li class="navLink">
@@ -93,36 +93,51 @@
 
             <h2>BEM-VINDO DE VOLTA!</h2>
 
-            <input class="input-icon empresa" type="text" placeholder="CNPJ" name="cnpj" required>
-            <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" required>
+            <input class="input-icon empresa" type="text" placeholder="email" name="email" id="input_email" required>
+            <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" id="input_senha" required>
 
-            <button class="btnEntrar">Entrar</button>
+            <button class="btnEntrar" onclick="login()">Entrar</button> <br>
+
+            <div id="msg"></div>
 
         </div>
     </div>
 
 
-    <footer class="text-center">
+    <footer class="text-center ">
         <!-- Grid container -->
-         <div style="border-bottom: 1px solid black;width: 100%;"><img src="img/logoFooter.png" alt="" style="margin-right: 1000px;"></div>
-        <div class="container pt-4">
-            <!-- Seção de Contato -->
-            <section class="mb-4">
-                <a><i class="normal" style="font-size: 18px; font-weight: 500; margin-right: 7px; top: -50px;">TECNOLOGIA QUE PROTEGE, SEGURANÇA QUE CONFORTA</i></a>
-                <a href="#!" role="button"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="mailto:safegascompany@sptech.school"><i class="fas fa-envelope"></i> safegascompany@sptech.school</a>
-                <a href="tel:+551140028922"><i class="fas fa-phone"></i> (11) 4002-8922</a>
-                <a href="#!"><i class="fas fa-map-marker-alt"></i> Rua Haddock Lobo, 595 - São Paulo - SP</a>
-            </section>
-        </div>
+      
         <!-- Grid container -->
-    
+
         <!-- Copyright -->
-        <div class="text-center p-3">
-            <p style="margin-left: 900px; font-size: 15px;">© Safe Gas Company. Todos os direitos reservados.</p>
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2024 Copyright: SafeGas
         </div>
         <!-- Copyright -->
     </footer>
+    <!-- Footer -->
     
 </body>
 </html>
+
+<script>
+    function login() {
+      var emailCorreto = "safegas@gmail.com";
+      var senhaCorreta = "@123";
+
+      var email = input_email.value.trim();
+      var senha = input_senha.value.trim();
+      
+
+      if (email === emailCorreto && senha === senhaCorreta) {
+        msg.innerHTML = "<span style= 'color: green;'>Login bem-sucedido!</span>";
+        
+        setTimeout(function(){
+            window.location.href = "dashboard.html";
+        }, 1500);
+        
+      } else {
+        msg.innerHTML = "<span style= 'color: red;'>Email ou senha incorretos.</span>";
+      }
+    }
+  </script>
