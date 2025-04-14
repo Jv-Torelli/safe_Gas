@@ -11,9 +11,9 @@ senha VARCHAR(8)
 CREATE TABLE cadastroCondominio (
 idCondominio INT PRIMARY KEY AUTO_INCREMENT,
 nome VARCHAR(30) NOT NULL,
-logradouro VARCHAR(50) NOT NULL,
 cep CHAR(8) NOT NULL,
 numero INT NOT NULL,
+bairro VARCHAR(45)NOT NULL,
 cnpj CHAR(14) UNIQUE,
 email VARCHAR(40),
 senha CHAR(8) NOT NULL
