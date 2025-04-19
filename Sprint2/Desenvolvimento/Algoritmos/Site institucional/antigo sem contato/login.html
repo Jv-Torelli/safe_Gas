@@ -96,7 +96,7 @@
             <input class="input-icon empresa" type="text" placeholder="cnpj" name="email" id="input_cnpj" required>
             <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" id="input_senha" required>
 
-            <button class="btnEntrar" onclick="login()">Entrar</button> <br>
+            <button class="btnEntrar" id="btn_Login" onclick="login()">Entrar</button> <br>
 
             <div id="msg"></div>
 
@@ -121,6 +121,9 @@
 </html>
 
 <script>
+
+    var tentativas = 3;
+
     function login() {
       var cnpjCorreto = "12312312312344";
       var senhaCorreta = "@123";
@@ -134,7 +137,7 @@
             return;
         }
       
-    for(var contador = 1 ; contador <= 1; contador++){
+      while(tentativas >= 0){
       if (cnpj === cnpjCorreto && senha === senhaCorreta) {
         mensagem += "<span style= 'color: green;'>Login bem-sucedido!</span>";
         
@@ -142,12 +145,16 @@
             window.location.href = "dashboard.html";
         }, 1500);
         
-      } else {
-        mensagem += "<span style= 'color: red;'>Email ou senha incorretos.</span>";
-      }
+      } else if(tentativas > 0){ 
+        tentativas--;
+        mensagem += `<span style= 'color: red;'>CNPJ ou senha incorretos. Você ainda tem ${tentativas} tentativa(s)</span>`;
+    }else {
+        mensagem = `<span style='color: red;'>Tentativas esgotadas. Por favor, modifique sua senha ou tente mais tarde.</span>`;
+        document.getElementById("btn_Login").disabled = true;
     }
+        msg.innerHTML = `${mensagem}`
+        break;
+  }
+}
 
-    msg.innerHTML = `${mensagem}`
-
-    }
   </script>
