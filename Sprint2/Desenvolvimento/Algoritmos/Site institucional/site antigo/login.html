@@ -93,7 +93,7 @@
 
             <h2>BEM-VINDO DE VOLTA!</h2>
 
-            <input class="input-icon empresa" type="text" placeholder="email" name="email" id="input_email" required>
+            <input class="input-icon empresa" type="text" placeholder="cnpj" name="email" id="input_cnpj" required>
             <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" id="input_senha" required>
 
             <button class="btnEntrar" onclick="login()">Entrar</button> <br>
@@ -120,24 +120,35 @@
 </body>
 </html>
 
+
 <script>
     function login() {
-      var emailCorreto = "safegas@gmail.com";
+      var cnpjCorreto = "12312312312344";
       var senhaCorreta = "@123";
+      var mensagem = ``
 
-      var email = input_email.value.trim();
+      var cnpj = input_cnpj.value.trim();
       var senha = input_senha.value.trim();
-      
 
-      if (email === emailCorreto && senha === senhaCorreta) {
-        msg.innerHTML = "<span style= 'color: green;'>Login bem-sucedido!</span>";
+      if (cnpj.length !== 14 || isNaN(cnpj)) {
+            alert("O CNPJ deve conter exatamente 14 números.");
+            return;
+        }
+      
+    for(var contador = 1 ; contador <= 1; contador++){
+      if (cnpj === cnpjCorreto && senha === senhaCorreta) {
+        mensagem += "<span style= 'color: green;'>Login bem-sucedido!</span>";
         
         setTimeout(function(){
             window.location.href = "dashboard.html";
         }, 1500);
         
       } else {
-        msg.innerHTML = "<span style= 'color: red;'>Email ou senha incorretos.</span>";
+        mensagem += "<span style= 'color: red;'>Email ou senha incorretos.</span>";
       }
+    }
+
+    msg.innerHTML = `${mensagem}`
+
     }
   </script>
