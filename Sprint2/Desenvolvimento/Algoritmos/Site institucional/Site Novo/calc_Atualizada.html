@@ -89,67 +89,83 @@
             <div class="tituloCalc">
                 <h1>Simulador Financeiro</h1>
             </div>
+            <!-- <div class="CampoInput">
+                <p>Houve vazamento de gás:</p> <select oninput="AfetadosInput()" id="select_vazamento">
+                    <option value="Sim">Sim</option>
+                    <option value="Não">Não</option>
+                </select>
+            </div> -->
+            <div class="CampoInput">
+                <p>Quantidade de andares:</p>
+                <input type="number" id="input_andares" placeholder="Ex: 10">
+            </div>
             <div class="CampoInput">
                 <p>Quantos apartamentos são por andar:</p>
                 <input type="number" id="input_aptos" placeholder="Ex: 5">
             </div>
             <div class="CampoInput">
-                <p>Quantidade de andares:</p>
-                <input type="number" id="input_andares" placeholder="Ex: 10">
+                <p>Quantos apartamentos foram afetados?:</p>
+                <input type='number' id='input_and_afetados' placeholder='Ex: 3'>
             </div>
+            <div class="CampoInput">
+                <p>Custo de Manutenção(Mensal):</p>
+                <input type="number" id="input_manutencao" placeholder="R$:">
+            </div>
+
 
             <div class="CampoInput">
                 <p>Qual o valor estimado de um apartamento em reais:</p>
                 <input id="input_imovel" type="number" placeholder="R$: ">
             </div>
-            <div class="CampoInput">
-                <p>Houve vazamento de gás:</p> <select oninput="AfetadosInput()" id="select_vazamento">
-                    <option value="Sim">Sim</option>
-                    <option value="Não">Não</option>
-                </select>
-            </div>
-            <div class="CampoInput" id="DivAfetados">
-                <p>Quantos andares foram afetados?:</p>
-                <input type='number' id='input_and_afetados' placeholder='Ex: 3'> <br><br>
-            </div>
 
 
+            <br><br>
 
             <button onclick="calcularVazamento()" id="button_calcu">Calcular</button>
         </div>
 
         <div class="containerCalcResultado" id="mensagem">
+
             <div class="TituloComoFunciona">
-                <h1>Simule suas perdas financeiras com vazamentos de gás e proteja seu patrimônio!</h1>
+                <h1>Simule sua economia com a detecção de vazamentos de gás e valorize seu patrimônio!</h1>
             </div>
             <img src="./img/Calculadora/shieldGreen.png" alt="">
             <div class="ComoFuncionaDiv">
                 <h1>Como funciona?</h1>
-                <p>Nos campos ao lado informe os dados do seu condomínio e descubra o impacto financeiro de um vazamento de gás.</p>
+                <p>Nos campos ao lado informe os dados do seu condomínio e descubra o impacto financeiro de um vazamento
+                    de gás.</p>
             </div>
         </div>
 
     </div>
 
     </div>
-    <div class="foote"><p>Proteja seu condomínio: segurança e economia com nosso monitoramento de gás!</p></div>
+    <div class="foote">
+        <p>Proteja seu condomínio: segurança e economia com nosso monitoramento de gás!</p>
+    </div>
 </body>
 
 </html>
 
 <script>
-    // Função para exibir o input de afetados
-    function AfetadosInput() {
-        var selectAfetado = select_vazamento.value;
-        input_msg = " Quantos andares foram afetados?: <input type = 'text' id = 'input_and_afetados' placeholder = 'Ex: 3' > <br><br>"
+    // // Função para exibir o input de afetados
+    // function AfetadosInput() {
+    //     var selectAfetado = select_vazamento.value;
+    //     input_msg = " Quantos andares foram afetados?: <input type = 'text' id = 'input_and_afetados' placeholder = 'Ex: 3' > "
 
-        if (selectAfetado == "Sim") {
-            input_msg = " Quantos andares foram afetados?: <input type = 'text' id = 'input_and_afetados' placeholder = 'Ex: 3' > <br><br>"
-        } else {
-            input_msg = " ";
-        }
-        DivAfetados.innerHTML = input_msg;
+    //     if (selectAfetado == "Sim") {
+    //         input_msg = " Quantos andares foram afetados?: <input type = 'text' id = 'input_and_afetados' placeholder = 'Ex: 3' > "
+    //     } else {
+    //         input_msg = " ";
+    //     }
+    //     DivAfetados.innerHTML = input_msg;
 
+    // }
+    function formatarValor(valor) {
+        return valor.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });  // FORMATA PRA REAL
     }
 
     function calcularVazamento() {
@@ -157,23 +173,29 @@
         mensagem.innerHTML = '';
 
         // Incialmente pegamos os valores das inputs pelos seus ids
-        var apto = Number(input_aptos.value);
+        var aptoPorAndar = Number(input_aptos.value);
         var andares = Number(input_andares.value);
         // var altura = Number(input_altura.value);
         // var metros = Number(input_metros.value);
-        var vazamento = select_vazamento.value;
+        var vazamento = "Sim";
         var valorImovel = Number(input_imovel.value);
-        var andaresAfetados = Number(input_and_afetados.value);
+        var apartamentosAfetados = Number(input_and_afetados.value);
+        var ManutencaoPreco = Number(input_manutencao.value);
 
         //Em seguida damos continuidade realizando cálculos referentes ao modelo do negócio, a quantidade de aptos e o valor da perda estimada.
-        var totalApto = andares * apto;
+        var totalApto = andares * aptoPorAndar;
         var valorPerdaEstimada = 0;
-        var totalAfetados = andaresAfetados * apto;
+        var totalAfetados = apartamentosAfetados * aptoPorAndar;
         // var reconstrucaoMetro = 150000;
         var totalImoveis = valorImovel * totalApto;
-        var qtdAptosAfetados = apto * andaresAfetados;
-        var valorTotalAfetados = valorImovel * totalAfetados
-        
+        var qtdAptosAfetados = aptoPorAndar * apartamentosAfetados;
+        var valorTotalAfetados = valorImovel * apartamentosAfetados;
+        var economiaManutencao = (ManutencaoPreco * 60) / 100;
+        var manutencaoAnual = (economiaManutencao * 12);
+        var BeneficioAnual = (manutencaoAnual + valorTotalAfetados);
+        var prejuizoAp = (apartamentosAfetados * valorImovel);
+
+
 
         // mensagens de resultado
         var mensagemTopo = ``
@@ -181,19 +203,19 @@
         // começamos verificando se possui ou não seguro
         if (vazamento == "Sim") {
             if (andares > 0) {
-                if (apto > 0) {
-
-                    var qtdAptosAfetados = apto * andaresAfetados;
+                if (aptoPorAndar > 0) {
                     var valorAfetados = totalAfetados * valorImovel;
                     valorPerdaEstimada = valorImovel * totalApto;
 
 
 
                     mensagem.innerHTML = `  <div class="mensagemTopo" id="msgTopo">
-                <p>Com nosso Monitoramento de Gás, você evita perdas e protege seu patrimônio antes que o pior aconteça!</p> 
+                <p>Com a SafeGas Company você evita perdas e protege seu patrimônio!
+                </p>
             </div>
             <div class="PerdaDiv">
-                <span> Impacto Financeiro Estimado:</span> <h1>R$${valorTotalAfetados}</h1> <span>em prejuízo para o condomínio!</span>
+                <span> </span>
+                <h1>${formatarValor(BeneficioAnual)}</h1> <span>em Economia total para seu condomínio!</span>
             </div>
             <div class="iconsRow">
                 <div class="iconResultado">
@@ -206,42 +228,45 @@
                 </div>
             </div>
             <div class="ContainerBolinhasResultado">
+
                 <div class="campoResultado">
-                   <div class="resultadoRowLeft">
+                    <div class="resultadoRowLeft">
                         <div class="bolinhas" id="n1"></div>
-                        <p>Valor Total: (${totalApto} un)</p>
+                        <p>Valor protegido com nossa solução:</p>
                     </div>
-                    <h3>R$${totalImoveis}</h3> 
+                    <h3 style="color: green">${formatarValor(valorTotalAfetados)}</h3>
                 </div>
 
 
                 <div class="campoResultado">
                     <div class="resultadoRowLeft">
                         <div class="bolinhas" id="n2"></div>
-                        <p>Valor unitário apartamento:</p>
+                        <p>Economia anual com manutenção: ( anual )</p>
                     </div>
-                    <h3>R$${valorImovel}</h3>
-                </div>
+                    <h3  style="color: green">${formatarValor(manutencaoAnual)}</h3>
+                </div> 
+
+          
 
 
                 <div class="campoResultado">
                     <div class="resultadoRowLeft">
                         <div class="bolinhas" id="n3"></div>
-                        <p>Apartamentos afetados: (${qtdAptosAfetados} un)</p>
+                        <p >Prejuízos total sem nossa solução:(${apartamentosAfetados} ap)</p>
                     </div>
-                    <h3>R$${valorTotalAfetados}</h3>
+                    <h3 style="color: red;">${formatarValor(prejuizoAp)}</h3>
                 </div>
+
 
 
                 <div class="campoResultado">
-                     <div class="resultadoRowLeft">
+                    <div class="resultadoRowLeft">
                         <div class="bolinhas" id="n4"></div>
-                        <p>Total andares afetados:</p>
+                        <p>Valor Total:(${totalApto} apartamentos) </p>
                     </div>
-                    <h3>${andaresAfetados} andares</h3> 
+                    <h3>${formatarValor(totalImoveis)}</h3>
                 </div>
-            </div>`
-
+            </div>  `
 
 
                 }
@@ -249,7 +274,7 @@
         }
         if (vazamento == "Não") {
             if (andares > 0) {
-                if (apto > 0) {
+                if (aptoPorAndar > 0) {
                     mensagem.innerHTML = `Se não houve vazamento, seu patrimonio de ${totalImoveis} baseado na quantidade de ${totalApto} apartamentos distribuídos em ${andares} andares está seguro! Fique de olho.`
                 }
             }

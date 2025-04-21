@@ -13,8 +13,14 @@
     .main {
         display: flex;
         flex-direction: row;
-        height: 100%;
-        justify-content: space-around;
+        height: 96%;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+
+    .containerMain {
+        width: 85%;
     }
 
     .containerDadosDiv {
@@ -22,7 +28,10 @@
         flex-direction: column;
         height: 100%;
         width: 70%;
+        justify-content: space-between;
     }
+
+
 
     .containerCard {
         height: 160px;
@@ -30,6 +39,7 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
+        margin-top: 2%;
     }
 
     .notificacoesDiv {
@@ -43,14 +53,64 @@
         overflow: scroll;
         overflow-x: hidden;
         border-radius: 6px;
-        max-height: 75%;
+        max-height: 90%;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+        height: 100%;
     }
 
     body {
         height: 900px;
-        overflow: scroll;
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 0;
     }
+
+    .LogoutNavbarDiv {
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .tituloNav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logoNav img {
+        width: 70%;
+        height: 75%;
+        border-radius: 15px;
+        padding: 10px;
+    }
+
+    .logoNav {
+        width: 90%;
+        height: 90px;
+        display: flex;
+        justify-content: center;
+        background: white;
+        border-radius: 15px;
+    }
+
+    .tituloNav h2 {
+        color: white;
+
+    }
+
+    .navBarLeft {
+        width: 15%;
+        background: #7CB063;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
 
     .cardsDiv {
         background-color: white;
@@ -101,11 +161,10 @@
         background: darkblue;
         border-radius: 6px;
         overflow-y: scroll;
-        max-height: 200px;
     }
 
     .containerSensores {
-        height: 250px;
+        height: 50%;
         width: 100%;
         display: flex;
         justify-content: space-around;
@@ -129,7 +188,7 @@
     }
 
     .statusCard {
-        background: green;
+        background: #7CB063;
         border-radius: 15px;
         display: flex;
         align-items: center;
@@ -185,148 +244,198 @@
         text-align: center;
         width: 200px;
     }
+
+    .btnNavbarDiv {
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .btnNavbar {
+        width: 90%;
+        background: white;
+        border-radius: 15px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
 
 <body>
-    <div class="containerCard">
-        <div class="cardsDiv">
-            <div class="tituloCard">
-                <h2>Nível Atual de Gás (%)</h2>
+    <div class="navBarLeft">
+
+        <div class="tituloNav">
+            <div class="logoNav">
+                <img src="img/logoSafeGas.png" alt="">
             </div>
-            <div class="nivelCard">
-                <h1>10%</h1>
-            </div>
+            <h2>olá, Lello Condomínios</h2>
+
         </div>
-        <div class="cardsDiv">
-            <div class="tituloCard">
-                <h2>Status do Sensor </h2>
+        <div class="btnNavbarDiv">
+            <div class="btnNavbar">
+                <h2>Visão geral</h2>
             </div>
-            <div class="nivelCard">
-                <div class="statusCard">
-                    <h1>SEGURO</h1>
-                </div>
+            <div class="btnNavbar">
+                <h2>Prédio 1</h2>
             </div>
+            <div class="btnNavbar">
+                <h2>Andar 1</h2>
+            </div>
+            <div class="btnNavbar">
+                <h2>Apartamento 1</h2>
+            </div>
+
         </div>
-        <div class="cardsDiv">
-            <div class="tituloCard">
-                <h2>Última Ocorrência Crítica</h2>
-            </div>
-            <div class="nivelCard">
-                <h1>10%</h1>
-            </div>
-        </div>
-        <div class="cardsDiv">
-            <div class="tituloCard">
-                <h2>Média de Gás nas Últimas 24h (%)</h2>
-            </div>
-            <div class="nivelCard">
-                <h1>10%</h1>
+        <div class="LogoutNavbarDiv">
+            <div class="btnNavbar">
+                <h1>Sair</h1>
             </div>
         </div>
     </div>
-
-    <div class="main">
-        <div class="containerDadosDiv">
-
-            <div class="graficosDiv">
-                <div class="GraficosDeBarraDiv">
-                    <h1>Quantidade de Vazamentos por Mês</h1>
-                    <canvas id="sensorBarra"></canvas>
+    <div class="containerMain">
+        <div class="containerCard">
+            <div class="cardsDiv">
+                <div class="tituloCard">
+                    <h2>Nível Atual de Gás (%)</h2>
                 </div>
-
-                <div class="GraficosDeLinhasDiv">
-                    <h1>Nivel de Gás</h1>
-                    <canvas id="sensorAnalogico"></canvas>
+                <div class="nivelCard">
+                    <h1>10%</h1>
                 </div>
             </div>
-            <div class="containerSensores">
-                <div class="sensoresDiv">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Sensor</th>
-                                <th>Apartamento</th>
-                                <th>Status</th>
-                                <th>Última Atualização</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>123A</td>
-                                <td>Seguro</td>
-                                <td>12/10/2024</td>
-                            </tr>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>--%</td>
-                                <td>--</td>
-                                <td>--</td>
-                            </tr>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>--%</td>
-                                <td>--</td>
-                                <td>--</td>
-                            </tr>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>--%</td>
-                                <td>--</td>
-                                <td>--</td>
-                            </tr>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>--%</td>
-                                <td>--</td>
-                                <td>--</td>
-                            </tr>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>--%</td>
-                                <td>--</td>
-                                <td>--</td>
-                            </tr>
-                            <tr>
-                                <td id="btn_Sensor">Sensor 1</td>
-                                <td>--%</td>
-                                <td>--</td>
-                                <td>--</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="cardsDiv">
+                <div class="tituloCard">
+                    <h2>Status do Sensor </h2>
+                </div>
+                <div class="nivelCard">
+                    <div class="statusCard">
+                        <h1>SEGURO</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="cardsDiv">
+                <div class="tituloCard">
+                    <h2>Última Ocorrência Crítica</h2>
+                </div>
+                <div class="nivelCard">
+                    <h1>22/04</h1>
+                </div>
+            </div>
+            <div class="cardsDiv">
+                <div class="tituloCard">
+                    <h2>Alertas nas ultimas 24h</h2>
+                </div>
+                <div class="nivelCard">
+                    <h1>1</h1>
                 </div>
             </div>
         </div>
-        <div class="notificacoesDiv">
-            <div class="cardNotificacoes" id="TituloNotificacoes">
-                <h3> Notificações </h3>
-            </div>
-            <div class="cardNotificacoes">
-                <div class="iconNotificacoes">
-                    <img src="./imgs/iconGreen.png" alt="">
-                </div>
-                <div class="statusNotificacoes">
-                    <h3>Nivel de gás adequado</h3>
-                </div>
-            </div>
-            <div class="cardNotificacoes">
-                <div class="iconNotificacoes">
-                    <img src="./imgs/iconYellow.png" alt="">
-                </div>
-                <div class="statusNotificacoes">
-                    <h3>Nível de gás elevado! Atenção!</h3>
-                </div>
-            </div>
-            <div class="cardNotificacoes">
-                <div class="iconNotificacoes">
-                    <img src="./imgs/iconRed.png" alt="">
-                </div>
-                <div class="statusNotificacoes">
-                    <h3>Perigo! Vazamento detectado!</h3>
-                </div>
-            </div>
 
+        <div class="main">
+            <div class="containerDadosDiv">
+
+                <div class="graficosDiv">
+                    <div class="GraficosDeBarraDiv">
+                        <h1>Quantidade de Vazamentos por Mês</h1>
+                        <canvas id="sensorBarra"></canvas>
+                    </div>
+
+                    <div class="GraficosDeLinhasDiv">
+                        <h1>Nivel de Gás</h1>
+                        <canvas id="sensorAnalogico"></canvas>
+                    </div>
+                </div>
+                <div class="containerSensores">
+                    <div class="sensoresDiv">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sensor</th>
+                                    <th>Apartamento</th>
+                                    <th>Status</th>
+                                    <th>Última Atualização</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td id="btn_Sensor">Sensor 1</td>
+                                    <td>123A</td>
+                                    <td>Seguro</td>
+                                    <td>12/10/2024</td>
+                                </tr>
+                                <tr>
+                                    <td id="btn_Sensor">Sensor 1</td>
+                                    <td>--%</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                                <tr>
+                                    <td id="btn_Sensor">Sensor 1</td>
+                                    <td>--%</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                                <tr>
+                                    <td id="btn_Sensor">Sensor 1</td>
+                                    <td>--%</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                                <tr>
+                                    <td id="btn_Sensor">Sensor 1</td>
+                                    <td>--%</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                                <tr>
+                                    <td id="btn_Sensor">Sensor 1</td>
+                                    <td>--%</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                                <tr>
+                                    <td id="btn_Sensor">Sensor 1</td>
+                                    <td>--%</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="notificacoesDiv">
+                <div class="cardNotificacoes" id="TituloNotificacoes">
+                    <h3> Notificações </h3>
+                </div>
+                <div class="cardNotificacoes">
+                    <div class="iconNotificacoes">
+                        <img src="./img/iconGreen.png" alt="">
+                    </div>
+                    <div class="statusNotificacoes">
+                        <h3>Nivel de gás adequado</h3>
+                    </div>
+                </div>
+                <div class="cardNotificacoes">
+                    <div class="iconNotificacoes">
+                        <img src="./img/iconYellow.png" alt="">
+                    </div>
+                    <div class="statusNotificacoes">
+                        <h3>Nível de gás elevado! Atenção!</h3>
+                    </div>
+                </div>
+                <div class="cardNotificacoes">
+                    <div class="iconNotificacoes">
+                        <img src="./img/iconRed.png" alt="">
+                    </div>
+                    <div class="statusNotificacoes">
+                        <h3>Perigo! Vazamento detectado!</h3>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </body>

@@ -179,7 +179,6 @@ section {
     background-color: transparent;
     border: 1px solid rgb(255, 255, 255);
     font-size: 11.3pt;
-
     box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.021);
     cursor: pointer;
     transition: background-color .2s ease;
@@ -345,7 +344,7 @@ section {
     align-items: center;
     justify-content: space-between;
     padding: 23px 10%;
-    visibility: hidden;
+    visibility: visible;
 
 }
 
@@ -421,7 +420,6 @@ section {
     background-color: #f2f2f2;
     padding: 40px;
     border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
 .form .form-group {
@@ -721,5 +719,5 @@ section {
 }
 
 .home {
-    visibility: hidden;
+    visibility: visible;
 }

@@ -210,7 +210,9 @@ body {
 .PerdaDiv h1 {
     font-weight: 600;
     font-size: 40px;
-    color: #FF0000;
+    /* color: #FF0000; */
+    color: #7CB063;
+
 }
 
 span {
