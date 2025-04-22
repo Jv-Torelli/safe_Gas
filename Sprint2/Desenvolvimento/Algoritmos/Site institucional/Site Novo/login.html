@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <script src="https://unpkg.com/scrollreveal"></script>
     <link rel="icon" href="./img/miniLogo.png">
 </head>
+
 <body>
 
     <header>
@@ -17,18 +19,18 @@
             <div class="titleNav">
                 <img src="./img/logoSafeGas.png" id="logo">
             </div>
-            <ul class="navLinks">
+            <ul class="navLinks"> <!-- container da lista -->
 
-                <li class="navLink ativa">
-                    <a href="../Site Novo/index.html#home">Home</a>
+                <li class="navLink ativa"> <!-- lista se sessoes da pagina -->
+                    <a href="./index.html">Home</a>
                 </li>
 
                 <li class="navLink">
-                    <a href="#Projetos">Serviços</a>
+                    <a href="./index.html">Quem somos</a>
                 </li>
 
                 <li class="navLink">
-                    <a href="#sobre">Quem somos</a>
+                    <a href="./index.html">Serviços</a>
                 </li>
 
                 <li class="navLink">
@@ -36,7 +38,7 @@
                 </li>
 
                 <li class="navLink">
-                    <a href="#contato">Contato</a>
+                    <a href="./index.html">Contato</a>
                 </li>
 
             </ul>
@@ -44,21 +46,16 @@
 
             <div class="btnsNav">
                 <a href="cadastro.html">
-                <button class="btnLogin" id="btnRegister"> Registrar</button>
+                    <button class="btnLogin" id="btnRegister"> Registrar</button>
                 </a>
                 <a href="login.html">
-                <button class="btnLogin">Entrar</button>
+                    <button class="btnLogin">Entrar</button>
                 </a>
             </div>
+        </nav> <!-- fim da Divisão da navbar Desktop -->
 
 
-            <button id="btnMobile">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-        </nav>   <!-- fim da Divisão da navbar Desktop -->
-
-
-        <div id="navM">  <!-- fim da Divisão da navbar Mobile -->
+        <div id="navM"> <!-- fim da Divisão da navbar Mobile -->
             <ul class="navLinksMobile">
                 <li class="navLink ativa">
                     <a href="#home">Home</a>
@@ -94,7 +91,8 @@
             <h2>BEM-VINDO DE VOLTA!</h2>
 
             <input class="input-icon empresa" type="text" placeholder="cnpj" name="email" id="input_cnpj" required>
-            <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" id="input_senha" required>
+            <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" id="input_senha"
+                required>
 
             <button class="btnEntrar" id="btn_Login" onclick="login()">Entrar</button> <br>
 
@@ -106,7 +104,7 @@
 
     <footer class="text-center ">
         <!-- Grid container -->
-      
+
         <!-- Grid container -->
 
         <!-- Copyright -->
@@ -116,45 +114,47 @@
         <!-- Copyright -->
     </footer>
     <!-- Footer -->
-    
+
 </body>
+
 </html>
+
 
 <script>
 
     var tentativas = 3;
 
     function login() {
-      var cnpjCorreto = "12312312312344";
-      var senhaCorreta = "@123";
-      var mensagem = ``
+        var cnpjCorreto = "12312312312344";
+        var senhaCorreta = "@123";
+        var mensagem = ``
 
-      var cnpj = input_cnpj.value.trim();
-      var senha = input_senha.value.trim();
+        var cnpj = input_cnpj.value.trim();
+        var senha = input_senha.value.trim();
 
-      if (cnpj.length !== 14 || isNaN(cnpj)) {
+        if (cnpj.length !== 14 || isNaN(cnpj)) {
             alert("O CNPJ deve conter exatamente 14 números.");
             return;
         }
-      
-      while(tentativas >= 0){
-      if (cnpj === cnpjCorreto && senha === senhaCorreta) {
-        mensagem += "<span style= 'color: green;'>Login bem-sucedido!</span>";
-        
-        setTimeout(function(){
-            window.location.href = "dashboard.html";
-        }, 1500);
-        
-      } else if(tentativas > 0){ 
-        tentativas--;
-        mensagem += `<span style= 'color: red;'>CNPJ ou senha incorretos. Você ainda tem ${tentativas} tentativa(s)</span>`;
-    }else {
-        mensagem = `<span style='color: red;'>Tentativas esgotadas. Por favor, modifique sua senha ou tente mais tarde.</span>`;
-        document.getElementById("btn_Login").disabled = true;
-    }
-        msg.innerHTML = `${mensagem}`
-        break;
-  }
-}
 
-  </script>
+        while (tentativas >= 0) {
+            if (cnpj === cnpjCorreto && senha === senhaCorreta) {
+                mensagem += "<span style= 'color: green;'>Login bem-sucedido!</span>";
+
+                setTimeout(function () {
+                    window.location.href = "dashboard.html";
+                }, 1500);
+
+            } else if (tentativas > 0) {
+                tentativas--;
+                mensagem += `<span style= 'color: red;'>CNPJ ou senha incorretos. Você ainda tem ${tentativas} tentativa(s)</span>`;
+            } else {
+                mensagem = `<span style='color: red;'>Tentativas esgotadas. Por favor, modifique sua senha ou tente mais tarde.</span>`;
+                document.getElementById("btn_Login").disabled = true;
+            }
+            msg.innerHTML = `${mensagem}`
+            break;
+        }
+    }
+
+</script>

@@ -19,18 +19,18 @@
             <div class="titleNav">
                 <img src="./img/logoSafeGas.png" id="logo">
             </div>
-            <ul class="navLinks">
+            <ul class="navLinks"> <!-- container da lista -->
 
-                <li class="navLink ativa">
-                    <a href="../Site Novo/index.html#home">Home</a>
+                <li class="navLink ativa"> <!-- lista se sessoes da pagina -->
+                    <a href="./index.html">Home</a>
                 </li>
 
                 <li class="navLink">
-                    <a href="#Projetos">Serviços</a>
+                    <a href="./index.html">Quem somos</a>
                 </li>
 
                 <li class="navLink">
-                    <a href="#sobre">Quem somos</a>
+                    <a href="./index.html">Serviços</a>
                 </li>
 
                 <li class="navLink">
@@ -38,10 +38,11 @@
                 </li>
 
                 <li class="navLink">
-                    <a href="#contato">Contato</a>
+                    <a href="./index.html">Contato</a>
                 </li>
 
             </ul>
+
 
 
             <div class="btnsNav">
@@ -94,7 +95,7 @@
                 conosco, faça login com <br>
                 suas informações.</h3>
 
-            <button class="btnFazerLogin">ENTRAR</button>
+            <a href="./login.html" class="btnFazerLogin">ENTRAR</a>
 
         </div>
         <div class="containerInputs">
@@ -106,7 +107,8 @@
             <input class="input-icon numero" type="text" placeholder="Número" name="numero" required>
             <input class="input-icon empresa" type="text" placeholder="CNPJ" name="cnpj" id="input_cnpj" required>
             <input class="input-icon email" type="email" placeholder="E-mail" name="email" id="input_email" required>
-            <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" id="input_senha" required>
+            <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" id="input_senha"
+                required>
 
 
             <button class="btnEntrar" onclick="cadastro()">CADASTRAR</button>
@@ -134,12 +136,12 @@
 
 
 <script>
-    function cadastro(){
-        var emailCorreto = `safegas@gmail.com`;
-        var senhaCorreta = `@123`;
+    function cadastro() {
+        // var emailCorreto = `safegas@gmail.com`;
+        // var senhaCorreta = `@123`;
 
         var cep = input_cep.value.trim();
-        var cnpj= input_cnpj.value.trim();
+        var cnpj = input_cnpj.value.trim();
         var email = input_email.value.trim();
         var senha = input_senha.value.trim();
 
@@ -147,29 +149,17 @@
         if (cep.length !== 8 || isNaN(cep)) {
             alert("O CEP deve conter exatamente 8 números.");
             return;
-        }
-
-        // Validação de CNPJ
-        if (cnpj.length !== 14 || isNaN(cnpj)) {
+        } else if (cnpj.length !== 14 || isNaN(cnpj)) {
             alert("O CNPJ deve conter exatamente 14 números.");
             return;
-        }
-
-        // Validação de caracteres especiais no email
-        if (!email.includes("@") || !email.includes(".")) {
+        } else if (!email.includes("@") || !email.includes(".")) {
             alert("E-mail inválido! Deve conter '@' e '.'");
             return;
-        }
-
-        if(email === emailCorreto && senha === senhaCorreta){  
-        alert(`Cadastro realizado com sucesso!`)
-
-        setTimeout(function(){
-        window.location.href = "login.html";
-        }, 1500);
-
-        }else{
-            alert(`Email ou senha incorretos!`);
+        } else {
+            alert(`Cadastro realizado com sucesso!`)
+            setTimeout(function () {
+                window.location.href = "login.html";
+            }, 150);
         }
 
 
