@@ -8,6 +8,7 @@
 <style>
     * {
         font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
     }
 
     .main {
@@ -38,6 +39,7 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
+        margin-top: 1.5%;
     }
 
     .notificacoesDiv {
@@ -51,9 +53,9 @@
         overflow: scroll;
         overflow-x: hidden;
         border-radius: 6px;
-        max-height: 90%;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-        height: 81%;
+        max-height: 95%;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+        height: 95%;
     }
 
     body {
@@ -71,6 +73,15 @@
         flex-direction: column;
         justify-content: flex-end;
         align-items: center;
+
+    }
+
+    .LogoutNavbarDiv .btnNavbar {
+        transition: 0.5s;
+    }
+
+    .LogoutNavbarDiv .btnNavbar:hover {
+        background-color: #506D96;
     }
 
     .tituloNav {
@@ -116,7 +127,10 @@
         width: 20%;
         border-radius: 7px;
         border-left: black solid 6px;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .graficosDiv {
@@ -135,8 +149,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
         font-size: 10px;
+        justify-content: center;
     }
 
     .graficosDiv canvas {
@@ -151,6 +166,8 @@
         display: flex;
         align-items: center;
         justify-content: space-around;
+        background: white;
+        border-radius: 15px;
     }
 
     .sensoresDiv {
@@ -194,10 +211,11 @@
         width: 70%;
         font-size: 10px;
         color: white;
+        height: 70%;
     }
 
     thead {
-        background: red;
+        background: #506D96;
         color: white;
     }
 
@@ -206,6 +224,14 @@
         background: white;
         padding: 10px;
 
+    }
+
+    .infoCardsSituacao {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        height: 30%;
+        align-items: center;
     }
 
     tr {
@@ -218,6 +244,16 @@
         transition: 0.2s;
     }
 
+    #perigo {
+        background-color: rgba(255, 0, 0, 0.432);
+        font-weight: bold;
+    }
+
+    #seguro {
+        background-color: #7bb06386;
+        font-weight: bold;
+    }
+
     #btn_Sensor:hover {
         background-color: black;
         color: white;
@@ -228,7 +264,7 @@
         min-height: 60px;
         border-bottom: 1px solid white;
         border-top: 1px solid white;
-        color: white;
+        color: black;
         display: flex;
         justify-content: center;
     }
@@ -241,6 +277,43 @@
         display: flex;
         text-align: center;
         width: 200px;
+    }
+
+    .divMetricas {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 0.5%;
+    }
+
+    .rowCardMetricas {
+        width: 100%;
+        height: 70px;
+        display: flex;
+        gap: 22px;
+        justify-content: center;
+    }
+
+    .cardMetricas {
+        height: 100%;
+        width: 18%;
+    }
+
+    .nivelMetricas {
+        height: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid black;
+    }
+
+    .statusMetricas {
+        height: 50%;
+        background: green;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .btnNavbarDiv {
@@ -259,7 +332,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-    }
+        text-decoration: none;
+        color: black;
+    }s
 </style>
 
 <body>
@@ -293,14 +368,64 @@
             </a>
         </div>
     </div>
+
     <div class="containerMain">
+
+        <div class="divMetricas">
+            <div class="tituloMetricas">
+                <h1>Métricas Nível de Gás</h1>
+            </div>
+            <div class="rowCardMetricas">
+                <div class="cardMetricas">
+                    <div class="nivelMetricas">
+                        <p> até 2.5% </p>
+                    </div>
+                    <div class="statusMetricas">
+                        <h2>Seguro</h2>
+                    </div>
+                </div>
+                <div class="cardMetricas">
+                    <div class="nivelMetricas">
+                        <p> entre 2.5% a 5% </p>
+                    </div>
+                    <div class="statusMetricas" style="background-color: yellow;">
+                        <h2>Atenção</h2>
+                    </div>
+                </div>
+                <div class="cardMetricas">
+                    <div class="nivelMetricas">
+                        <p> entre 5% a 10% </p>
+                    </div>
+                    <div class="statusMetricas" style="background-color: red;">
+                        <h2>Alerta</h2>
+                    </div>
+                </div>
+                <div class="cardMetricas">
+                    <div class="nivelMetricas">
+                        <p> entre 10% a 15%</p>
+                    </div>
+                    <div class="statusMetricas" style="background-color: rgb(102, 0, 0); color: white;">
+                        <h2>Perigo</h2>
+                    </div>
+                </div>
+                <div class="cardMetricas">
+                    <div class="nivelMetricas">
+                        <p> maior 15%</p>
+                    </div>
+                    <div class="statusMetricas" style="background-color: black; color: white;">
+                        <h2>Emergência</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="containerCard">
             <div class="cardsDiv">
                 <div class="tituloCard">
                     <h2>Nível Atual de Gás (%)</h2>
                 </div>
                 <div class="nivelCard">
-                    <h1>10%</h1>
+                    <h1>2.5%</h1>
                 </div>
             </div>
             <div class="cardsDiv">
@@ -315,7 +440,15 @@
             </div>
 
             <div class="cardsDiv">
-
+                <div class="infoCardsSituacao">
+                    <h2>Atenção!</h2>
+                </div>
+                <div class="infoCardsSituacao">
+                    <h3>Verifique ventilação.</h3>
+                </div>
+                <div class="infoCardsSituacao">
+                    <h5>Condições inadequadas</h5>
+                </div>
             </div>
             <div class="cardsDiv">
                 <div class="tituloCard">
@@ -356,45 +489,46 @@
                                 <tr>
                                     <td id="btn_Sensor">Sensor 1</td>
                                     <td>123A</td>
-                                    <td>Seguro</td>
+                                    <td id="seguro">Seguro</td>
                                     <td>12/10/2024</td>
                                 </tr>
                                 <tr>
-                                    <td id="btn_Sensor">Sensor 1</td>
-                                    <td>--%</td>
-                                    <td>--</td>
-                                    <td>--</td>
+                                    <td id="btn_Sensor">Sensor 2</td>
+                                    <td>123A</td>
+                                    <td id="seguro">Seguro</td>
+                                    <td>12/10/2024</td>
                                 </tr>
                                 <tr>
-                                    <td id="btn_Sensor">Sensor 1</td>
-                                    <td>--%</td>
-                                    <td>--</td>
-                                    <td>--</td>
+                                    <td id="btn_Sensor">Sensor 3</td>
+                                    <td>123A</td>
+                                    <td id="perigo">Perigo</td>
+                                    <td>12/10/2024</td>
                                 </tr>
                                 <tr>
-                                    <td id="btn_Sensor">Sensor 1</td>
-                                    <td>--%</td>
-                                    <td>--</td>
-                                    <td>--</td>
+                                    <td id="btn_Sensor">Sensor 4</td>
+                                    <td>123A</td>
+                                    <td id="seguro">Seguro</td>
+                                    <td>12/10/2024</td>
                                 </tr>
                                 <tr>
-                                    <td id="btn_Sensor">Sensor 1</td>
-                                    <td>--%</td>
-                                    <td>--</td>
-                                    <td>--</td>
+                                    <td id="btn_Sensor">Sensor 5</td>
+                                    <td>123A</td>
+                                    <td id="seguro">Seguro</td>
+                                    <td>12/10/2024</td>
                                 </tr>
                                 <tr>
-                                    <td id="btn_Sensor">Sensor 1</td>
-                                    <td>--%</td>
-                                    <td>--</td>
-                                    <td>--</td>
+                                    <td id="btn_Sensor">Sensor 6</td>
+                                    <td>123A</td>
+                                    <td id="seguro">Seguro</td>
+                                    <td>12/10/2024</td>
                                 </tr>
                                 <tr>
-                                    <td id="btn_Sensor">Sensor 1</td>
-                                    <td>--%</td>
-                                    <td>--</td>
-                                    <td>--</td>
+                                    <td id="btn_Sensor">Sensor 7</td>
+                                    <td>123A</td>
+                                    <td id="perigo">Perigo</td>
+                                    <td>12/10/2024</td>
                                 </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -409,7 +543,7 @@
                         <img src="./img/iconGreen.png" alt="">
                     </div>
                     <div class="statusNotificacoes">
-                        <h3>Nivel de gás adequado</h3>
+                        <h3>Níveis naturais ou traços minimos. Ambiente estável.</h3>
                     </div>
                 </div>
                 <div class="cardNotificacoes">
@@ -417,7 +551,7 @@
                         <img src="./img/iconYellow.png" alt="">
                     </div>
                     <div class="statusNotificacoes">
-                        <h3>Nível de gás elevado! Atenção!</h3>
+                        <h3>Atenção! Pequeno aumento. Pode haver acúmulo gradual.</h3>
                     </div>
                 </div>
                 <div class="cardNotificacoes">
@@ -425,10 +559,25 @@
                         <img src="./img/iconRed.png" alt="">
                     </div>
                     <div class="statusNotificacoes">
-                        <h3>Perigo! Vazamento detectado!</h3>
+                        <h3>Alerta! Gás em quantidade significativa.</h3>
                     </div>
                 </div>
-
+                <div class="cardNotificacoes">
+                    <div class="iconNotificacoes">
+                        <img src="./img/iconRedBlack.png" alt="">
+                    </div>
+                    <div class="statusNotificacoes">
+                        <h3>Perigo! Alta Concentração de gás!</h3>
+                    </div>
+                </div>
+                <div class="cardNotificacoes">
+                    <div class="iconNotificacoes">
+                        <img src="./img/iconBlack.png" alt="">
+                    </div>
+                    <div class="statusNotificacoes">
+                        <h3>Muito perigoso! Grande Risco de explosão</h3>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -442,7 +591,7 @@
             labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'],
             datasets: [{
                 label: 'Nivel de Gás Natural',
-                data: [5, 10, 9, 7, 10, 11, 10, 9, 7, 10, 11],
+                data: [2, 3, 2, 4, 10, 11, 5, 4, 2.3, 2, 2.5],
                 borderWidth: 1,
                 backgroundColor: 'red',
                 borderColor: 'red',
