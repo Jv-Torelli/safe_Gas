@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+    }
+
+    .main {
+        height: 100%;
+        width: 85%;
+    }
+
+    .navbarLeft {
+        width: 15%;
+        height: 100%;
+        background-color: #7CB063;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+        display: flex;
+    }
+
+    .titulo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .legenda {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+
+    .legenda div {
+        height: 25px;
+        width: 120px;
+        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        font-weight: bold;
+        margin-left: 10px;
+    }
+
+    .linha {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .box {
+        width: 180px;
+        height: 120px;
+        color: black;
+        border-radius: 12px;
+        padding: 10px;
+        font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-left: 20px;
+    }
+
+    .verde {
+        background-color: green;
+    }
+
+    .amarelo {
+        background-color: yellow;
+    }
+
+    .vermelho {
+        background-color: red;
+    }
+
+    h4 {
+        font-size: 22px;
+        margin: 5px 0;
+    }
+
+    p {
+        font-weight: normal;
+    }
+</style>
+
+<body>
+    <div class="navbarLeft">
+        <div style="color: white;padding: 35px;">
+            <h3>Olá, condominio!</h3>
+        </div>
+
+
+        <div
+            style="height: 20px;width: 55%;background-color: white;color: black;border-radius: 8px;margin-bottom: 20px;">
+            <h3>Visão geral</h3>
+        </div>
+
+
+        <div
+            style="height: 20px;width: 55%;background-color: white;color: black;border-radius: 8px; margin-bottom: 20px; ">
+            <h3>Prédio 1</h3>
+        </div>
+
+
+        <div
+            style="height: 20px;width: 55%;background-color: white;color: black;border-radius: 8px;margin-bottom: 680px;">
+            <h3>Andar 1</h3>
+        </div>
+
+
+
+
+        <div style="height: 20px;width: 55%;background-color: white;color: black;border-radius: 8px;flex-direction: column;
+        align-items:end ;">
+            <h3>Sair</h3>
+        </div>
+    </div>
+    <div class="main">
+
+
+        <div class="titulo">Métricas Gás Natural</div>
+
+        <div class="legenda">
+            <div class="verde">abaixo de 5%</div>
+            <div class="amarelo">acima de 5%</div>
+            <div class="vermelho">acima de 10%</div>
+        </div>
+
+        <div class="linha">
+            <div class="box verde">Apartamento 1 <h4>1%</h4>
+                <p>nível de gás ideal</p>
+            </div>
+            <div class="box verde">Apartamento 2 <h4>2%</h4>
+                <p>nível de gás ideal</p>
+            </div>
+            <div class="box verde">Apartamento 3 <h4>3%</h4>
+                <p>nível de gás ideal</p>
+            </div>
+
+        </div>
+        <div class="linha">
+            <div class="box amarelo">Apartamento 4 <h4>7%</h4>
+                <p>nível de gás alarmante</p>
+            </div>
+            <div class="box amarelo">Apartamento 5 <h4>9%</h4>
+                <p>nível de gás alarmante</p>
+            </div>
+            <div class="box amarelo">Apartamento 6 <h4>8%</h4>
+                <p>nível de gás alarmante</p>
+            </div><br><br>
+
+        </div>
+        <div class="linha">
+            <div class="box vermelho">Apartamento 7 <h4>20%</h4>
+                <p>nível de gás alarmante</p>
+            </div>
+            <div class="box vermelho">Apartamento 8 <h4>17%</h4>
+                <p>nível de gás alarmante</p>
+            </div>
+            <div class="box vermelho">Apartamento 9 <h4>19%</h4>
+                <p>nível de gás alarmante</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>     
