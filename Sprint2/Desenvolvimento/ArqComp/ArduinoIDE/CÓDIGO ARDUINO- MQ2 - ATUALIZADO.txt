@@ -14,17 +14,10 @@ void loop() {
   
   
   
-  Serial.print("Mínimo:");
-  Serial.print(linhaFixa);
-  Serial.print(" ");
-  Serial.print("Porcentagem:"); 
-  Serial.print(porcentagem);
-  Serial.print(" ");
-  Serial.print("Máximo:");
-  Serial.println(15);
-  Serial.print(" ");
+
+  Serial.println(porcentagem);
   
- porcentagem = ((float)(valorSensor - VALOR_MINIMO) / (VALOR_MAXIMO - VALOR_MINIMO)) * (PORCENTAGEM_MAX - PORCENTAGEM_MIN) + PORCENTAGEM_MIN;
+ porcentagem = ((float)valorSensor/100); // converte para porcentagem
 
   if (porcentagem < 0) {
     porcentagem = 0;
