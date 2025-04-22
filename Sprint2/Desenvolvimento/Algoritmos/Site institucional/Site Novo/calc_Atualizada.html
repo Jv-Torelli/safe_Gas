@@ -104,7 +104,7 @@
                 <input type="number" id="input_aptos" placeholder="Ex: 5">
             </div>
             <div class="CampoInput">
-                <p>Quantos apartamentos foram afetados?:</p>
+                <p>Em uma possível explosão, quantos apartamentos podem ser afetados?:</p>
                 <input type='number' id='input_and_afetados' placeholder='Ex: 3'>
             </div>
             <div class="CampoInput">
@@ -192,8 +192,9 @@
         var valorTotalAfetados = valorImovel * apartamentosAfetados;
         var economiaManutencao = (ManutencaoPreco * 60) / 100;
         var manutencaoAnual = (economiaManutencao * 12);
-        var BeneficioAnual = (manutencaoAnual + valorTotalAfetados);
         var prejuizoAp = (apartamentosAfetados * valorImovel);
+        var valorEconomia = (ManutencaoPreco * 12) - manutencaoAnual;
+        var BeneficioAnual = (valorEconomia + valorTotalAfetados);
 
 
 
@@ -215,7 +216,7 @@
             </div>
             <div class="PerdaDiv">
                 <span> </span>
-                <h1>${formatarValor(BeneficioAnual)}</h1> <span>em Economia total para seu condomínio!</span>
+                <h1>${formatarValor(BeneficioAnual)}</h1> <span>Visamos atingir até este valor em econômia para seu condomínio!</span>
             </div>
             <div class="iconsRow">
                 <div class="iconResultado">
@@ -241,9 +242,9 @@
                 <div class="campoResultado">
                     <div class="resultadoRowLeft">
                         <div class="bolinhas" id="n2"></div>
-                        <p>Economia anual com manutenção: ( anual )</p>
+                        <p>Visamos atingir uma econômia de: ( anual )</p>
                     </div>
-                    <h3  style="color: green">${formatarValor(manutencaoAnual)}</h3>
+                    <h3  style="color: green">${formatarValor(valorEconomia)}</h3>
                 </div> 
 
           
@@ -252,7 +253,7 @@
                 <div class="campoResultado">
                     <div class="resultadoRowLeft">
                         <div class="bolinhas" id="n3"></div>
-                        <p >Prejuízos total sem nossa solução:(${apartamentosAfetados} ap)</p>
+                        <p >Prejuízo estimado sem nossa solução:(${apartamentosAfetados} ap)</p>
                     </div>
                     <h3 style="color: red;">${formatarValor(prejuizoAp)}</h3>
                 </div>
