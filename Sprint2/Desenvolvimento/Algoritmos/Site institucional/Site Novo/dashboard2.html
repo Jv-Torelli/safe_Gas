@@ -533,19 +533,61 @@
 
 
 <script>
-  const linha = document.getElementById('graficoLinha');
-
-  new Chart(linha, {
-    type: 'line',
-    data: {
-      labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'],
-      datasets: [{
-        label: 'Gas Natural',
-        data: [2.5, 2.8, 2.4, 3.1, 2.9, 2.9, 3.1, 2.9, 2.9],
-        borderWidth: 1,
-        backgroundColor: 'red',
-        borderColor: 'red',
-      }]
-    }
-  });
+const ctx = document.getElementById('graficoLinha').getContext('2d');
+    
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['0:00','2:00','4:00','6:00','8:00','10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+        datasets: [{
+          label: 'Nível de gás natural (%)',
+          data: [5, 7, 10, 8, 15, 12, 5, 7, 10, 8, 15, 12],
+          borderColor: 'red',
+          backgroundColor: 'rgba(255, 0, 0, 0.1)',
+          tension: 0.4,
+          fill: true,
+          pointBackgroundColor: 'red',
+          pointRadius: 4,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            min: 0,
+            max: 20,
+            ticks: {
+              callback: function(value) {
+                return value + '%';
+              }
+            },
+            title: {
+              display: true,
+              text: 'Porcentagem'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Horário'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            labels: {
+              color: 'red'
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return context.parsed.y + '%';
+              }
+            }
+          }
+        }
+      }
+    });
 </script>
