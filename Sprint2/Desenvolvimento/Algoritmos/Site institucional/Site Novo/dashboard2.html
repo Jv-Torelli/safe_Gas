@@ -324,18 +324,26 @@
     transform: scale(1.01);
 
   }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
 </style>
 
 <body>
+  <!-- nav -->
   <div class="navbarLeft">
-    <div class="btnNavbar">
+    <a href="./dashboard1.html" class="btnNavbar">
       <img src="./img/visaoBtn.png" alt="">
       Visão Geral
-    </div>
+    </a>
     <div class="btnNavbar">
       <h1>Sair</h1>
     </div>
   </div>
+
+  <!-- logo  e indicador -->
   <div class="containerInfos">
     <div class="rowInfo1">
       <div class="logo"><img src="./img/logoSafeGas.png" alt=""></div>
@@ -345,7 +353,7 @@
         <div class="tituloSensores">
           <h1>Sensores</h1>
         </div>
-
+        <!-- lista sensor -->
         <div onclick="chamarPredioUmAndares()" class="sensorDiv" style="background-color: #FF9F9F;">
           <img id="icons" src="./img/sensorOk.png" alt="">
           <p>Sensor 1</p>
@@ -369,6 +377,7 @@
 
     </div>
   </div>
+  <!-- métricas -->
   <div class="elementosContainer">
     <div class="metricasRowDiv">
       <h1>Métricas níveis de gás</h1>
