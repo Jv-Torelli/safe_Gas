@@ -24,7 +24,6 @@ CONSTRAINT fkCondominio FOREIGN KEY (fkCondominio) references condominio(idCondo
 CREATE TABLE sensor (
 idSensor INT PRIMARY KEY auto_increment,
 nome VARCHAR(25) NOT NULL,
-tipo VARCHAR(30) NOT NULL,
 apartamento VARCHAR(5) NOT NULL,
 statusSensor VARCHAR(15),
 	CONSTRAINT ckSensor 
@@ -45,11 +44,15 @@ CONSTRAINT fkCondominioApartamento FOREIGN KEY (fkCondominioApartamento) referen
 
 
 CREATE TABLE alerta(
-idAlerta INT PRIMARY KEY auto_increment,
+idAlerta INT AUTO_INCREMENT,
+fkSensorAlerta INT NOT NULL,
 statusAlerta VARCHAR(30),
 	CONSTRAINT ckStatus
-		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Alerta', 'Perigo', 'Emergência'))
+		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Alerta', 'Perigo', 'Emergência')),
+PRIMARY KEY (idAlerta, fkSensorAlerta),
+	FOREIGN KEY (fkSensorAlerta) REFERENCES sensor(idSensor)
 );
+
 
 CREATE TABLE medicao (
 idMedicao INT PRIMARY KEY AUTO_INCREMENT,
@@ -76,12 +79,11 @@ INSERT INTO condominio VALUES
 (DEFAULT, 'Condomínio Fenix', 'Rua Lauro de Freitas', '03820270', 365, '14637498000190', 'fenix.cond@outlook.com', 'segfnx05');
 
 
-INSERT INTO alerta(statusAlerta)
-VALUES('Normal'),
-('Atenção'),
-('Crítico'),
-('Crítico');
-
+INSERT INTO alerta(fkSensorAlerta, statusAlerta)
+VALUES(1,'Seguro'),
+(2,'Atenção'),
+(3,'Alerta'),
+(4,'Emergência');
 
 INSERT INTO usuario VALUES
 (DEFAULT, '12435278000193', 'segccl01'),
@@ -90,16 +92,17 @@ INSERT INTO usuario VALUES
 (DEFAULT, '14365878000192', 'segclb04'),
 (DEFAULT, '14637498000190', 'segfnx05');
 
-INSERT INTO sensor (nome, tipo, statusSensor) VALUES
-('MQ-2', 'Sensor gás', 'Ativo'),
-('MQ-3', 'Sensor gás', 'Inativo'),
-('MQ-4', 'Sensor gás', 'Ativo');
-
+INSERT INTO sensor (nome, statusSensor, apartamento) VALUES
+('MQ-2',  'Ativo','61-D'),
+('MQ-2', 'Inativo', '33-A'),
+('MQ-2',  'Ativo', '45-B'),
+('MQ-2',  'Ativo','22-C');
 
 INSERT INTO medicao (idMedicao, concentracaoGases) VALUES
+(DEFAULT, 2.5),
 (DEFAULT, 5),
 (DEFAULT, 10),
-(DEFAULT, 20),
+(DEFAULT, 15),
 (DEFAULT, 20);
 
 SELECT * FROM condominio WHERE logradouro LIKE '%s';
@@ -109,13 +112,12 @@ SELECT * FROM sensor WHERE statusSensor NOT LIKE 'Inativo';
 SELECT * FROM usuario WHERE idUsuario = 2;
 
 SELECT dataHora AS 'Data e Hora',
-concentracaoGases AS 'Concentração de Gases',
-statusAlerta AS 'Status'
+concentracaoGases AS 'Concentração de Gases'
 FROM medicao;
 
 SELECT * FROM condominio WHERE logradouro LIKE '%L%';
 
-SELECT * FROM sensor WHERE statusSensor NOT LIKE 'Inativo';
+SELECT * FROM sensor WHERE statusSensor LIKE 'Inativo';
 
 SELECT * FROM condominio WHERE idCondominio = 1;
 
