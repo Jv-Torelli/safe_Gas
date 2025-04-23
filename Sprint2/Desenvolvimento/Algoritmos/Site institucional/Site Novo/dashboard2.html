@@ -5,8 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="dashboard2.css">
     <title>dashboard2</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     
-</body>
-</html>
+    <div class="container">
+        <div class="barra-lateral">
+        </div>
+          <div class="logo">
+            <img src="./img/logoSafeGas.png" alt="Safe Gas Company">
+          </div>
+          <div class="caixa-sensores">
+            <div class="botao-sensor1"><img src=""> <h3>Sensor 1</h3></div>
+            <div class="botao-sensor2"><img src=""> <h3>Sensor 2</h3></div>
+            <div class="botao-sensor3"><img src=""> <h3>Sensor 3</h3></div>
+            <div class="botao-sensor4"><img src=""> <h3>Sensor 4</h3></div>
+          </div>
+        
+        <div class="conteudo-principal">
+          <div class="cabecalho">Métricas Níveis de Gás</div>
+          <div class="legenda">
+            <div class="seguro">SEGURO<br>0% até 2,5%</div>
+            <div class="atencao">ATENÇÃO<br>2,5% até 5%</div>
+            <div class="critico">CRÍTICO<br>5% até 10%</div>
+            <div class="perigo">PERIGO<br>10% até 15%</div>
+            <div class="emergencia">EMERGÊNCIA<br>Acima de 15%</div>
+          </div>
+          <div class="grade-status">
+            <div class="caixa">
+              <div class="titulo-caixa"><h3>Nível de Gás</h3></div>
+              <div>1</div>
+            </div>
+            <div class="caixa">
+              <div class="titulo-caixa"><h3>Nº de sensores em níveis críticos</h3></div>
+              <div>1</div>
+            </div>
+            <div class="caixa">
+              <div class="titulo-caixa"><h3>Localização do Sensor</h3></div>
+              <div>cozinha</div>
+            </div>
+            <div class="caixa2">
+              <div class="titulo-caixa"><h3>Status do Sensor</h3></div>
+              <div>1%</div>
+            </div>
+            <div class="caixa3">
+              <div class="titulo-caixa"><h3>Atenção</h3></div>
+              <div class="seguro">Seguro</div>
+            </div>
+            <div class="caixa4">
+              <div class="titulo-caixa"><h3>Última Atualização há 24H</h3></div>
+              <div>2 sensores com nivel de alerta</div>
+            </div>
+          </div>
+          <div class="grafico-gas">
+            <div style="text-align:center; padding-top: 90px; color: #888;">
+                <canvas id="graficoLinha"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+    </html>
+    
+    <script>
+        const ctx = document.getElementById('graficoLinha').getContext('2d');
+    
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['0:00','2:00','4:00','6:00','8:00','10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+            datasets: [{
+              label: 'Nível de gás natural (%)',
+              data: [5, 7, 10, 8, 15, 12, 5, 7, 10, 8, 15, 12],
+              borderColor: 'red',
+              backgroundColor: 'rgba(255, 0, 0, 0.1)',
+              tension: 0.4,
+              fill: true,
+              pointBackgroundColor: 'red',
+              pointRadius: 4,
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                min: 0,
+                max: 20,
+                ticks: {
+                  callback: function(value) {
+                    return value + '%';
+                  }
+                },
+                title: {
+                  display: true,
+                  text: 'Porcentagem'
+                }
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: 'Horário'
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: true,
+                labels: {
+                  color: 'red'
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return context.parsed.y + '%';
+                  }
+                }
+              }
+            }
+          }
+        });
+      </script>
+    
