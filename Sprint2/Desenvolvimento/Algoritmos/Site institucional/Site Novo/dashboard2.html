@@ -1,129 +1,501 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="dashboard2.css">
-    <title>dashboard2</title>
+    <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap');
+
+    * {
+        margin: 0;
+        font-family: "Roboto", sans-serif;
+    }
+
+    body {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .grafico {
+        height: 85%;
+        width: 60%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        border-radius: 3px;
+        padding: 2%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .navbarLeft {
+        height: 100vh;
+        background: green;
+        width: 10%;
+    }
+
+    .infoCampo {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+
+
+    .labelIndicador {
+        width: 100%;
+        height: 50%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+    }
+
+    .valorIndicador {
+        height: 50%;
+        width: 50%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+    }
+
+    .indicadoresSensorDiv {
+        height: 100%;
+        width: 30%;
+        border-radius: 3px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .indicadorSensor {
+        height: 25%;
+        width: 85%;
+        background: white;
+        border-radius: 3px;
+        display: flex;
+        flex-direction: row;
+        padding: 3%;
+        align-items: center;
+        gap: 25px;
+        justify-content: center;
+    }
+
+    #LabelstatusIndicador {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .rowIndicadoresGerais {
+        width: 100%;
+        height: 20%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .graficoDiv {
+        height: 75%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    #statusIndicador {
+        height: 100%;
+        background: yellow;
+        width: 70%;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+    }
+
+    .IndicadorGeral {
+        height: 70%;
+        width: 29%;
+        background: white;
+        border-radius: 5px;
+        padding: 1%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .elementosContainer {
+        width: 70%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .containerInfos {
+        width: 20%;
+        height: 97vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .containerGraficos {
+        height: 75%;
+        background: #e5e5e5;
+        width: 97%;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .rowIndicadoresGerais {
+        width: 100%;
+        height: 20%;
+    }
+
+    .rowInfo2 {
+        width: 95%;
+        height: 100%;
+        background: #e5e5e5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .rowInfo1 {
+        height: 24%;
+        width: 99%;
+        display: flex;
+        align-items: center;
+    }
+
+    .logo {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logo img {
+        width: 60%;
+    }
+
+    .conteudoCardApartamento {
+        display: flex;
+        gap: 70px;
+        align-items: flex-end;
+    }
+
+    .tituloSensores {
+        height: 15%;
+        width: 100%;
+        background: #7cb063;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        box-shadow: 0px 4px 4px 0px #9b9b9b;
+    }
+
+    .sensorDiv {
+        height: 10%;
+        width: 80%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        box-shadow: 0px 4px 4px 0px #9b9b9b;
+        padding-left: 10%;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    #iconsIndicador {
+        height: 100px;
+    }
+
+    #icons {
+        height: 70px;
+    }
+
+    .containerApartamento {
+        height: 75%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .metricasRowDiv {
+        width: 97%;
+        background: #7cb063;
+        color: white;
+        height: 20%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-direction: column;
+    }
+
+    .metricasRowLegendas {
+        width: 100%;
+        height: 60%;
+        margin-top: 1.5%;
+        display: flex;
+        flex-direction: row;
+        box-shadow: 0px 4px 4px 0px #9b9b9b;
+
+
+    }
+
+    .cardLegendaMetrica {
+        background: black;
+        width: 20%;
+        height: 100%;
+
+    }
+
+    .statusLegenda {
+        width: 100%;
+        height: 50%;
+        background: #3CE561;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .nivelMetricaLegenda {
+        height: 50%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e5e5e5;
+        color: #000000;
+    }
+</style>
+
 <body>
-    
-    <div class="container">
-        <div class="barra-lateral">
+    <div class="navbarLeft"></div>
+    <div class="containerInfos">
+        <div class="rowInfo1">
+            <div class="logo"><img src="./img/logoSafeGas.png" alt=""></div>
         </div>
-          <div class="logo">
-            <img src="./img/logoSafeGas.png" alt="Safe Gas Company">
-          </div>
-          <div class="caixa-sensores">
-            <div class="botao-sensor1"><img src=""> <h3>Sensor 1</h3></div>
-            <div class="botao-sensor2"><img src=""> <h3>Sensor 2</h3></div>
-            <div class="botao-sensor3"><img src=""> <h3>Sensor 3</h3></div>
-            <div class="botao-sensor4"><img src=""> <h3>Sensor 4</h3></div>
-          </div>
-        
-        <div class="conteudo-principal">
-          <div class="cabecalho">Métricas Níveis de Gás</div>
-          <div class="legenda">
-            <div class="seguro">SEGURO<br>0% até 2,5%</div>
-            <div class="atencao">ATENÇÃO<br>2,5% até 5%</div>
-            <div class="critico">CRÍTICO<br>5% até 10%</div>
-            <div class="perigo">PERIGO<br>10% até 15%</div>
-            <div class="emergencia">EMERGÊNCIA<br>Acima de 15%</div>
-          </div>
-          <div class="grade-status">
-            <div class="caixa">
-              <div class="titulo-caixa"><h3>Nível de Gás</h3></div>
-              <div>1</div>
+        <div class="containerApartamento">
+            <div class="rowInfo2">
+                <div class="tituloSensores">
+                    <h1>Sensores</h1>
+                </div>
+
+                <div onclick="chamarPredioUmAndares()" class="sensorDiv" style="background-color: #FF9F9F;">
+                    <img id="icons" src="./img/sensorOk.png" alt="">
+                    <p>Sensor 1</p>
+                </div>
+                <div onclick="chamarPredioDoisAndares()" class="sensorDiv">
+                    <img id="icons" src="./img/sensorOk.png" alt="">
+                    <p>Sensor 2</p>
+                </div>
+                <div onclick="chamarPredioTresAndares()" class="sensorDiv" style="background-color: #E5D73C;">
+                    <img id="icons" src="./img/sensorOk.png" alt="">
+
+                    <p>Sensor 3</p>
+                </div>
+                <div onclick="chamarPredioQuatroAndares()" class="sensorDiv">
+                    <img id="icons" src="./img/sensorOk.png" alt="">
+
+                    <p>Sensor 4</p>
+                </div>
+
             </div>
-            <div class="caixa">
-              <div class="titulo-caixa"><h3>Nº de sensores em níveis críticos</h3></div>
-              <div>1</div>
-            </div>
-            <div class="caixa">
-              <div class="titulo-caixa"><h3>Localização do Sensor</h3></div>
-              <div>cozinha</div>
-            </div>
-            <div class="caixa2">
-              <div class="titulo-caixa"><h3>Status do Sensor</h3></div>
-              <div>1%</div>
-            </div>
-            <div class="caixa3">
-              <div class="titulo-caixa"><h3>Atenção</h3></div>
-              <div class="seguro">Seguro</div>
-            </div>
-            <div class="caixa4">
-              <div class="titulo-caixa"><h3>Última Atualização há 24H</h3></div>
-              <div>2 sensores com nivel de alerta</div>
-            </div>
-          </div>
-          <div class="grafico-gas">
-            <div style="text-align:center; padding-top: 90px; color: #888;">
-                <canvas id="graficoLinha"></canvas>
-            </div>
-          </div>
+
         </div>
-      </div>
-    </body>
-    </html>
-    
-    <script>
-        const ctx = document.getElementById('graficoLinha').getContext('2d');
-    
-        new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: ['0:00','2:00','4:00','6:00','8:00','10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+    </div>
+    <div class="elementosContainer">
+        <div class="metricasRowDiv">
+            <h1>Métricas níveis de gás</h1>
+            <div class="metricasRowLegendas">
+                <div class="cardLegendaMetrica">
+                    <div class="statusLegenda">
+                        <h1>SEGURO </h1>
+                    </div>
+                    <div class="nivelMetricaLegenda">
+                        <h2>0% a 2,5%</h2>
+                    </div>
+                </div>
+
+                <div class="cardLegendaMetrica">
+                    <div class="statusLegenda" style="background-color: #E5D73C;">
+                        <h1>ATENÇÃO </h1>
+                    </div>
+                    <div class="nivelMetricaLegenda">
+                        <h2>2,5% a 5%</h2>
+                    </div>
+                </div>
+
+                <div class="cardLegendaMetrica">
+                    <div class="statusLegenda" style="background-color: #E53C3C;">
+                        <h1>CRÍTICO </h1>
+                    </div>
+                    <div class="nivelMetricaLegenda">
+                        <h2>5% a 10% </h2>
+                    </div>
+                </div>
+
+                <div class="cardLegendaMetrica">
+                    <div class="statusLegenda" style="background-color: #972B2B;">
+                        <h1>PERIGO </h1>
+                    </div>
+                    <div class="nivelMetricaLegenda">
+                        <h2>10% a 15%</h2>
+                    </div>
+                </div>
+
+                <div class="cardLegendaMetrica">
+                    <div class="statusLegenda" style="background-color: #232523;">
+                        <h1>EMERGÊNCIA </h1>
+                    </div>
+                    <div class="nivelMetricaLegenda">
+                        <h2>Acima de 15%</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- graficos -->
+
+        <div class="containerGraficos">
+            <div class="rowIndicadoresGerais">
+                <div class="IndicadorGeral">
+                    <img src="./img/sensorGas.png" id="iconsIndicador" alt="">
+                    <div class="infoCampo">
+                        <div class="labelIndicador">
+                            <h2>Sensores Ativos</h2>
+                        </div>
+                        <div class="valorIndicador">
+                            <h1>1</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="IndicadorGeral">
+                    <img src="./img/alertVermelho.png" id="icons" alt="">
+
+                    <div class="infoCampo">
+                        <div class="labelIndicador">
+                            <h2>Quantidade de Sensores em Nível Alarmante</h2>
+                        </div>
+                        <div class="valorIndicador">
+                            <h1>1</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="IndicadorGeral">
+                    <img src="./img/sinoIcon.png" id="icons" alt="">
+
+                    <div class="infoCampo">
+                        <div class="labelIndicador">
+                            <h2>Alertas nas Últimas 24h</h2>
+                        </div>
+                        <div class="valorIndicador">
+                            <h1>1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="graficoDiv">
+                <div class="grafico">
+                    <h1>Nível de Gás</h1>
+                    <canvas id="graficoLinha"></canvas>
+                </div>
+                <div class="indicadoresSensorDiv">
+                    <div class="indicadorSensor">
+                        <img src="./img/gasIcon.png" id="iconsIndicador" alt="">
+
+                        <div class="infoCampo">
+                            <div class="labelIndicador">
+                                <h2>Nível Atual de Gás</h2>
+                            </div>
+                            <div class="valorIndicador">
+                                <h1>2.5%</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="indicadorSensor">
+
+                        <div class="infoCampo">
+                            <div class="labelIndicador" id="LabelstatusIndicador">
+                                <h2>Status do Gás</h2>
+                            </div>
+                            <div class="valorIndicador" id="statusIndicador">
+                                <h1>ATENÇÃO</h1>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="indicadorSensor">
+                        <img src="./img/sensorGas.png" id="iconsIndicador" alt="">
+
+                        <div class="infoCampo">
+                            <div class="labelIndicador">
+                                <h2>Ações Recomendadas</h2>
+                            </div>
+                            <div class="valorIndicador">
+                                <h1>2.5%</h1>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>
+
+
+<script>
+    const linha = document.getElementById('graficoLinha');
+
+    new Chart(linha, {
+        type: 'line',
+        data: {
+            labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'],
             datasets: [{
-              label: 'Nível de gás natural (%)',
-              data: [5, 7, 10, 8, 15, 12, 5, 7, 10, 8, 15, 12],
-              borderColor: 'red',
-              backgroundColor: 'rgba(255, 0, 0, 0.1)',
-              tension: 0.4,
-              fill: true,
-              pointBackgroundColor: 'red',
-              pointRadius: 4,
+                label: 'Gas Natural',
+                data: [2.5, 2.8, 2.4, 3.1, 2.9, 2.9, 3.1, 2.9, 2.9],
+                borderWidth: 1,
+                backgroundColor: 'red',
+                borderColor: 'red',
             }]
-          },
-          options: {
-            responsive: true,
-            scales: {
-              y: {
-                min: 0,
-                max: 20,
-                ticks: {
-                  callback: function(value) {
-                    return value + '%';
-                  }
-                },
-                title: {
-                  display: true,
-                  text: 'Porcentagem'
-                }
-              },
-              x: {
-                title: {
-                  display: true,
-                  text: 'Horário'
-                }
-              }
-            },
-            plugins: {
-              legend: {
-                display: true,
-                labels: {
-                  color: 'red'
-                }
-              },
-              tooltip: {
-                callbacks: {
-                  label: function(context) {
-                    return context.parsed.y + '%';
-                  }
-                }
-              }
-            }
-          }
-        });
-      </script>
-    
+        }
+    });
+</script>
