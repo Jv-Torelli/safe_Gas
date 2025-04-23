@@ -9,7 +9,7 @@ void loop() {
 
   int valorSensor = analogRead(PINO_SENSOR_MQ2);  
   float porcentagem = ((float)valorSensor); // VARIÁVEL RECEBENDO O VALOR DO SENSOR
-  porcentagem = ((float)porcentagem/10000); // CÁLCULO PARA CONVERSÃO DE (PPM) PARA PERCENTUAL (%)
+  porcentagem = ((float)porcentagem/180); // CÁLCULO PARA CONVERSÃO DE (PPM) PARA PERCENTUAL (%)
 
   Serial.print("Porcentagem:"); // SAÍDA PRINTADAS
   Serial.print(porcentagem);
