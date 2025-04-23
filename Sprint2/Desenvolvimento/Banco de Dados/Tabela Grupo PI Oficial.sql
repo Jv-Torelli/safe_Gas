@@ -48,15 +48,13 @@ CREATE TABLE alerta(
 idAlerta INT PRIMARY KEY auto_increment,
 statusAlerta VARCHAR(30),
 	CONSTRAINT ckStatus
-		CHECK (statusAlerta IN ('Normal', 'Atenção', 'Crítico'))
+		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Alerta', 'Perigo', 'Emergência'))
 );
 
 CREATE TABLE medicao (
 idMedicao INT PRIMARY KEY AUTO_INCREMENT,
 dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
 concentracaoGases FLOAT NOT NULL,
-	CONSTRAINT ckTaxa 
-		CHECK (concentracaoGases IN (5,10,20)),
 fkSensor INT,
 CONSTRAINT fkSensor FOREIGN KEY (fkSensor) references sensor(idSensor)
 );
