@@ -11,15 +11,15 @@ void loop() {
   float porcentagem = ((float)valorSensor); // VARIÁVEL RECEBENDO O VALOR DO SENSOR
   porcentagem = ((float)porcentagem/180); // CÁLCULO PARA CONVERSÃO DE (PPM) PARA PERCENTUAL (%)
 
-  Serial.print("Porcentagem:"); // SAÍDA PRINTADAS
-  Serial.print(porcentagem);
-  Serial.print(" ");
-  Serial.print("LIE:"); // LIMITE INFERIOR 
-  Serial.print(5);
-  Serial.print(" ");
-  Serial.print("LSE:"); // LIMITE SUPERIOR
-  Serial.print(15);
-  Serial.println("");
+  // Serial.print("Porcentagem:"); // SAÍDA PRINTADAS
+  Serial.println(porcentagem);
+  // Serial.print(" ");
+  // Serial.print("LIE:"); // LIMITE INFERIOR 
+  // Serial.print(5);
+  // Serial.print(" ");
+  // Serial.print("LSE:"); // LIMITE SUPERIOR
+  // Serial.print(15);
+  // Serial.println("");
 
   delay(2000);
 
