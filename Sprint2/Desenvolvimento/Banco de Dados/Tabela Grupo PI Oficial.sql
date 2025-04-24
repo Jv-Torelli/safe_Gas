@@ -1,7 +1,6 @@
 CREATE DATABASE sgc;
 USE sgc;
 
-
 CREATE TABLE condominio (
 idCondominio INT PRIMARY KEY AUTO_INCREMENT,
 nome VARCHAR(30) NOT NULL,
@@ -24,12 +23,11 @@ CONSTRAINT fkCondominio FOREIGN KEY (fkCondominio) references condominio(idCondo
 CREATE TABLE sensor (
 idSensor INT PRIMARY KEY auto_increment,
 nome VARCHAR(25) NOT NULL,
-apartamento VARCHAR(5) NOT NULL,
 statusSensor VARCHAR(15),
 	CONSTRAINT ckSensor 
 		CHECK (statusSensor IN ('Ativo', 'Inativo')),
-fkCondominioSensor INT,
-CONSTRAINT fkCondominioSensor FOREIGN KEY (fkCondominioSensor) references condominio(idCondominio)
+fkApartamento INT,
+CONSTRAINT fkApartamento FOREIGN KEY (fkApartamento) references apartamento(idApartamento)
 );
 
 CREATE TABLE apartamento (
@@ -100,17 +98,17 @@ INSERT INTO login (cnpj, senha, fkCondominio) VALUES
 ('01234567000110', 'senha10', 10);
 
 -- Tabela sensor
-INSERT INTO sensor (nome, apartamento, statusSensor, fkCondominioSensor) VALUES
-('Sensor Gás 1', '101A', 'Ativo', 1),
-('Sensor Gás 2', '102B', 'Inativo', 2),
-('Sensor Gás 3', '103C', 'Ativo', 3),
-('Sensor Gás 4', '104D', 'Ativo', 4),
-('Sensor Gás 5', '105E', 'Inativo', 5),
-('Sensor Gás 6', '106F', 'Ativo', 6),
-('Sensor Gás 7', '107G', 'Inativo', 7),
-('Sensor Gás 8', '108H', 'Ativo', 8),
-('Sensor Gás 9', '109I', 'Ativo', 9),
-('Sensor Gás 10', '110J', 'Inativo', 10);
+INSERT INTO sensor (nome, statusSensor, fkApartamento) VALUES
+('Sensor Gás 1', 'Ativo', 1),
+('Sensor Gás 2', 'Inativo', 2),
+('Sensor Gás 3', 'Ativo', 3),
+('Sensor Gás 4', 'Ativo', 4),
+('Sensor Gás 5',  'Inativo', 5),
+('Sensor Gás 6', 'Ativo', 6),
+('Sensor Gás 7', 'Inativo', 7),
+('Sensor Gás 8', 'Ativo', 8),
+('Sensor Gás 9', 'Ativo', 9),
+('Sensor Gás 10', 'Inativo', 10);
 
 
 -- Tabela apartamento
@@ -141,8 +139,8 @@ INSERT INTO alerta (fkSensorAlerta, statusAlerta) VALUES
 
 -- Tabela medicao 
 INSERT INTO medicao (concentracaoGases, fkSensor) VALUES
-(3.2, 1),
-(5.8, 2);
+(2.0, 1),
+(3.8, 2);
 
 -- Tabela contato
 INSERT INTO contato (assunto, email, mensagem, fkCondominioContato) VALUES
@@ -198,7 +196,7 @@ SELECT
   CONCAT('bloco', a.blocoApartamento, '-', a.numApartamento) AS apartamento
 FROM condominio AS c
 JOIN login AS l ON c.idCondominio = l.fkCondominio
-JOIN sensor AS s ON c.idCondominio = s.fkCondominioSensor
+JOIN sensor AS s ON c.idCondominio = s.fkApartamento
 JOIN alerta AS al ON s.idSensor = al.fkSensorAlerta
 JOIN medicao AS m ON s.idSensor = m.fkSensor
 JOIN apartamento AS a ON c.idCondominio = a.fkCondominioApartamento;
@@ -213,7 +211,7 @@ SELECT
   CONCAT(a.blocoApartamento, '-', a.numApartamento) AS apartamento
 FROM condominio AS c
 JOIN login AS l ON c.idCondominio = l.fkCondominio
-JOIN sensor AS s ON c.idCondominio = s.fkCondominioSensor
+JOIN sensor AS s ON c.idCondominio = s.fkApartamento
 JOIN alerta AS al ON s.idSensor = al.fkSensorAlerta
 JOIN medicao AS m ON s.idSensor = m.fkSensor
 JOIN apartamento AS a ON c.idCondominio = a.fkCondominioApartamento
@@ -235,7 +233,7 @@ SELECT
   END AS classificacao_gas
 FROM condominio AS c
 JOIN login AS l ON c.idCondominio = l.fkCondominio
-JOIN sensor AS s ON c.idCondominio = s.fkCondominioSensor
+JOIN sensor AS s ON c.idCondominio = s.fkApartamento
 JOIN alerta AS al ON s.idSensor = al.fkSensorAlerta
 JOIN medicao AS m ON s.idSensor = m.fkSensor
 JOIN apartamento AS a ON c.idCondominio = a.fkCondominioApartamento
@@ -259,7 +257,7 @@ SELECT
   END AS classificacao_gas
 FROM condominio AS c
 JOIN login AS l ON c.idCondominio = l.fkCondominio
-JOIN sensor AS s ON c.idCondominio = s.fkCondominioSensor
+JOIN sensor AS s ON c.idCondominio = s.fkApartamento
 JOIN alerta AS al ON s.idSensor = al.fkSensorAlerta
 JOIN medicao AS m ON s.idSensor = m.fkSensor
 JOIN apartamento AS a ON c.idCondominio = a.fkCondominioApartamento
