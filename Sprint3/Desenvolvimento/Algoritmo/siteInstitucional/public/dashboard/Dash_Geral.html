@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/dash_geral.css">
+
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-1M8pDJVPQz+iQw..."
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="main"> <!-- Contêiner principal -->
+        <div class="navbar"> <!-- Barra lateral -->
+            <div class="welcome_navbar">
+                <h5>Olá, <span> ${nome} </span>!</h5>
+                <h5>Bem-vindo de volta.</h5>
+            </div>
+    
+            <div class="container_btn">
+                <div class="btnNavbar"><img src="../assets/icons_navbar/predio_icon.png"> Dashboard Geral</div>
+                <div class="btnNavbar"><img src="../assets/icons_navbar/predio_icon.png"> Histórico de Alertas</div>
+                <div class="btnNavbar"><img src="../assets/icons_navbar/predio_icon.png"> Portaria</div>
+            </div>
+    
+            <div class="btnNavbar"><img src="../assets/icons_navbar/logout.png"> Logout</div>
+        </div>
+
+        <main class="painel">
+            <div class="apartamentosRisco">
+                <p>Apartamentos em risco:</p>
+            </div>
+            <div class="container-alertas">
+              <div class="cartao-alerta alerta-atencao">
+                <i class="fas fa-building"></i>
+                <i class="fas fa-exclamation-triangle"></i>
+                <div class="textCartao">
+                  <p>Atenção</p>
+                  <p>Prédio 2<br>30C - 1º andar</p>
+                </div>
+              </div>
+          
+              <div class="cartao-alerta alerta-atencao">
+                <i class="fas fa-building"></i>
+                <i class="fas fa-exclamation-triangle"></i>
+                <div class="textCartao">
+                  <p>Atenção</p>
+                  <p>Prédio 2<br>30C - 1º andar</p>
+                </div>
+              </div>
+          
+              <div class="cartao-alerta alerta-critico">
+                <i class="fas fa-building"></i>
+                <i class="fas fa-exclamation-circle"></i>
+                <div class="textCartao">
+                  <p>Crítico</p>
+                  <p>Prédio 2<br>30C - 1º andar</p>
+                </div>
+              </div>
+            </div>
+          
+            <div class="areaDados">
+            <div class="container-predios">
+        <div class="predio"><p>Prédio 1</p>
+            <img src="../assets/dashGeral/apto.png" alt="">
+        </div>
+        
+        <div class="predio"><p>Prédio 2</p>
+            <img src="../assets/dashGeral/apto.png" alt="">    
+        </div>
+
+        <div class="predio"><p>Prédio 3</p>
+            <img src="../assets/dashGeral/apto.png" alt="">
+        </div>
+
+        <div class="predio alerta-critico"><p>Prédio 4</p>
+            <img src="../assets/dashGeral/apto.png" alt="">    
+        </div>
+
+        <div class="predio"><p>Prédio 5</p>
+            <img src="../assets/dashGeral/apto.png" alt="">
+        </div>
+
+        <div class="predio"><p>Prédio 6</p>
+            <img src="../assets/dashGeral/apto.png" alt="">
+        </div>
+              
+        <div class="predio alerta-atencao"><p>Prédio 7</p>
+            <img src="../assets/dashGeral/apto.png" alt="">
+        </div>
+        <div class="predio"><p>Prédio 8</p>
+            <img src="../assets/dashGeral/apto.png" alt="">
+        </div>
+            </div>
+
+
+        <div class="cards">
+        <div class="divResumoAlertas">
+            <div class="resumo-alertas">
+              <p>Quantidade de ap em risco:</p>
+              <h2>8</h2> 
+            </div>
+        </div>
+             
+            <div class="metricas">
+              <div class="legenda-alerta"><i class="fas fa-exclamation-triangle"></i> Atenção</div>
+              <div class="legenda-alerta"><i class="fas fa-exclamation-circle"></i> Crítico</div>
+              <div class="legenda-alerta"><i class="fas fa-radiation"></i> Perigo</div>
+              <div class="legenda-alerta"><i class="fas fa-fire"></i> Emergência</div>
+            </div>
+        </div>
+
+        </div>
+          
+          </main>
+
+    </div>
+    
+</body>
+</html>
