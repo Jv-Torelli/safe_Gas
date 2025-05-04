@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/calculadora.css">
+    <link rel="shortcut icon" href="./assets/img_site_institucional/miniLogo.png" type="image/x-icon">
+    <title>Calculadora</title>
+</head>
+
+<body>
+    <header> <!-- Parte superior do body -->
+        <nav class="navBar" id="navBar"> <!-- Divisão da navbar Desktop  -->
+            <div class="titleNav">
+                <img src="./assets/img_site_institucional/logoSafeGas.png" id="logo">
+            </div>
+            <ul class="navLinks"> <!-- container da lista -->
+
+                <li class="navLink ativa"> <!-- lista se sessoes da pagina -->
+                    <a href="./index.html">Home</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="./index.html">Quem somos</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="./index.html">Serviços</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="./calc_Atualizada.html">Simulador</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="./index.html">Contato</a>
+                </li>
+
+            </ul>
+
+
+            <div class="btnsNav">
+                <a href="cadastro.html">
+                    <button class="btnLogin" id="btnRegister"> Registrar</button>
+                </a>
+                <a href="login.html">
+                    <button class="btnLogin">Entrar</button>
+                </a>
+            </div>
+
+
+            <button id="btnMobile">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </nav> <!-- fim da Divisão da navbar Desktop -->
+
+
+        <div id="navM"> <!-- fim da Divisão da navbar Mobile -->
+            <ul class="navLinksMobile">
+                <li class="navLink ativa">
+                    <a href="#home">Home</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="#sobre">Quem somos</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="#Projetos">Serviços</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="#parceiros">Simulador</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="#">Fale conosco</a>
+                </li>
+
+            </ul>
+        </div> <!-- fim da Divisão da navbar Mobile -->
+
+
+    </header> <!-- fim do header  -->
+    <div class="containerDivs">
+        <div class="containerCalc">
+            <div class="tituloCalc">
+                <h1>Simulador Financeiro</h1>
+            </div>
+            <!-- <div class="CampoInput">
+                <p>Houve vazamento de gás:</p> <select oninput="AfetadosInput()" id="select_vazamento">
+                    <option value="Sim">Sim</option>
+                    <option value="Não">Não</option>
+                </select>
+            </div> -->
+            <div class="CampoInput">
+                <p>Quantidade de andares:</p>
+                <input type="number" id="input_andares" placeholder="Ex: 10">
+            </div>
+            <div class="CampoInput">
+                <p>Quantos apartamentos são por andar:</p>
+                <input type="number" id="input_aptos" placeholder="Ex: 5">
+            </div>
+            <div class="CampoInput">
+                <p>Em uma possível explosão, quantos apartamentos podem ser afetados?:</p>
+                <input type='number' id='input_and_afetados' placeholder='Ex: 3'>
+            </div>
+            <div class="CampoInput">
+                <p>Custo de Manutenção(Mensal):</p>
+                <input type="number" id="input_manutencao" placeholder="R$:">
+            </div>
+
+
+            <div class="CampoInput">
+                <p>Qual o valor estimado de um apartamento em reais:</p>
+                <input id="input_imovel" type="number" placeholder="R$: ">
+            </div>
+
+
+            <br><br>
+
+            <button onclick="calcularVazamento()" id="button_calcu">Calcular</button>
+        </div>
+
+        <div class="containerCalcResultado" id="mensagem">
+
+            <div class="TituloComoFunciona">
+                <h1>Simule sua economia com a detecção de vazamentos de gás e valorize seu patrimônio!</h1>
+            </div>
+            <img src="./assets/img_site_institucional/Calculadora/shieldGreen.png" alt="">
+            <div class="ComoFuncionaDiv">
+                <h1>Como funciona?</h1>
+                <p>Nos campos ao lado informe os dados do seu condomínio e descubra o impacto financeiro de um vazamento
+                    de gás.</p>
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+    <div class="foote">
+        <p>Proteja seu condomínio: segurança e economia com nosso monitoramento de gás!</p>
+    </div>
+</body>
+
+</html>
+
+<script>
+    // // Função para exibir o input de afetados
+    // function AfetadosInput() {
+    //     var selectAfetado = select_vazamento.value;
+    //     input_msg = " Quantos andares foram afetados?: <input type = 'text' id = 'input_and_afetados' placeholder = 'Ex: 3' > "
+
+    //     if (selectAfetado == "Sim") {
+    //         input_msg = " Quantos andares foram afetados?: <input type = 'text' id = 'input_and_afetados' placeholder = 'Ex: 3' > "
+    //     } else {
+    //         input_msg = " ";
+    //     }
+    //     DivAfetados.innerHTML = input_msg;
+
+    // }
+    function formatarValor(valor) {
+        return valor.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });  // FORMATA PRA REAL
+    }
+
+    function calcularVazamento() {
+        // a linha abaixo limpa a div para que os valores não se repitam e acabem confundindo
+        mensagem.innerHTML = '';
+
+        // Incialmente pegamos os valores das inputs pelos seus ids
+        var aptoPorAndar = Number(input_aptos.value);
+        var andares = Number(input_andares.value);
+        // var altura = Number(input_altura.value);
+        // var metros = Number(input_metros.value);
+        var vazamento = "Sim";
+        var valorImovel = Number(input_imovel.value);
+        var apartamentosAfetados = Number(input_and_afetados.value);
+        var ManutencaoPreco = Number(input_manutencao.value);
+
+        //Em seguida damos continuidade realizando cálculos referentes ao modelo do negócio, a quantidade de aptos e o valor da perda estimada.
+        var totalApto = andares * aptoPorAndar;
+        var valorPerdaEstimada = 0;
+        var totalAfetados = apartamentosAfetados * aptoPorAndar;
+        // var reconstrucaoMetro = 150000;
+        var totalImoveis = valorImovel * totalApto;
+        var qtdAptosAfetados = aptoPorAndar * apartamentosAfetados;
+        var valorTotalAfetados = valorImovel * apartamentosAfetados;
+        var economiaManutencao = (ManutencaoPreco * 60) / 100;
+        var manutencaoAnual = (economiaManutencao * 12);
+        var prejuizoAp = (apartamentosAfetados * valorImovel);
+        var valorEconomia = (ManutencaoPreco * 12) - manutencaoAnual;
+        var BeneficioAnual = (valorEconomia + valorTotalAfetados);
+
+
+
+        // mensagens de resultado
+        var mensagemTopo = ``
+
+        // começamos verificando se possui ou não seguro
+        if (vazamento == "Sim") {
+            if (andares > 0) {
+                if (aptoPorAndar > 0) {
+                    var valorAfetados = totalAfetados * valorImovel;
+                    valorPerdaEstimada = valorImovel * totalApto;
+
+
+
+                    mensagem.innerHTML = `  <div class="mensagemTopo" id="msgTopo">
+                <p>Com a SafeGas Company você evita perdas e protege seu patrimônio!
+                </p>
+            </div>
+            <div class="PerdaDiv">
+                <span> </span>
+                <h1>${formatarValor(BeneficioAnual)}</h1> <span>Visamos atingir até este valor em econômia para seu condomínio!</span>
+            </div>
+            <div class="iconsRow">
+                <div class="iconResultado">
+                    <img src="./assets/img_site_institucional/Calculadora/IconGasReultado.png" alt="">
+                    <img src="./assets/img_site_institucional/Calculadora/iconProtect.png" alt="">
+                </div>
+                <div class="iconTexto">
+                    <span>Previna acidentes</span>
+                    <span>Proteja vidas e seu investimento</span>
+                </div>
+            </div>
+            <div class="ContainerBolinhasResultado">
+
+                <div class="campoResultado">
+                    <div class="resultadoRowLeft">
+                        <div class="bolinhas" id="n1"></div>
+                        <p>Valor protegido com nossa solução:</p>
+                    </div>
+                    <h3 style="color: green">${formatarValor(valorTotalAfetados)}</h3>
+                </div>
+
+
+                <div class="campoResultado">
+                    <div class="resultadoRowLeft">
+                        <div class="bolinhas" id="n2"></div>
+                        <p>Visamos atingir uma econômia anual de manutenção de:</p>
+                    </div>
+                    <h3  style="color: green">${formatarValor(valorEconomia)}</h3>
+                </div> 
+
+          
+
+
+                <div class="campoResultado">
+                    <div class="resultadoRowLeft">
+                        <div class="bolinhas" id="n3"></div>
+                        <p >Prejuízo estimado sem nossa solução(${apartamentosAfetados} ap):</p>
+                    </div>
+                    <h3 style="color: red;">${formatarValor(prejuizoAp)}</h3>
+                </div>
+
+
+
+                <div class="campoResultado">
+                    <div class="resultadoRowLeft">
+                        <div class="bolinhas" id="n4"></div>
+                        <p>Valor Total:(${totalApto} apartamentos) </p>
+                    </div>
+                    <h3>${formatarValor(totalImoveis)}</h3>
+                </div>
+            </div>  `
+
+
+                }
+            }
+        }
+        if (vazamento == "Não") {
+            if (andares > 0) {
+                if (aptoPorAndar > 0) {
+                    mensagem.innerHTML = `Se não houve vazamento, seu patrimonio de ${totalImoveis} baseado na quantidade de ${totalApto} apartamentos distribuídos em ${andares} andares está seguro! Fique de olho.`
+                }
+            }
+
+
+        }
+    }
+</script>

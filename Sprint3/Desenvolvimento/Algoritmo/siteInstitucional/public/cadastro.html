@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="./css/cadastro.css">
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <link rel="icon" href="./assets/img_site_institucional/miniLogo.png">
+
+    <script src="./js/sessao.js"></script>
+
+</head>
+
+<body>
+
+    <header>
+        <nav class="navBar" id="navBar">
+            <div class="titleNav">
+                <img src="./assets/img_site_institucional/logoSafeGas.png" id="logo">
+            </div>
+            <ul class="navLinks"> <!-- container da lista -->
+
+                <li class="navLink ativa"> <!-- lista se sessoes da pagina -->
+                    <a href="./index.html">Home</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="./index.html">Quem somos</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="./index.html">Serviços</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="./calc_Atualizada.html">Simulador</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="./index.html">Contato</a>
+                </li>
+
+            </ul>
+
+
+
+            <div class="btnsNav">
+                <button class="btnLogin" id="btnRegister"> Registrar</button>
+                <a href="login.html">
+                    <button class="btnLogin">Entrar</button>
+                </a>
+            </div>
+
+
+            <button id="btnMobile">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </nav> <!-- fim da Divisão da navbar Desktop -->
+
+
+        <div id="navM"> <!-- fim da Divisão da navbar Mobile -->
+            <ul class="navLinksMobile">
+                <li class="navLink ativa">
+                    <a href="#home">Home</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="#sobre">Quem somos</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="#Projetos">Serviços</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="#parceiros">Simulador</a>
+                </li>
+
+                <li class="navLink">
+                    <a href="#">Fale conosco</a>
+                </li>
+
+            </ul>
+        </div> <!-- fim da Divisão da navbar Mobile -->
+
+
+    </header> <!-- fim do header  -->
+
+    <div class="containerCadastro">
+        <div class="containerCadastroFeito">
+            <h2>BEM VINDO DE VOLTA!</h2>
+
+            <h3>Para continuar conectado <br>
+                conosco, faça login com <br>
+                suas informações.</h3>
+
+            <a href="./login.html" class="btnFazerLogin">ENTRAR</a>
+
+        </div>
+        <div class="containerInputs">
+
+            <h2>CADASTRAR CONDOMÍNIO</h2>
+
+            <!--
+                               Para inserir mais um campo, copie uma das inputs abaixo.
+                               Assim que inserir vá para o script abaixo.
+                           -->
+
+            <div class="campo">
+                <input class="input-icon nome" id="nome_input" type="text" placeholder="Nome" required />
+            </div>
+            <div class="campo">
+                <input class="input-icon logradouro" id="cep_input" type="text" placeholder="CEP" required />
+            </div>
+            <div class="campo">
+                <input class="input-icon cep" id="logradouro_input" type="text" placeholder="Logradouro" required />
+            </div>
+            <div class="campo">
+                <input class="input-icon numero" id="Numero_log_input" type="text" placeholder="Numero Logradouro"
+                    required />
+            </div>
+            <div class="campo">
+                <input class="input-icon empresa" id="cnpj_input" type="text" placeholder="CNPJ" required />
+            </div>
+            <div class="campo">
+                <input class="input-icon cadeado" id="senha_input" type="password" placeholder="Senha" required />
+            </div>
+            <div class="campo">
+                <input class="input-icon cadeado" id="confirmacao_senha_input" type="password"
+                    placeholder="Confirmar senha" required />
+            </div>
+            <button class="btnEntrar" onclick="cadastrar()">Cadastrar</button>
+
+        </div>
+    </div>
+    <div class="alerta_erro">
+        <div class="card_erro" id="cardErro">
+            <span id="mensagem_erro"></span>
+        </div>
+    </div>
+
+    <footer class="text-center ">
+        <!-- Grid container -->
+
+        <!-- Grid container -->
+
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2024 Copyright: SafeGas
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+
+</body>
+
+</html>
+
+
+
+<script>
+
+    function cadastrar() {
+        // aguardar();
+
+        //Recupere o valor da nova input pelo nome do id
+        // Agora vá para o método fetch logo abaixo
+        var nomeVar = nome_input.value;
+        var cepVar = cep_input.value;
+        var logradouroVar = logradouro_input.value;
+        var numLogVar = logradouro_input.value;
+        var cnpjVar = cnpj_input.value;
+        var senhaVar = senha_input.value;
+        var confirmacaoSenhaVar = confirmacao_senha_input.value;
+
+        // validações
+        // Validação de CEP
+        if (cepVar.length !== 8 || isNaN(cepVar)) {
+            alert("O CEP deve conter exatamente 8 números.");
+            return;
+        } else if (cnpjVar.length !== 14 || isNaN(cnpjVar)) {
+            alert("O CNPJ deve conter exatamente 14 números.");
+            return;
+        } else if (senhaVar != confirmacaoSenhaVar) {
+            alert("As senhas devem ser exatamente iguais!");
+            return;
+        } else {
+            alert(`Cadastro realizado com sucesso!`)
+            setTimeout(function () {
+                window.location.href = "login.html";
+            }, 150);
+        }
+
+
+
+        // Verificando se há algum campo em branco
+        if (
+            nomeVar == "" ||
+            cepVar == "" ||
+            logradouroVar == "" ||
+            numLogVar == "" ||
+            cnpjVar == "" ||
+            senhaVar == ""
+        ) {
+            alert(
+                "(Mensagem de erro para todos os campos em branco)");
+
+            finalizarAguardar();
+            return false;
+        }
+        // Enviando o valor da nova input
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                nomeServer: nomeVar,
+                cepServer: cepVar,
+                logradouroServer: logradouroVar,
+                numLogServer: numLogVar,
+                cnpjServer: cnpjVar,
+                senhaServer: senhaVar,
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    alert(
+                        "Cadastro realizado com sucesso! Redirecionando para tela de Login...");
+
+                    setTimeout(() => {
+                        window.location = "login.html";
+                    }, "2000");
+
+                    limparFormulario();
+                    finalizarAguardar();
+                } else {
+                    throw "Houve um erro ao tentar realizar o cadastro!";
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+                finalizarAguardar();
+            });
+
+        return false;
+    }
+
+</script>

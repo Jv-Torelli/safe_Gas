@@ -286,12 +286,10 @@ section {
     justify-content: center;
     flex-direction: column;
     margin-top: 160px;
-    width: 400px;
-    height: 400px;
     background-color: #7CB063;
     border-right: none;
     border-radius: 10px 0 0 10px;
-    height: 600px;
+    height: 650px;
     width: 600px;
 }
 
@@ -337,7 +335,7 @@ section {
     border: solid 2.5px #7CB063;
     border-left: none;
     border-radius: 0 10px 10px 0;
-    height: 600px;
+    height: 650px;
     width: 600px;
 }
 
