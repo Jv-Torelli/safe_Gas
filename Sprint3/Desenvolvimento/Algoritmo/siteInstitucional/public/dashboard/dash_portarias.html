@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="/css/dash_portarias.css">
+</head>
+
+<body>
+
+  <div class="main"> <!-- Div principal -->
+    <div class="navbar">
+      <div class="welcome_navbar">
+        <h5>Olá, <span> ${nome} </span>!</h5>
+        <h5>Bem-vindo de volta.</h5>
+      </div>
+
+      <div class="container_btn">
+        <div class="btnNavbar" id="logout"><img src="/assets/icons_navbar/predio_icon.png">dashboard geral
+        </div>
+        <div class="btnNavbar" id="logout"><img src="/assets/icons_navbar/predio_icon.png">Historico de alertas
+        </div>
+        <div class="btnNavbar" id="logout"><img src="/assets/icons_navbar/predio_icon.png">Portaria</div>
+      </div>
+
+      <div class="btnNavbar" id="logout"> <img src="/assets/icons_navbar/Logout.png"> Logout</div>
+
+    </div>
+
+    <div class="container">
+      <div class="sindico-criar">
+        <span id="title-sindico">Sindico</span>
+        <button id="button-criar"><img src="/assets/icons_cadastro/plus.png" alt="">CRIAR</button>
+      </div>
+      <div class="tabela">
+        <table class="tabela-fisica">
+          <thead>
+            <!-- <tr></tr> = linha && <td></td> = coluna-->
+            <!-- Inicio de uma tupla da tabela -->
+            <tr>
+              <!-- Valores atribuidos em cada coluna -->
+              <th>Portaria</th>
+              <th>Telefone</th>
+              <th>E-mail</th>
+              <th>Data de Cadastro</th>
+              <th>Editar</th>
+              <th>Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>1125478996</td>
+              <td>slaoq@email.com</td>
+              <td>25-03-2025</td>
+              <td><img src="/assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
+              <td><img src="/assets/icons_cadastro/lixeira.png" alt=""></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>1125478996</td>
+              <td>slaoq@email.com</td>
+              <td>25-03-2025</td>
+              <td><img src="/assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
+              <td><img src="/assets/icons_cadastro/lixeira.png" alt=""></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>1125478996</td>
+              <td>slaoq@email.com</td>
+              <td>25-03-2025</td>
+              <td class="image-cadastro"><img src="/assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
+              <td><img src="/assets/icons_cadastro/lixeira.png" alt=""></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>1125478996</td>
+              <td>slaoq@email.com</td>
+              <td>25-03-2025</td>
+              <td class="image-cadastro"><img src="/assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
+              <td><img src="/assets/icons_cadastro/lixeira.png" alt=""></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>1125478996</td>
+              <td>slaoq@email.com</td>
+              <td>25-03-2025</td>
+              <td class="image-cadastro"><img src="/assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
+              <td><img src="/assets/icons_cadastro/lixeira.png" alt=""></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+  </div> <!-- Fim  Div principal -->
+</body>
+
+</html>
