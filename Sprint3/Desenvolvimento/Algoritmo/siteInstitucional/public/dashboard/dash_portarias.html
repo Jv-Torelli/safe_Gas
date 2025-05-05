@@ -5,12 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
-  <link rel="stylesheet" href="/css/dash_portarias.css">
+  <link rel="stylesheet" href="../css/dash_portarias.css">
 </head>
 
 <body>
 
-  <div class="main"> <!-- Div principal -->
+  <div class="main">
     <div class="navbar">
       <div class="welcome_navbar">
         <h5>Olá, <span> ${nome} </span>!</h5>
@@ -18,22 +18,59 @@
       </div>
 
       <div class="container_btn">
-        <div class="btnNavbar" id="logout"><img src="/assets/icons_navbar/predio_icon.png">Dashboard geral
+        <div class="btnNavbar" id="logout"><img src="../assets/icons_navbar/predio_icon.png">Dashboard geral
         </div>
-        <div class="btnNavbar" id="logout"><img src="/assets/icons_navbar/predio_icon.png">Historico de alertas
+        <div class="btnNavbar" id="logout"><img src="../assets/icons_navbar/predio_icon.png">Historico de alertas
         </div>
-        <div class="btnNavbar" id="logout"><img src="/assets/icons_navbar/predio_icon.png">Portaria</div>
+        <div class="btnNavbar" id="logout"><img src="../assets/icons_navbar/predio_icon.png">Portaria</div>
       </div>
 
-      <div class="btnNavbar" id="logout"> <img src="/assets/icons_navbar/Logout.png"> Logout</div>
+      <div class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png"> Logout</div>
 
     </div>
 
     <div class="container">
       <div class="sindico-criar">
         <span id="title-sindico">Sindico</span>
-        <button id="button-criar"><img src="/assets/icons_cadastro/plus.png" alt="">CRIAR</button>
+        <button id="button-criar" onclick="criar()"><img src="../assets/icons_cadastro/plus.png" alt="">CRIAR</button>
       </div>
+
+      <div class="fundo-modal" id="fundoModal">
+        <div class="modal">
+            <div class="cabecalho-modal">
+                <h2 class="titulo-modal">Cadastro de Portaria</h2>
+                <button class="botao-fechar" id="botaoFechar">&times;</button>
+            </div>
+            
+            <form id="formularioPortaria">
+                <div class="grupo-form">
+                    <label for="numeroPortaria">Número da Portaria:</label>
+                    <input type="text" id="numeroPortaria" name="numeroPortaria" required>
+                </div>
+                
+                <div class="grupo-form">
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" id="telefone" name="telefone" required>
+                </div>
+                
+                <div class="grupo-form">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="grupo-form">
+                    <label for="dataCadastro">Data de Cadastro:</label>
+                    <input type="date" id="dataCadastro" name="dataCadastro" required>
+                </div>
+                
+                <div class="botoes">
+                    <button type="button" class="botao-cancelar" id="botaoCancelar">Cancelar</button>
+                    <button type="submit" class="botao-salvar">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
       <div class="tabela">
         <table class="tabela-fisica">
           <thead>
@@ -52,40 +89,40 @@
               <td>1125478996</td>
               <td>slaoq@email.com</td>
               <td>25-03-2025</td>
-              <td><img src="/assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
-              <td><img src="/assets/icons_cadastro/lixeira.png" alt=""></td>
+              <td><img src="../assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
+              <td><img src="../assets/icons_cadastro/lixeira.png" alt=""></td>
             </tr>
             <tr>
               <td>2</td>
               <td>1125478996</td>
               <td>slaoq@email.com</td>
               <td>25-03-2025</td>
-              <td><img src="/assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
-              <td><img src="/assets/icons_cadastro/lixeira.png" alt=""></td>
+              <td><img src="../assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
+              <td><img src="../assets/icons_cadastro/lixeira.png" alt=""></td>
             </tr>
             <tr>
               <td>3</td>
               <td>1125478996</td>
               <td>slaoq@email.com</td>
               <td>25-03-2025</td>
-              <td class="image-cadastro"><img src="/assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
-              <td><img src="/assets/icons_cadastro/lixeira.png" alt=""></td>
+              <td class="image-cadastro"><img src="../assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
+              <td><img src="../assets/icons_cadastro/lixeira.png" alt=""></td>
             </tr>
             <tr>
               <td>4</td>
               <td>1125478996</td>
               <td>slaoq@email.com</td>
               <td>25-03-2025</td>
-              <td class="image-cadastro"><img src="/assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
-              <td><img src="/assets/icons_cadastro/lixeira.png" alt=""></td>
+              <td class="image-cadastro"><img src="../assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
+              <td><img src="../assets/icons_cadastro/lixeira.png" alt=""></td>
             </tr>
             <tr>
               <td>5</td>
               <td>1125478996</td>
               <td>slaoq@email.com</td>
               <td>25-03-2025</td>
-              <td class="image-cadastro"><img src="/assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
-              <td><img src="/assets/icons_cadastro/lixeira.png" alt=""></td>
+              <td class="image-cadastro"><img src="../assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
+              <td><img src="../assets/icons_cadastro/lixeira.png" alt=""></td>
             </tr>
           </tbody>
         </table>
@@ -93,7 +130,73 @@
     </div>
 
 
-  </div> <!-- Fim  Div principal -->
+  </div> 
 </body>
 
 </html>
+
+<script>
+  
+  document.addEventListener('DOMContentLoaded', function() {
+      // Elementos do DOM
+      const botaoCriar = document.getElementById('button-criar');
+      const fundoModal = document.getElementById('fundoModal');
+      const botaoFechar = document.getElementById('botaoFechar');
+      const botaoCancelar = document.getElementById('botaoCancelar');
+      const formularioPortaria = document.getElementById('formularioPortaria');
+      const mensagemSucesso = document.getElementById('mensagemSucesso');
+      const dataCadastro = document.getElementById('dataCadastro');
+      
+      // Deixa como data podrão a do dia de hoje
+      const hoje = new Date().toISOString().split('T')[0];
+      dataCadastro.value = hoje;
+      
+      // Função que faz o modal abrir
+      function abrirModal() {
+          fundoModal.classList.add('ativo');
+      }
+      
+      // Função que fecha o modal
+      function fecharModal() {
+          fundoModal.classList.remove('ativo');
+          formularioPortaria.reset();
+          dataCadastro.value = hoje;
+      }
+      
+      // Adiciona as funções dos botões que fecham ou abrem o modal
+      botaoCriar.addEventListener('click', abrirModal);
+      botaoFechar.addEventListener('click', fecharModal);
+      botaoCancelar.addEventListener('click', fecharModal);
+      
+      // Fecha o modal ao clicar fora dele
+      fundoModal.addEventListener('click', function(e) {
+          if (e.target === fundoModal) {
+              fecharModal();
+          }
+      });
+      
+      // Envia o formulário, vai nos ajudar ao conectar com o banco
+      formularioPortaria.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          // Aqui colocariamos a lógica para salvar os dados, por enquanto só um exemplo puxando com id
+          console.log('Dados da portaria:', {
+              numeroPortaria: document.getElementById('numeroPortaria').value,
+              telefone: document.getElementById('telefone').value,
+              email: document.getElementById('email').value,
+              dataCadastro: document.getElementById('dataCadastro').value
+          });
+          
+          // Exibe uma mensagem de sucesso
+          mensagemSucesso.classList.add('ativo');
+          
+          // Fecha o modal
+          fecharModal();
+          
+          // Após 3 seg a msg fecha
+          setTimeout(function() {
+              mensagemSucesso.classList.remove('ativo');
+          }, 3000);
+      });
+  });
+  </script>
