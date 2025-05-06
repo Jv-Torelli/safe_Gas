@@ -90,11 +90,11 @@
 
             <h2>BEM-VINDO DE VOLTA!</h2>
 
-            <input class="input-icon empresa" type="text" placeholder="cnpj" name="email" id="input_cnpj" required>
+            <input class="input-icon empresa" type="text" placeholder="cnpj" name="cnpj" id="input_cnpj" required>
             <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" id="input_senha"
                 required>
 
-            <button class="btnEntrar" id="btn_Login" onclick="login()">Entrar</button> <br>
+            <button class="btnEntrar" id="btn_Login" onclick="entrar()">Entrar</button> <br>
 
             <div id="msg"></div>
 
@@ -125,8 +125,6 @@
     var tentativas = 3;
 
     function login() {
-        var cnpjCorreto = "12312312312344";
-        var senhaCorreta = "@123";
         var mensagem = ``
 
         var cnpj = input_cnpj.value.trim();
@@ -155,6 +153,65 @@
             msg.innerHTML = `${mensagem}`
             break;
         }
+    }
+
+
+
+    function entrar() {
+
+        var cnpjVar = input_cnpj.value;
+        var senhaVar = input_senha.value;
+
+        if (cnpjVar == "" || senhaVar == "") {
+            alert('Mensagem de erro para todos os campos em branco');
+            return false;
+        }
+     
+        console.log("FORM LOGIN: ", cnpjVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                cnpjServer: cnpjVar,
+                senhaServer: senhaVar
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.CNPJ_USUARIO = json.cnpj;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+
+                    setTimeout(function () {
+                        window.location = "./dashboard/Dash_Geral.html";
+                    }, 1000); // apenas para exibir o loading
+
+                });
+
+            } else {
+
+                alert("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
     }
 
 </script>
