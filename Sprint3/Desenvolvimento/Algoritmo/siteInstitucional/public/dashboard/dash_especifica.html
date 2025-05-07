@@ -70,20 +70,23 @@
 
       <div class="container_central"> <!-- Contêiner central -->
         <div class="div_legenda">
-          <div>Identificação: <span>Prédio 2 / Andar 3 / Apartamento 33</span></div>
+          <div><span>Prédio 2 - Apartamento 33</span></div>
           <div>Nível de Gás: </div>
         </div>
 
         <div class="div_grafico"> <!-- Div para Gráfico das medições dos sensores -->
           <canvas id="graficoLinha"></canvas>
         </div>
+
+        <div class="div_sensores"> <!-- Div para Seleção de sensores -->
+          <div class="sensor"><button onclick="mudar_cor()" id="btn_sensor">sensor a</button></div>
+          <div class="sensor"><button onclick="mudar_cor()" id="btn_sensor">sensor b</button></div>
+          <div class="sensor"><button onclick="mudar_cor()" id="btn_sensor">sensor c</button></div>
+        </div>
+
       </div>
 
-      <div class="div_sensores"> <!-- Div para Seleção de sensores -->
-        <div class="sensor"><button>sensor a</button></div>
-        <div class="sensor"><button>sensor b</button></div>
-        <div class="sensor"><button>sensor c</button></div>
-      </div>
+      
 
   </div>
   </main>
@@ -91,6 +94,12 @@
 </body>
 </html>
 <script>
+
+  function mudar_cor(){
+    document.getElementById("btn_sensor").style.backgroundColor = "#2cdd61";
+    document.getElementById("btn_sensor").style.color = "white";
+
+  }
   
   const graficoUm = document.getElementById('graficoLinha').getContext('2d');
   new Chart(graficoUm, {
