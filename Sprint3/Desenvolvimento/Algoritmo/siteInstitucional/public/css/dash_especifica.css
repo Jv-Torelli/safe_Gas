@@ -49,8 +49,16 @@ a {
     margin-bottom: 40px;
 }
 
+.div_voltar button {
+    background-color: white;
+    border-color: transparent;
+    border-radius: 5px;    
+    box-shadow: 3px 3px 3px #caccceab;
+    padding: 3px;
+}
+
 .div_voltar img {
-    width: 40px;
+    width: 25px;
 }
 
 .container_central {
