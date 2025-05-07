@@ -1,153 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/dash_especifica.css">
-
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    integrity="sha512-1M8pDJVPQz+iQw..."
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/dash_especifica.css">
+  <link rel="stylesheet" href="../css/dash_geral.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <title>Document</title>
+  <title>Dashboard Específica</title>
 </head>
 <body>
+  
+  <div class="main"> <!-- Contêiner principal -->
+    <div class="navbar"> <!-- Barra lateral de Menu -->
+      <div class="welcome_navbar">
+        <h5>Olá, <span> ${nome} </span>!</h5>
+        <h5>Bem-vindo de volta.</h5>
+      </div>
 
-    <div class="main"> <!-- Contêiner principal -->
-        <div class="navbar"> <!-- Barra lateral -->
-            <div class="welcome_navbar">
-                <h5>Olá, <span> ${nome} </span>!</h5>
-                <h5>Bem-vindo de volta.</h5>
-            </div>
-    
-            <div class="container_btn">
-                <div class="btnNavbar"><img src="../assets/icons_navbar/predio_icon.png"> Dashboard Geral</div>
-                <div class="btnNavbar"><img src="../assets/icons_navbar/predio_icon.png"> Histórico de Alertas</div>
-                <div class="btnNavbar"><img src="../assets/icons_navbar/predio_icon.png"> Portaria</div>
-            </div>
-    
-            <div class="btnNavbar"><img src="../assets/icons_navbar/logout.png"> Logout</div>
+      <div class="container_btn">
+        <div class="btnNavbar">
+          <img src="../assets/icons_navbar/predio_icon.png">
+          <a href="Dash_Geral.html">Dashboard Geral</a> <!-- Ir para Dashboard Geral -->
         </div>
 
-        <main class="painel">
-            <div class="container-alertas">
-
-                <div class="cartao-alerta alerta-atencao">
-                    <div class="textCartao">
-                      <p><- </p>
-                    </div>
-                  </div>
-
-              <div class="cartao-alerta alerta-atencao">
-                <div class="textCartao">
-                  <p>Ação</p>
-                  <p></p>
-                </div>
-              </div>
-          
-              <div class="cartao-alerta alerta-atencao">
-                <div class="textCartao">
-                  <p>Status</p>
-                  <p>Local</p>
-                </div>
-              </div>
-          
-              <div class="cartao-alerta alerta-critico">
-                <div class="textCartao">
-                  <p>Última Atualização</p>
-                  <p></p>
-                </div>
-              </div>
-            </div>
-          
-            <div class="areaDados">
-
-            <div class="container-predios">
-                <canvas id="graficoLinha"></canvas>        
-            </div>
-
-            <div class="div_sensores">
-                <div class="sensor">sensor a</div>
-                <div class="sensor">sensor b</div>
-                <div class="sensor">sensor c</div>
-            </div>
-
-
-        
-             
+        <div class="btnNavbar">
+          <img src="../assets/icons_navbar/predio_icon.png">
+          <a href="dash_historico.html">Histórico de Alertas</a> <!-- Ir para Histórico -->
         </div>
 
+        <div class="btnNavbar">
+          <img src="../assets/icons_navbar/predio_icon.png">
+          <a href="dash_portarias.html">Portaria</a> <!-- Ir para Dashboard Portaria -->
         </div>
-          
-          </main>
 
+      </div>
+      <div class="btnNavbar">
+        <img src="../assets/icons_navbar/logout.png">
+        <a href="../login.html">Logout</a> <!-- Sair do Login -->
+      </div>
     </div>
-    
-    
+
+    <main class="painel"> <!-- Painel do todo conteúdo -->
+      <div class="container_superior"> <!-- Contêiner superior para indicadores KPIs -->
+
+        <div class="div_voltar">
+          <button> <!-- Botão voltar à Dashboard Geral -->
+            <a href="Dash_Geral.html">
+              <img src="../assets/dashEspecifica/seta_voltar.png" alt="">
+            </a>
+          </button>
+        </div>
+
+        <div class="container_kpis"> <!-- Contêiner para todas KPIs -->
+          <div class="kpi acao">
+            <div id="div_acao">Ação:</div> <!-- KPI de Ação Recomendada -->
+          </div>
+
+          <div class="kpi status_local">
+            <div id="div_status">Status:</div>
+            <hr> <!-- KPI de Status de ALerta -->
+            <div id="div_local">Local:</div> <!-- KPI de Local do Incidente -->
+          </div>
+
+          <div class="kpi atualizacao">
+            <div id="div_atualizacao">Última Atualização:</div> <!-- KPI de Última Atualização -->
+          </div>
+        </div>
+      </div>
+
+      <div class="container_central"> <!-- Contêiner central -->
+        <div class="div_legenda">
+          <div>Identificação: <span>Prédio 2 / Andar 3 / Apartamento 33</span></div>
+          <div>Nível de Gás: </div>
+        </div>
+
+        <div class="div_grafico"> <!-- Div para Gráfico das medições dos sensores -->
+          <canvas id="graficoLinha"></canvas>
+        </div>
+      </div>
+
+      <div class="div_sensores"> <!-- Div para Seleção de sensores -->
+        <div class="sensor"><button>sensor a</button></div>
+        <div class="sensor"><button>sensor b</button></div>
+        <div class="sensor"><button>sensor c</button></div>
+      </div>
+
+  </div>
+  </main>
+
 </body>
 </html>
 <script>
-    const graficoUm = document.getElementById('graficoLinha').getContext('2d');
-
-
-new Chart(graficoUm, {
-  type: 'line',
-  data: {
-    labels: ['0:00', '2:00', '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
-    datasets: [{
-      label: 'Nível de gás natural (%)',
-      data: [5.6, 5.9, 5.9, 8.0, 7.5, 7.3, 7.2, 7.1, 5.7, 7.8, 8.2, 8.5,],
-      borderColor: 'red',
-      backgroundColor: 'rgba(255, 0, 0, 0.1)',
-      tension: 0.4,
-      fill: true,
-      pointBackgroundColor: 'red',
-      pointRadius: 4,
-    }]
-  },
-  options: {
-    responsive: true,
-    scales: {
-      y: {
-        min: 0,
-        max: 10,
-        ticks: {
-          callback: function (value) {
-            return value + '%';
+  
+  const graficoUm = document.getElementById('graficoLinha').getContext('2d');
+  new Chart(graficoUm, {
+    type: 'line',
+    data: {
+      labels: ['0:00', '2:00', '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+      datasets: [{
+        label: "",
+        data: [5.6, 5.9, 5.9, 8.0, 7.5, 7.3, 7.2, 7.1, 5.7, 7.8, 8.2, 8.5,],
+        borderColor: 'red',
+        backgroundColor: 'rgba(255, 0, 0, 0.1)',
+        tension: 0.2,
+        fill: true,
+        pointBackgroundColor: 'red',
+        pointRadius: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          min: 0,
+          max: 10,
+          ticks: {
+            callback: function (value) {
+              return value + '%';
+            }
+          },
+          title: {
+            display: true,
+            text: 'Porcentagem'
           }
         },
-        title: {
-          display: true,
-          text: 'Porcentagem'
+        x: {
+          title: {
+            display: true,
+            text: 'Horário'
+          }
         }
       },
-      x: {
-        title: {
-          display: true,
-          text: 'Horário'
-        }
-      }
-    },
-    plugins: {
-      legend: {
-        display: true,
-        labels: {
-          color: 'red'
-        }
-      },
-      tooltip: {
-        callbacks: {
-          label: function (context) {
-            return context.parsed.y + '%';
+      plugins: {
+        legend: {
+          display: false,
+          labels: {
+            color: 'red'
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              return context.parsed.y + '%';
+            }
           }
         }
       }
     }
-  }
-});
+  });
 </script>
