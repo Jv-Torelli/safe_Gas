@@ -1,6 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 * {
     margin: 0;
+    font-family: 'Inter', sans-serif;
 }
+
+body {
+    font-family: 'Roboto', sans-serif;
+  }
 
 .main {
     height: 100vh;
@@ -8,6 +14,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 /* nav containers */
@@ -58,4 +65,132 @@
 
 .navbar span {
     color: white;
+}
+
+.container {
+    width: 81%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(247, 247, 247);
+}
+
+.container_conteudo{
+    width: 78%;
+    height: 500px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.title-historico{
+    font-size: 40px;
+    font-weight: 900;
+    margin-bottom: 50px;
+}
+
+#div_atividades_botoes {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+#div_atividades{
+    font-weight: 600;
+    font-size: 19px;
+}
+
+/* #div_atividades button{
+    
+} */
+
+#button_exportar {
+    background-color: rgb(247, 247, 247);
+    border: none;
+    border-radius: 3px;
+    width: 62px;
+    height: 23px;
+    cursor: pointer;
+}
+
+#button_filtrar {
+    background-color: rgb(49, 49, 255);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    width: 62px;
+    height: 23px;
+    cursor: pointer;
+}
+
+/* .filtros{
+    width: 84%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+} */
+
+.select_filtros {
+    font-weight: 600;
+    height: 30px;
+    border: none;
+    color: #666;
+    background-color: transparent;
+    font-size: 16px;
+    text-align: center;
+    height: 32px;
+    width: auto;
+    cursor: pointer;
+} 
+
+#label_data {
+    text-align: center;
+}
+
+#input_data {
+    width: 100px;
+    height: 25px;
+    font-size: 14px;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.tabela{
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.tabela-fisica {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th{
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: #7bb062;
+    background-color: rgb(247, 247, 247);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 16px;
+    color: #666;
+    width: auto;
+}
+
+td{
+    border-top: 2px solid rgba(0, 0, 0, 0.095);
+    font-size: 16px;
+    text-align: center;
+    height: 32px;
+    font-weight: 400;
 }

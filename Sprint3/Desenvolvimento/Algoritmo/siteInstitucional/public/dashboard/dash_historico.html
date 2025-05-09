@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="../css/dash_historico.css">
+</head>
+
+<body>
+
+  <div class="main">
+    <div class="navbar">
+      <div class="welcome_navbar">
+        <h5>Olá, <span> ${nome} </span>!</h5>
+        <h5>Bem-vindo de volta.</h5>
+      </div>
+
+      <div class="container_btn">
+        <div class="btnNavbar" id="logout"><img src="../assets/icons_navbar/predio_icon.png">Dashboard geral
+        </div>
+        <div class="btnNavbar" id="logout"><img src="../assets/icons_navbar/predio_icon.png">Historico de alertas
+        </div>
+        <div class="btnNavbar" id="logout"><img src="../assets/icons_navbar/predio_icon.png">Portaria</div>
+      </div>
+
+      <div class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png"> Logout</div>
+
+    </div>
+
+
+    <div class="container">
+      <div class="container_conteudo">
+
+        <div class="title-historico">
+          Histórico de Alertas
+        </div>
+
+        <!-- <div class="filtros">
+          <select name="" class="select_filtros" id="select_predio">
+            <option value="#">Prédio</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+  
+          <select name="" class="select_filtros" id="select_andar">
+            <option value="#">Andar</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+  
+          <button>Exportar</button>
+          <button>Filtrar</button>
+  
+          <select name="" class="select_filtros" id="select_alertas">
+            <option value="#">Status</option>
+            <option value="1">Atenção</option>
+            <option value="2">Crítico</option>
+            <option value="3">Perigo</option>
+            <option value="4">Emergência</option>
+          </select>
+  
+          <div class="select_filtros" id="label_data">
+            <label for="data_hora">Data</label>
+            <br>
+            <input id="input_data" type="date" name="">
+          </div>
+        </div> -->
+
+        <div class="tabela">
+          <div id="div_atividades_botoes">
+            <div id="div_atividades">Atividades Recentes</div>
+            <div id="div_botoes">
+              <button id="button_exportar">Exportar</button>
+              <button id="button_filtrar">Filtrar</button>
+            </div>
+          </div>
+          <table class="tabela-fisica">
+            <thead>
+              <tr>
+                <th><select name="" class="select_filtros" id="select_predio">
+                    <option value="#">Prédio</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                </th>
+                <th>
+                  <select name="" class="select_filtros" id="select_andar">
+                    <option value="#">Andar</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                </th>
+                <th>
+                  <select name="" class="select_filtros" id="select_apartamento">
+                    <option value="#">Apartamento</option>
+                    <option value="1">101</option>
+                    <option value="2">202</option>
+                    <option value="3">303</option>
+                    <option value="4">404</option>
+                    <option value="5">505</option>
+                  </select>
+                </th>
+                <th>
+                  <select name="" class="select_filtros" id="select_niveis">
+                    <option value="#">Níveis</option>
+                    <option value="1">2.5% à 4.9%</option>
+                    <option value="2">5% à 9.9%</option>
+                    <option value="3">10% à 14.9</option>
+                    <option value="4">Acima de 15% </option>
+                  </select>
+                </th>
+                <th>
+                  <select name="" class="select_filtros" id="select_alertas">
+                    <option value="#">Status</option>
+                    <option value="1">Atenção</option>
+                    <option value="2">Crítico</option>
+                    <option value="3">Perigo</option>
+                    <option value="4">Emergência</option>
+                  </select>
+                </th>
+                <th>
+                  <label for="data_hora">Data</label>
+                  <input id="input_data" type="date">
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>6</td>
+                <td>604</td>
+                <td>3.9%</td>
+                <td>Alerta</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>6</td>
+                <td>604</td>
+                <td>3.9%</td>
+                <td>Alerta</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>6</td>
+                <td>604</td>
+                <td>3.9%</td>
+                <td>Alerta</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>6</td>
+                <td>604</td>
+                <td>3.9%</td>
+                <td>Alerta</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>6</td>
+                <td>604</td>
+                <td>3.9%</td>
+                <td>Alerta</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</body>
+
+</html>
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Elementos do DOM
+    const botaoCriar = document.getElementById('button-criar');
+    const fundoModal = document.getElementById('fundoModal');
+    const botaoFechar = document.getElementById('botaoFechar');
+    const botaoCancelar = document.getElementById('botaoCancelar');
+    const formularioPortaria = document.getElementById('formularioPortaria');
+    const mensagemSucesso = document.getElementById('mensagemSucesso');
+    const dataCadastro = document.getElementById('dataCadastro');
+
+    // Deixa como data podrão a do dia de hoje
+    const hoje = new Date().toISOString().split('T')[0];
+    dataCadastro.value = hoje;
+
+    // Função que faz o modal abrir
+    function abrirModal() {
+      fundoModal.classList.add('ativo');
+    }
+
+    // Função que fecha o modal
+    function fecharModal() {
+      fundoModal.classList.remove('ativo');
+      formularioPortaria.reset();
+      dataCadastro.value = hoje;
+    }
+
+    // Adiciona as funções dos botões que fecham ou abrem o modal
+    botaoCriar.addEventListener('click', abrirModal);
+    botaoFechar.addEventListener('click', fecharModal);
+    botaoCancelar.addEventListener('click', fecharModal);
+
+    // Fecha o modal ao clicar fora dele
+    fundoModal.addEventListener('click', function (e) {
+      if (e.target === fundoModal) {
+        fecharModal();
+      }
+    });
+
+    // Envia o formulário, vai nos ajudar ao conectar com o banco
+    formularioPortaria.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Aqui colocariamos a lógica para salvar os dados, por enquanto só um exemplo puxando com id
+      console.log('Dados da portaria:', {
+        numeroPortaria: document.getElementById('numeroPortaria').value,
+        telefone: document.getElementById('telefone').value,
+        email: document.getElementById('email').value,
+        dataCadastro: document.getElementById('dataCadastro').value
+      });
+
+      // Exibe uma mensagem de sucesso
+      mensagemSucesso.classList.add('ativo');
+
+      // Fecha o modal
+      fecharModal();
+
+      // Após 3 seg a msg fecha
+      setTimeout(function () {
+        mensagemSucesso.classList.remove('ativo');
+      }, 3000);
+    });
+  });
+</script>
