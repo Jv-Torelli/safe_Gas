@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="..//css/dash_andares.css">
+    <link rel="stylesheet" href="..//css/navbar.css">
+    <title>Mapa de Apartamentos</title>
+</head>
+<body>
+    <div class="main"> <!-- Contêiner principal -->
+        <div class="navbar"> <!-- Barra lateral -->
+            <div class="welcome_navbar">
+                <h5>Olá, <span> ${nome} </span>!</h5>
+                <h5>Bem-vindo de volta.</h5>
+            </div>
+    
+            <div class="container_btn">
+                <div class="btnNavbar"><img src="../assets/icons_navbar/predio_icon.png"> Dashboard Geral</div>
+                <div class="btnNavbar"><img src="../assets/icons_navbar/predio_icon.png"> Histórico de Alertas</div>
+                <div class="btnNavbar"><img src="../assets/icons_navbar/predio_icon.png"> Portaria</div>
+            </div>
+    
+            <div class="btnNavbar"><img src="../assets/icons_navbar/logout.png"> Logout</div>
+        </div>
+    <div class="container">
+        <div class="mapa-apartamentos">
+            <div class="mapa-header">
+                <h2>Mapa de Apartamentos</h2>
+                <select>
+                    <option value="todos">Todos os Andares</option>
+                    <option value="5">5º Andar</option>
+                    <option value="4">4º Andar</option>
+                    <option value="3">3º Andar</option>
+                    <option value="2">2º Andar</option>
+                    <option value="1">1º Andar</option>
+                </select>
+                <button>Alterar Visão</button>
+            </div>
+
+            <div class="andar-label">5º Andar</div>
+            <div class="apartamento">501</div>
+            <div class="apartamento">502</div>
+            <div class="apartamento">503</div>
+            <div class="apartamento">504</div>
+
+            <div class="andar-label">4º Andar</div>
+            <div class="apartamento">401</div>
+            <div class="apartamento">402</div>
+            <div class="apartamento">403</div>
+            <div class="apartamento">404</div>
+
+            <div class="andar-label">3º Andar</div>
+            <div class="apartamento alerta">301</div>
+            <div class="apartamento">302</div>
+            <div class="apartamento">303</div>
+            <div class="apartamento">304</div>
+
+            <div class="andar-label">2º Andar</div>
+            <div class="apartamento">201</div>
+            <div class="apartamento">202</div>
+            <div class="apartamento">203</div>
+            <div class="apartamento emergencia">204</div>
+
+            <div class="andar-label">1º Andar</div>
+            <div class="apartamento">101</div>
+            <div class="apartamento alerta">102</div>
+            <div class="apartamento">103</div>
+            <div class="apartamento">104</div>
+
+            <div class="andar-label"></div> 
+            <div class="legendas">
+                <div class="legenda-item"><div class="legenda-cor normal"></div> Normal</div>
+                <div class="legenda-item"><div class="legenda-cor alerta-cor"></div> Alerta</div>
+                <div class="legenda-item"><div class="legenda-cor emergencia-cor"></div> Emergência</div>
+            </div>
+        </div>
+
+        <div class="painel-estatisticas">
+            <div class="estatistica-item">
+                <div>Total de Apartamentos</div>
+                <div class="estatistica-valor"><span class="total-icon">🏠</span> 20</div>
+            </div>
+            <div class="estatistica-item">
+                <div>Alertas</div>
+                <div class="estatistica-valor"><span class="alerta-icon">⚠️</span> 2</div>
+            </div>
+            <div class="estatistica-item">
+                <div>Emergências</div>
+                <div class="estatistica-valor"><span class="emergencia-icon">🔴</span> 1</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    // .mapa-apartamentos h2 {
+   // grid-column: 1 / -1;
+   // text-align: center;
+   // margin-bottom: 10px;}
+
+</script>
