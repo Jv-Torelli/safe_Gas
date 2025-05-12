@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../css/dash_especifica.css">
-  <link rel="stylesheet" href="../css/dash_geral.css">
+  <link rel="stylesheet" href="../css/navbar.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <title>Dashboard Específica</title>
 </head>
+
 <body>
-  
+
   <div class="main"> <!-- Contêiner principal -->
     <div class="navbar"> <!-- Barra lateral de Menu -->
       <div class="welcome_navbar">
@@ -41,120 +43,154 @@
     </div>
 
     <main class="painel"> <!-- Painel do todo conteúdo -->
-      <div class="container_superior"> <!-- Contêiner superior para indicadores KPIs -->
-
-        <div class="div_voltar">
-          <button> <!-- Botão voltar à Dashboard Geral -->
-            <a href="Dash_Geral.html">
-              <img src="../assets/dashEspecifica/seta_voltar.png" alt="">
-            </a>
-          </button>
-        </div>
-
-        <div class="container_kpis"> <!-- Contêiner para todas KPIs -->
-          <div class="kpi acao">
-            <div id="div_acao">Ação:</div> <!-- KPI de Ação Recomendada -->
+      <div class="container_superior">
+        <div class="div_kpi indicador_acao">
+          <div class="div_icon">
+            <img src="" alt="">
           </div>
-
-          <div class="kpi status_local">
-            <div id="div_status">Status:</div>
-            <hr> <!-- KPI de Status de ALerta -->
-            <div id="div_local">Local:</div> <!-- KPI de Local do Incidente -->
-          </div>
-
-          <div class="kpi atualizacao">
-            <div id="div_atualizacao">Última Atualização:</div> <!-- KPI de Última Atualização -->
+          <div class="div_informacao">
+            <span class="span_titulo">Ação Rápida</span>
+            <span class="span_resposta">Ventilação</span>
           </div>
         </div>
+
+        <div class="div_kpi indicador_status">
+          <div class="div_icon">
+            <img src="../assets/dashEspecifica/icon_status.png" alt="">
+          </div>
+          <div class="div_informacao">
+            <span class="span_titulo">Status de Alerta</span>
+            <span class="span_resposta">Crítico</span>
+          </div>
+        </div>
+
+        <div class="div_kpi indicador_local">
+          <div class="div_icon">
+            <img src="../assets/dashEspecifica/icon_local.png" alt="">
+          </div>
+          <div class="div_informacao">
+            <span class="span_titulo">No Local</span>
+            <span class="span_resposta">Cozinha</span>
+          </div>
+        </div>
+
+        <div class="div_kpi indicador_hora">
+          <div class="div_icon">
+            <img src="../assets/dashEspecifica/icon_atualizacao.png" alt="">
+          </div>
+          <div class="div_informacao">
+            <span class="span_titulo">Última Verificação</span>
+            <span class="span_resposta">Hoje, 15:45</span>
+          </div>
+        </div>
+
       </div>
 
-      <div class="container_central"> <!-- Contêiner central -->
-        <div class="div_legenda">
-          <div><span>Prédio 2 - Apartamento 33</span></div>
-          <div>Nível de Gás: </div>
+      <div class="container_inferior">
+        <div class="div_grafico">
+          <div class="div_nivel">
+            <span class="span_titulo">Nivel de Gás (Últimas 24h)</span>
+            <canvas id="canvas_grafico"></canvas>
+          </div>
         </div>
 
-        <div class="div_grafico"> <!-- Div para Gráfico das medições dos sensores -->
-          <canvas id="graficoLinha"></canvas>
-        </div>
+        <div class="div_sensores">
+          <div class="div_alerta">
 
-        <div class="div_sensores"> <!-- Div para Seleção de sensores -->
-          <div class="sensor"><button onclick="mudar_cor()" id="btn_sensor">sensor a</button></div>
-          <div class="sensor"><button onclick="mudar_cor()" id="btn_sensor">sensor b</button></div>
-          <div class="sensor"><button onclick="mudar_cor()" id="btn_sensor">sensor c</button></div>
+            <div class="div_status_alerta">
+              <img src="../assets/dashEspecifica/icon_alerta.png" alt="">
+              <span class="span_titulo" style="color: black; font-size: 29px; font-weight: 700;">Alerta Crítico<br><span class="span_resposta" style="color: #666666; font-size: 18px; font-weight: 600;">Alta concentração de gás</span></span>
+            </div>
+
+            <div class="div_identificacao">
+              <span class="span_resposta">Torre C, Apto 402</span>
+            </div>
+            
+          </div>
+          <div class="div_medicao"></div>
         </div>
 
       </div>
-
-      
-
-  </div>
-  </main>
+    </main>
 
 </body>
+
 </html>
 <script>
+  const ctx = document.getElementById('canvas_grafico').getContext('2d');
 
-  function mudar_cor(){
-    document.getElementById("btn_sensor").style.backgroundColor = "#2cdd61";
-    document.getElementById("btn_sensor").style.color = "white";
+  const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+gradient.addColorStop(0, 'rgba(37, 99, 235, 0.5)');
+gradient.addColorStop(0.5, 'rgba(37, 99, 235, 0.01)');
+gradient.addColorStop(0.6, 'rgba(37, 99, 235, 0.01)');
+gradient.addColorStop(0.6, 'rgb(255, 255, 255)');
 
-  }
-  
-  const graficoUm = document.getElementById('graficoLinha').getContext('2d');
-  new Chart(graficoUm, {
+ const graficoGas = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: [],
-      datasets: [{
-        label: "",
-        data: [5.6, 5.9, 5.9, 8.0, 7.5, 7.3, 7.2, 7.1, 5.7, 7.8, 8.2, 8.5,],
-        borderColor: 'red',
-        backgroundColor: 'rgba(255, 0, 0, 0.1)',
-        tension: 0.2,
-        fill: true,
-        pointBackgroundColor: 'red',
-        pointRadius: 2,
-      }]
+      labels: ['0:00','2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'],
+      datasets: [
+        {
+          label: 'Nível de Gás (%)',
+          data: [3.1, 3.3, 3.9, 3.8, 3.0, 3.6, 3.3, 3.2, 4.4, 4.3, 4.2, 4.5, 4.2],
+          borderColor: '#2563eb',
+          backgroundColor: gradient,
+          tension: 0.3,
+          fill: true,
+          pointRadius: 0.3,
+          borderWidth: 2
+        },
+        {
+          label: 'Limite de Segurança',
+          data: Array(13).fill(5),
+          borderColor: 'red',
+          borderWidth: 1,
+          pointRadius: 0,
+          fill: false,
+        }
+      ]
     },
     options: {
-      responsive: true,
+      responsive: false,
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          mode: 'index',
+          intersect: false
+        }
+      },
       scales: {
         y: {
-          min: 0,
-          max: 10,
+          beginAtZero: true,
+          max: 12,
           ticks: {
-            callback: function (value) {
-              return value + '%';
+            callback: function(value) {
+              return value + ' %';
             }
-          },
-          title: {
-            display: true,
-            text: 'Porcentagem'
           }
         },
         x: {
           title: {
             display: true,
-            text: 'Horário'
-          }
-        }
-      },
-      plugins: {
-        legend: {
-          display: false,
-          labels: {
-            color: 'red'
-          }
-        },
-        tooltip: {
-          callbacks: {
-            label: function (context) {
-              return context.parsed.y + '%';
-            }
+            text: 'Hora'
           }
         }
       }
-    }
+    },
+    plugins: [{
+      id: 'customLabelPlugin',
+      afterDraw: (chart) => {
+        const {ctx, chartArea: {top, right, width}} = chart;
+        ctx.save();
+        ctx.font = '16px sans-serif';
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
+        ctx.fillText('Limite de Segurança', right - width /7.5, top + 65);
+        ctx.restore();
+      }
+    }]
   });
+
 </script>
