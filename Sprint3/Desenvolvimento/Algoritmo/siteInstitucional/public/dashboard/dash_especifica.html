@@ -46,7 +46,7 @@
       <div class="container_superior">
         <div class="div_kpi indicador_acao">
           <div class="div_icon">
-            <img src="" alt="">
+            <img src="../assets/dashEspecifica/icon_acao.png" alt="">
           </div>
           <div class="div_informacao">
             <span class="span_titulo">Ação Rápida</span>
@@ -90,6 +90,8 @@
         <div class="div_grafico">
           <div class="div_nivel">
             <span class="span_titulo">Nivel de Gás (Últimas 24h)</span>
+            <span class="span_identificacao">Torre B, Apto 307</span>
+            <hr>
             <canvas id="canvas_grafico"></canvas>
           </div>
         </div>
@@ -98,20 +100,51 @@
           <div class="div_alerta">
 
             <div class="div_status_alerta">
-              <img src="../assets/dashEspecifica/icon_alerta.png" alt="">
-              <span class="span_titulo" style="color: black; font-size: 29px; font-weight: 700;">Alerta Crítico<br><span class="span_resposta" style="color: #666666; font-size: 18px; font-weight: 600;">Alta concentração de gás</span></span>
+              <div class="div_img_alerta">
+                <img src="../assets/dashEspecifica/icon_alerta.png" alt="">
+              </div>
+              <div class="div_sobre_alerta">
+                <span class="span_titulo">Alerta Crítico</span>
+                <span class="span_subtitulo">Alta concentração de gás</span>
+              </div>
             </div>
 
-            <div class="div_identificacao">
-              <span class="span_resposta">Torre C, Apto 402</span>
-            </div>
-            
           </div>
-          <div class="div_medicao"></div>
-        </div>
+          <div class="div_medicao">
+            <div class="div_titulo_medicao">
+              <span class="span_titulo">Sensores</span>
+              <span class="span_subtitulo">NIVEL DE GÁS (%)</span>
+            </div>
+            <hr>
 
+            <div class="div_sensores_medicao">
+              <div class="div_opcao_sensor">
+                <span class="span_sensor">MQ2-001</span>
+                <span class="span_medicao">6,3</span>
+                <button class="btn_sensor">Detalhes</button>
+              </div>
+              <hr>
+
+              <div class="div_opcao_sensor">
+                <span class="span_sensor">MQ2-002</span>
+                <span class="span_medicao">8,5</span>
+                <button class="btn_sensor">Detalhes</button>
+              </div>
+              <hr>
+
+              <div class="div_opcao_sensor">
+                <span class="span_sensor">MQ2-003</span>
+                <span class="span_medicao">7,1</span>
+                <button class="btn_sensor">Detalhes</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
-    </main>
+
+  </div>
+  </main>
 
 </body>
 
@@ -120,19 +153,19 @@
   const ctx = document.getElementById('canvas_grafico').getContext('2d');
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-gradient.addColorStop(0, 'rgba(37, 99, 235, 0.5)');
-gradient.addColorStop(0.5, 'rgba(37, 99, 235, 0.01)');
-gradient.addColorStop(0.6, 'rgba(37, 99, 235, 0.01)');
-gradient.addColorStop(0.6, 'rgb(255, 255, 255)');
+  gradient.addColorStop(0, 'rgba(37, 99, 235, 0.5)');
+  gradient.addColorStop(0.5, 'rgba(37, 99, 235, 0.01)');
+  gradient.addColorStop(0.6, 'rgba(37, 99, 235, 0.01)');
+  gradient.addColorStop(0.6, 'rgb(255, 255, 255)');
 
- const graficoGas = new Chart(ctx, {
+  const graficoGas = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ['0:00','2:00','4:00','6:00','8:00','10:00','12:00','14:00','16:00','18:00','20:00','22:00','24:00'],
+      labels: ['0:00', '2:00', '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'],
       datasets: [
         {
           label: 'Nível de Gás (%)',
-          data: [3.1, 3.3, 3.9, 3.8, 3.0, 3.6, 3.3, 3.2, 4.4, 4.3, 4.2, 4.5, 4.2],
+          data: [3.1, 3.3, 3.9, 3.8, 3.0, 3.6, 3.3, 3.2, 4.4, 4.3, 4.2, 4.5, 8.5],
           borderColor: '#2563eb',
           backgroundColor: gradient,
           tension: 0.3,
@@ -166,7 +199,7 @@ gradient.addColorStop(0.6, 'rgb(255, 255, 255)');
           beginAtZero: true,
           max: 12,
           ticks: {
-            callback: function(value) {
+            callback: function (value) {
               return value + ' %';
             }
           }
@@ -182,12 +215,12 @@ gradient.addColorStop(0.6, 'rgb(255, 255, 255)');
     plugins: [{
       id: 'customLabelPlugin',
       afterDraw: (chart) => {
-        const {ctx, chartArea: {top, right, width}} = chart;
+        const { ctx, chartArea: { top, right, width } } = chart;
         ctx.save();
         ctx.font = '16px sans-serif';
         ctx.fillStyle = 'black';
         ctx.textAlign = 'center';
-        ctx.fillText('Limite de Segurança', right - width /7.5, top + 65);
+        ctx.fillText('Limite de Segurança', right - width / 7.5, top + 65);
         ctx.restore();
       }
     }]
