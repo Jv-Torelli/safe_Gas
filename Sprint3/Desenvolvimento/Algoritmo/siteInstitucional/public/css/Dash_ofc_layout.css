@@ -12,6 +12,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
 }
 
 .compenentesDiv {
@@ -34,4 +35,42 @@
     width: 30%;
     max-height: 90%;
     height: 90%;
+}
+
+.cabecalho-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #f4f6f8;
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.item-cabecalho {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px 15px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    width: 20%; 
+}
+
+.valor-principal {
+    display: block;
+    font-size: 1.2em;
+    font-weight: bold; 
+    color: #333;
+}
+
+.descricao {
+    color: #777;
+    font-size: 0.8em;
+}
+
+.icone-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 1.5em;
 }
