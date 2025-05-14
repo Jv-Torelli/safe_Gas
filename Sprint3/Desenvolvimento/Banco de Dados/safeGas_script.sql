@@ -1,6 +1,7 @@
 CREATE DATABASE sgc;
 USE sgc;
 
+-- Tabela Condominio
 CREATE TABLE condominio (
 idCondominio INT PRIMARY KEY AUTO_INCREMENT,
 nome_condominio VARCHAR(30) NOT NULL,
@@ -8,155 +9,149 @@ cep CHAR(11) NOT NULL,
 logradouro VARCHAR(45) NOT NULL,
 numero_logradouro varchar(5) NOT NULL,
 cnpj CHAR(14) UNIQUE,
-dt_cadastro_cond date
+dt_cadastro_condominio date
 );
 
+-- Tabela Portaria
 CREATE TABLE portaria (
-idPortaria INT AUTO_INCREMENT,
-fkCondominio INT not null,
-PRIMARY KEY (idPortaria, fkCondominio),
-	FOREIGN KEY (fkCondominio) REFERENCES condominio(idCondominio),
+idPortaria INT PRIMARY KEY AUTO_INCREMENT,
 numero_portaria CHAR(1),
 telefone char(11),
 dt_cadastro_port date,
 email varchar(60),
-senha VARCHAR(30) NOT NULL
+senha VARCHAR(30) NOT NULL,
+fkCondominioPortaria INT not null,
+CONSTRAINT fkCondominioPortaria FOREIGN KEY (fkCondominioPortaria) REFERENCES condominio(idCondominio)
 );
 
+-- Tabela Predio
 CREATE TABLE predio (
-idPredio int auto_increment,
-fkCondominio INT not null,
-PRIMARY KEY (idPredio, fkCondominio),
-	FOREIGN KEY (fkCondominio) REFERENCES condominio(idCondominio),
-numero_predio CHAR(1)
+idPredio INT PRIMARY KEY auto_increment,
+bloco_predio CHAR(1),
+fkPortariaPredio INT,
+CONSTRAINT fkPortariaPredio FOREIGN KEY(fkPortariaPredio) REFERENCES portaria(idPortaria)
 );
 
-CREATE TABLE andar (
-idAndar int auto_increment,
-fkPredio INT not null,
-fkCondominio INT not null,
-PRIMARY KEY (idAndar, fkPredio, fkCondominio),
-	FOREIGN KEY (fkPredio) REFERENCES predio(idPredio),
-    FOREIGN KEY (fkCondominio) REFERENCES condominio(idCondominio),
-piso int
-);
-
-CREATE TABLE apartamento (
-idApartamento INT auto_increment,
-fkAndar INT,
+-- Tabela Atendimento
+CREATE TABLE atendimento(
+idAtendimento INT,
+fkPortaria INT,
 fkPredio INT,
 fkCondominio INT,
-PRIMARY KEY (idApartamento, fkAndar, fkPredio, fkCondominio),
-	FOREIGN KEY (fkAndar) references andar(idAndar),
-	FOREIGN KEY (fkPredio) references predio(idPredio),
-	FOREIGN KEY (fkCondominio) references condominio(idCondominio),
-numero_apartamento VARCHAR(5)
+CONSTRAINT pkComposta PRIMARY KEY (idAtendimento, fkPortaria, fkPredio, fkCondominio),
+CONSTRAINT fkPortaria FOREIGN KEY(fkPortaria) REFERENCES portaria(idPortaria),
+CONSTRAINT fkPredio FOREIGN KEY(fkPredio) REFERENCES predio(idPredio),
+CONSTRAINT fkCondominio FOREIGN KEY(fkCondominio) REFERENCES condominio(idCondominio)
 );
 
+-- Tabela Apartamento
+CREATE TABLE apartamento (
+idApartamento INT PRIMARY KEY auto_increment,
+numero_apartamento VARCHAR(5),
+andar_apartamento INT,
+fkPredioApto INT,
+CONSTRAINT fkPredioApto FOREIGN KEY(fkPredioApto) REFERENCES predio(idPredio)
+);
+
+-- Tabela Sensor
 CREATE TABLE sensor (
 idSensor INT PRIMARY KEY auto_increment,
+status_sensor VARCHAR(10),
+	CONSTRAINT ckSensor 
+		CHECK (status_sensor IN ('Ativo', 'Inativo')),
+local_instalado VARCHAR(45),
 fkApartamento INT,
 CONSTRAINT fkApartamentoSensor FOREIGN KEY (fkApartamento) references apartamento(idApartamento),
-fkAndar INT,
-CONSTRAINT fkAndarSensor FOREIGN KEY (fkAndar) references andar(idAndar),
 fkPredio INT,
-CONSTRAINT fkPredioSensor FOREIGN KEY (fkPredio) references predio(idPredio),
-fkCondominio INT,
-CONSTRAINT fkCondominioSensor FOREIGN KEY (fkCondominio) references condominio(idCondominio),
-statusSensor VARCHAR(10),
-	CONSTRAINT ckSensor 
-		CHECK (statusSensor IN ('Ativo', 'Inativo')),
-local_instalado varchar(45)
+CONSTRAINT fkPredioSensor FOREIGN KEY (fkPredio) references predio(idPredio)
 );
 
+-- Tabela Alerta
+CREATE TABLE alerta(
+idAlerta INT AUTO_INCREMENT,
+statusAlerta VARCHAR(12),
+	CONSTRAINT ckStatus
+		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Alerta', 'Emergência'))
+);
+
+-- Tabela Medicao
 CREATE TABLE medicao (
 idMedicao INT AUTO_INCREMENT,
-fkSensor INT,
-PRIMARY KEY (idMedicao, fkSensor),
-	FOREIGN KEY (fkSensor) references sensor(idSensor),
-dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
+fkSensorMedicao INT,
+fkApartamentoMedicao INT,
+fkPredioMedicao INT,
+fkAlerta INT,
+CONSTRAINT pkCompostaMedicao PRIMARY KEY (idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlerta),
+CONSTRAINT fkSensorMedicao FOREIGN KEY (fkSensorMedicao) references sensor(idSensor),
+CONSTRAINT fkApartamentoMedicao FOREIGN KEY (fkApartamentoMedicao) references apartamento(idApartamento),
+CONSTRAINT fkPredioMedicao FOREIGN KEY (fkPredioMedicao) references predio(idPredio),
+CONSTRAINT fkAlertaMedicao FOREIGN KEY (fkAlertaMedicao) references alerta(idAlerta),
+data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
 nivel_de_gas FLOAT NOT NULL
 );
 
-CREATE TABLE alerta(
-idAlerta INT AUTO_INCREMENT,
-fkMedicao int,
-fkSensor INT,
-PRIMARY KEY (idAlerta, fkMedicao, fkSensor),
-	FOREIGN KEY (fkMedicao) REFERENCES medicao(idMedicao),
-	FOREIGN KEY (fkSensor) REFERENCES sensor(idSensor),
-statusAlerta VARCHAR(12),
-	CONSTRAINT ckStatus
-		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Alerta', 'Perigo', 'Emergência'))
-);
 
--- Tabela condominio
-INSERT INTO condominio (nome_condominio, cep, logradouro, numero_logradouro, cnpj, dt_cadastro_cond) VALUES
-('Condomínio Sol', '12345678', 'Rua das Flores',  '100', '12345678000101', '2025-01-06'),
-('Condomínio Lua', '23456789', 'Av. Estrelas',  '200', '23456789000102', '2025-01-11'),
-('Condomínio Mar', '34567890', 'Rua das Ondas',  '300', '34567890000103', '2025-01-15'),
-('Condomínio Céu', '45678901', 'Rua das Nuvens',  '400', '45678901000104', '2025-01-19'),
-('Condomínio Estrela', '56789012', 'Rua Galáxia',  '500', '56789012000105', '2025-01-25');
+INSERT INTO condominio (nome_condominio, cep, logradouro, numero_logradouro, cnpj, dt_cadastro_condominio) VALUES
+('Condomínio Sol', '12345678900', 'Rua das Flores', '100', '12345678000101', '2023-01-10'),
+('Condomínio Lua', '23456789001', 'Av. Estrelas', '200', '23456789000102', '2023-02-15'),
+('Condomínio Mar', '34567890123', 'Rua do Mar', '300', '34567890000103', '2023-03-20'),
+('Condomínio Céu', '45678901234', 'Travessa Céu Azul', '400', '45678901000104', '2023-04-25'),
+('Condomínio Terra', '56789012345', 'Av. Terra Nova', '500', '56789012000105', '2023-05-30');
 
--- Tabela portaria
-INSERT INTO portaria (fkCondominio, numero_portaria, telefone, dt_cadastro_port, email, senha) VALUES
-(1, '1', '11958764211', '2025-01-06', 'portariaUm@sol.com', 'senha01'),
-(1, '2', '11958764212', '2025-01-06', 'portariaDois@sol.com', 'senha02'),
-(2, '1', '11958764221', '2025-01-11', 'portariaUm@lua.com', 'senha03'),
-(3, '1', '11958764231', '2025-01-15', 'portariaUm@mar.com', 'senha04'),
-(3, '2', '11958764232', '2025-01-15', 'portariaDois@mar.com', 'senha05'),
-(4, '1', '11958764241', '2025-01-19', 'portariaUm@ceu.com', 'senha06'),
-(4, '2', '11958764242', '2025-01-19', 'portariaDois@ceu.com', 'senha07'),
-(5, '1', '11958764251', '2025-01-25', 'portariaUm@estrela.com', 'senha08');
+INSERT INTO portaria (numero_portaria, telefone, dt_cadastro_port, email, senha, fkCondominioPortaria) VALUES
+('1', '11999999999', '2023-01-12', 'portaria1a@sol.com', 'senha123', 1),
+('2', '11999999998', '2023-01-13', 'portaria1b@sol.com', 'senha124', 1),
+('1', '11988888888', '2023-02-18', 'portaria2@lua.com', 'senha234', 2),
+('1', '11977777777', '2023-03-22', 'portaria3a@mar.com', 'senha345', 3),
+('2', '11977777776', '2023-03-23', 'portaria3b@mar.com', 'senha346', 3),
+('1', '11966666666', '2023-04-28', 'portaria4@ceu.com', 'senha456', 4),
+('1', '11955555555', '2023-06-01', 'portaria5a@terra.com', 'senha567', 5),
+('2', '11955555554', '2023-06-02', 'portaria5b@terra.com', 'senha568', 5);
 
-INSERT INTO predio (fkCondominio, numero_predio) VALUES
-(1, '1'),
-(1, '4'),
-(2, '1'),
-(3, '2'),
-(3, '6'),
-(4, '1'),
-(4, '7'),
-(5, '1');
+INSERT INTO predio (bloco_predio, fkPortariaPredio) VALUES
+('A', 1),
+('B', 2),
+('A', 4), 
+('B', 5), 
+('C', 7); 
 
-INSERT INTO andar (fkPredio, fkCondominio, piso) VALUES 
-(1, 1, 5),
-(3, 2, 8),
-(4, 3, 12),
-(6, 4, 1),
-(8, 5, 15);
 
--- Tabela apartamento
-INSERT INTO apartamento (fkAndar, fkPredio, fkCondominio, numero_apartamento) VALUES
-(1, 1, 1, 101),
-(2, 3, 2, 806),
-(3, 4, 3, 1202),
-(4, 6, 4, 101),
-(5, 8, 5, 1507);
+INSERT INTO atendimento (idAtendimento, fkPortaria, fkPredio, fkCondominio) VALUES
+(1, 1, 1, 1),
+(2, 2, 2, 2),
+(3, 3, 3, 3),
+(4, 4, 4, 4),
+(5, 5, 5, 5);
 
--- Tabela sensor
-INSERT INTO sensor (fkApartamento, fkAndar, fkPredio,  fkCondominio, statusSensor, local_instalado) VALUES
-(1, 1, 1, 1, 'Ativo', 'cozinha'),
-(2, 2, 3, 2, 'Ativo', 'banheiro'),
-(3, 3, 4, 3, 'Ativo', 'banheiro'),
-(4, 4, 6, 4, 'Ativo', 'cozinha'),
-(5, 5, 8, 5, 'Inativo', 'cozinha');
+INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES
+('101', 1, 1),
+('202', 2, 2),
+('303', 3, 3),
+('404', 4, 4),
+('505', 5, 5);
 
--- Tabela medicao 
-INSERT INTO medicao (fkSensor, nivel_de_gas) VALUES
-(1, 2.0),
-(2, 2.9),
-(3, 5.4),
-(4, 10.3),
-(5, 16.6);
+INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES
+('Ativo', 'Cozinha', 1, 1),
+('Ativo', 'Sala', 2, 2),
+('Inativo', 'Quarto', 3, 3),
+('Ativo', 'Área de Serviço', 4, 4),
+('Inativo', 'Banheiro', 5, 5);
 
--- Tabela alerta
-INSERT INTO alerta (fkMedicao, fkSensor, statusAlerta) VALUES
-(1, 1,'Seguro'),
-(2, 2,'Atenção'),
-(3, 3,'Alerta'),
-(4, 4,'Perigo'),
-(5, 5,'Emergência');
+INSERT INTO alerta (statusAlerta) VALUES
+('Seguro'),
+('Atenção'),
+('Alerta'),
+('Emergência'),
+('Seguro');
+
+INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlerta, nivel_de_gas) VALUES
+(1, 1, 1, 1, 0.3),
+(2, 2, 2, 2, 0.7),
+(3, 3, 3, 3, 1.5),
+(4, 4, 4, 4, 2.8),
+(5, 5, 5, 5, 3.9);
+
+
 
 
 SELECT * FROM condominio;
@@ -165,7 +160,7 @@ SELECT * FROM portaria;
 
 SELECT * FROM predio;
 
-SELECT * FROM andar;
+SELECT * FROM atendimento;
 
 SELECT * FROM apartamento;
 
