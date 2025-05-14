@@ -7,7 +7,83 @@
     <title>Document</title>
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/Dash_ofc_layout.css">
+    <link rel="stylesheet" href="../css/Dash_ofc_layout_notificacoes.css">
 </head>
+<style>
+    .navbar-p {
+        display: flex;
+        margin-bottom: 10px;
+        width: 90%;
+        justify-content: space-between;
+    }
+
+    .tab-p {
+        padding: 10px 20px;
+        background-color: #f0f0f0;
+        margin-right: 5px;
+        border-radius: 5px;
+    }
+
+    .grid-p {
+        display: grid;
+        grid-template-columns: 80px repeat(3, 100px);
+        gap: 10px;
+        width: 90%;
+        justify-content: space-between;
+    }
+
+    .header-p {
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .andar-p {
+        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
+        border-radius: 5px;
+
+        font-weight: bold;
+    }
+
+    .normal {
+        background-color: #00c292;
+    }
+
+    .alerta {
+        background-color: #f8b739;
+    }
+
+    .critico {
+        background-color: #f83a3a;
+    }
+
+    .manutencao {
+        background-color: #d1d5db;
+        color: black;
+    }
+
+    .legend-p {
+        display: flex;
+        margin-top: 20px;
+        justify-content: space-between;
+        width: 85%;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .legend-color {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+    }
+</style>
 
 <body>
     <div class="main">
@@ -31,7 +107,7 @@
         </div>
 
         <div class="container_dash">
-            <div class="header" style="background-color: orange;">
+            <div class="header">
                 <div class="item-cabecalho">
                     <div class="icone-container">⚙️</div>
                     <span class="valor-principal">150</span>
@@ -55,10 +131,192 @@
             </div>
             <div class="compenentesDiv">
                 <div class="container_predios">
-                    <h1>predios filtro</h1>
+
+                    <div class="navbar-p">
+                        <div class="tab-p">Torre A</div>
+                        <div class="tab-p">Torre B</div>
+                        <div class="tab-p">Torre C</div>
+                        <div class="tab-p">Torre D</div>
+                        <div class="tab-p">Torre E</div>
+                    </div>
+
+                    <div class="grid-p">
+                        <div class="header-p">Andar</div>
+                        <div class="header-p">Apto 01</div>
+                        <div class="header-p">Apto 02</div>
+                        <div class="header-p">Apto 03</div>
+                        <!-- Linhas dos andares de 10 a 1 -->
+                        <!-- Andar 10 -->
+                        <div class="andar-p">10</div>
+                        <div class="andar-p normal">1</div>
+                        <div class="andar-p normal">2</div>
+                        <div class="andar-p normal">3</div>
+
+                        <!-- Andar-p 9 -->
+                        <div class="andar-p">9</div>
+                        <div class="andar-p normal">1</div>
+                        <div class="andar-p alerta">2</div>
+                        <div class="andar-p normal">3</div>
+
+                        <!-- Andar-p 8 -->
+                        <div class="andar-p">8</div>
+                        <div class="andar-p normal">1</div>
+                        <div class="andar-p alerta">2</div>
+                        <div class="andar-p normal">3</div>
+
+                        <!-- Andar-p 7 -->
+                        <div class="andar-p">7</div>
+                        <div class="andar-p normal">1</div>
+                        <div class="andar-p normal">2</div>
+                        <div class="andar-p normal">3</div>
+
+                        <!-- Andar-p 6 -->
+                        <div class="andar-p">6</div>
+                        <div class="andar-p normal">1</div>
+                        <div class="andar-p normal">2</div>
+                        <div class="andar-p normal">3</div>
+
+                        <!-- Andar-p 5 -->
+                        <div class="andar-p">5</div>
+                        <div class="andar-p normal">1</div>
+                        <div class="andar-p normal">2</div>
+                        <div class="andar-p normal">3</div>
+
+                        <!-- Andar-p 4 -->
+                        <div class="andar-p">4</div>
+                        <div class="andar-p alerta">1</div>
+                        <div class="andar-p alerta">2</div>
+                        <div class="andar-p normal">3</div>
+
+                        <!-- Andar-p 3 -->
+                        <div class="andar-p">3</div>
+                        <div class="andar-p normal">1</div>
+                        <div class="andar-p normal">2</div>
+                        <div class="andar-p normal">3</div>
+
+                        <!-- Andar-p 2 -->
+                        <div class="andar-p">2</div>
+                        <div class="andar-p normal">1</div>
+                        <div class="andar-p normal">2</div>
+                        <div class="andar-p normal">3</div>
+
+                        <!-- Andar-p 1 -->
+                        <div class="andar-p">1</div>
+                        <div class="andar-p normal">1</div>
+                        <div class="andar-p normal">2</div>
+                        <div class="andar-p normal">3</div>
+                    </div>
+
+                    <!-- Legenda -->
+                    <div class="legend-p">
+                        <div class="legend-item">
+                            <div class="legend-color normal"></div> Normal
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color alerta"></div> Alerta
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color critico"></div> Crítico
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color manutencao"></div> Manutenção
+                        </div>
+                    </div>
                 </div>
-                <div class="container_notificacoes"">
-                    <h1>notificações</h1>
+                <div class="container_notificacoes">
+                    <div id="alertas_recentes">Alertas Recentes</div>
+                    <div class="div_notificacoes_emergencia" id="notificacoes_emergencia">
+                        <div class="informacao_notificacao">
+                            <div class="informacao_emergencia">Torre B, Apto 703</div>
+                            <div class="nivel_gas">Nível emergencial de gás detectado</div>
+                            <button class="btn_verificar">Verificar</button>
+                        </div>
+                        <div class="horario_notificacao">
+                            Agora
+                        </div>
+                    </div>
+                    <div class="div_notificacoes_critico">
+                        <div class="informacao_notificacao">
+                            <div class="informacao_critica">Torre C, Apto 402</div>
+                            <div class="nivel_gas">Nível crítico de gás detectado</div>
+                            <button class="btn_verificar">Verificar</button>
+                        </div>
+                        <div class="horario_notificacao">
+                            Agora
+                        </div>
+                    </div>
+                    <div class="div_notificacoes_alerta">
+                        <div class="informacao_notificacao">
+                            <div class="notificacao_critica">
+                                <div class="informacao_alerta">Torre C, Apto 802</div>
+                                <div class="nivel_gas">Nível elevado de gás detectado</div>
+                                <button class="btn_verificar">Verificar</button>
+                            </div>
+                        </div>
+                        <div class="horario_notificacao">
+                            Agora
+                        </div>
+                    </div>
+                    <div class="div_notificacoes_alerta">
+                        <div class="notificacao_alerta">
+                            <div class="informacao_notificacao">
+                                <div class="informacao_alerta">Torre A, Apto 302</div>
+                                <div class="nivel_gas">Nível elevado de gás detectado</div>
+                                <button class="btn_verificar">Verificar</button>
+                            </div>
+                        </div>
+                        <div class="horario_notificacao">
+                            Agora
+                        </div>
+                    </div>
+                    <div class="div_notificacoes_alerta">
+                        <div class="notificacao_alerta">
+                            <div class="informacao_notificacao">
+                                <div class="informacao_alerta">Torre A, Apto 302</div>
+                                <div class="nivel_gas">Nível elevado de gás detectado</div>
+                                <button class="btn_verificar">Verificar</button>
+                            </div>
+                        </div>
+                        <div class="horario_notificacao">
+                            Agora
+                        </div>
+                    </div>
+                    <div class="div_notificacoes_alerta">
+                        <div class="notificacao_alerta">
+                            <div class="informacao_notificacao">
+                                <div class="informacao_alerta">Torre A, Apto 302</div>
+                                <div class="nivel_gas">Nível elevado de gás detectado</div>
+                                <button class="btn_verificar">Verificar</button>
+                            </div>
+                        </div>
+                        <div class="horario_notificacao">
+                            Agora
+                        </div>
+                    </div>
+                    <div class="div_notificacoes_alerta">
+                        <div class="notificacao_alerta">
+                            <div class="informacao_notificacao">
+                                <div class="informacao_alerta">Torre A, Apto 302</div>
+                                <div class="nivel_gas">Nível elevado de gás detectado</div>
+                                <button class="btn_verificar">Verificar</button>
+                            </div>
+                        </div>
+                        <div class="horario_notificacao">
+                            Agora
+                        </div>
+                    </div>
+                    <div class="div_notificacoes_alerta">
+                        <div class="notificacao_alerta">
+                            <div class="informacao_notificacao">
+                                <div class="informacao_alerta">Torre A, Apto 302</div>
+                                <div class="nivel_gas">Nível elevado de gás detectado</div>
+                                <button class="btn_verificar">Verificar</button>
+                            </div>
+                        </div>
+                        <div class="horario_notificacao">
+                            Agora
+                        </div>
+                    </div>
                 </div>
             </div>
 

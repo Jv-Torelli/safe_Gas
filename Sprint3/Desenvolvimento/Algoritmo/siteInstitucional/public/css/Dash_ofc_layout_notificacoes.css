@@ -30,12 +30,6 @@
     justify-content: space-around;
 }
 
-.container_predios {
-    background-color: purple;
-    width: 65%;
-    height: 95%;
-}
-
 .container_notificacoes {
     background-color: rgb(255, 255, 255);
     display: flex;

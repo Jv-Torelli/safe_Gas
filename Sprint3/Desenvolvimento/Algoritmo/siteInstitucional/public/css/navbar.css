@@ -8,6 +8,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: row;
+    background-color: #f2f2f2;
 }
 
 /* nav containers */
