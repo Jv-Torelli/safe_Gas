@@ -68,10 +68,11 @@ CONSTRAINT fkPredioSensor FOREIGN KEY (fkPredio) references predio(idPredio)
 
 -- Tabela Alerta
 CREATE TABLE alerta(
-idAlerta INT AUTO_INCREMENT,
+idAlerta INT PRIMARY KEY AUTO_INCREMENT,
 statusAlerta VARCHAR(12),
 	CONSTRAINT ckStatus
-		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Alerta', 'Emergência'))
+		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Alerta', 'Emergência')),
+acao varchar(60)
 );
 
 -- Tabela Medicao
@@ -80,8 +81,8 @@ idMedicao INT AUTO_INCREMENT,
 fkSensorMedicao INT,
 fkApartamentoMedicao INT,
 fkPredioMedicao INT,
-fkAlerta INT,
-CONSTRAINT pkCompostaMedicao PRIMARY KEY (idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlerta),
+fkAlertaMedicao INT,
+CONSTRAINT pkCompostaMedicao PRIMARY KEY (idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlertaMedicao),
 CONSTRAINT fkSensorMedicao FOREIGN KEY (fkSensorMedicao) references sensor(idSensor),
 CONSTRAINT fkApartamentoMedicao FOREIGN KEY (fkApartamentoMedicao) references apartamento(idApartamento),
 CONSTRAINT fkPredioMedicao FOREIGN KEY (fkPredioMedicao) references predio(idPredio),
