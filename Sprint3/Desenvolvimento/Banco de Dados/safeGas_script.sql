@@ -82,7 +82,7 @@ fkSensorMedicao INT,
 fkApartamentoMedicao INT,
 fkPredioMedicao INT,
 fkAlertaMedicao INT,
-CONSTRAINT pkCompostaMedicao PRIMARY KEY (idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlertaMedicao),
+CONSTRAINT pkCompostaMedicao PRIMARY KEY (idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao),
 CONSTRAINT fkSensorMedicao FOREIGN KEY (fkSensorMedicao) references sensor(idSensor),
 CONSTRAINT fkApartamentoMedicao FOREIGN KEY (fkApartamentoMedicao) references apartamento(idApartamento),
 CONSTRAINT fkPredioMedicao FOREIGN KEY (fkPredioMedicao) references predio(idPredio),
@@ -90,6 +90,7 @@ CONSTRAINT fkAlertaMedicao FOREIGN KEY (fkAlertaMedicao) references alerta(idAle
 data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
 nivel_de_gas FLOAT NOT NULL
 );
+
 
 
 INSERT INTO condominio (nome_condominio, cep, logradouro, numero_logradouro, cnpj, dt_cadastro_condominio) VALUES
@@ -145,7 +146,7 @@ INSERT INTO alerta (statusAlerta) VALUES
 ('Emergência'),
 ('Seguro');
 
-INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlerta, nivel_de_gas) VALUES
+INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlertaMedicao, nivel_de_gas) VALUES
 (1, 1, 1, 1, 0.3),
 (2, 2, 2, 2, 0.7),
 (3, 3, 3, 3, 1.5),
