@@ -9,7 +9,8 @@ cep CHAR(11) NOT NULL,
 logradouro VARCHAR(45) NOT NULL,
 numero_logradouro varchar(5) NOT NULL,
 cnpj CHAR(14) UNIQUE,
-dt_cadastro_condominio date
+dt_cadastro_condominio datetime default current_timestamp,
+senha varchar(45)
 );
 
 -- Tabela Portaria
