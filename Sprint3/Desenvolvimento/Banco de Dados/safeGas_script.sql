@@ -67,15 +67,6 @@ fkPredio INT,
 CONSTRAINT fkPredioSensor FOREIGN KEY (fkPredio) references predio(idPredio)
 );
 
--- Tabela Alerta
-CREATE TABLE alerta(
-idAlerta INT PRIMARY KEY AUTO_INCREMENT,
-statusAlerta VARCHAR(12),
-	CONSTRAINT ckStatus
-		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Alerta', 'Emergência')),
-acao varchar(60)
-);
-
 -- Tabela Medicao
 CREATE TABLE medicao (
 idMedicao INT AUTO_INCREMENT,
@@ -87,11 +78,21 @@ CONSTRAINT pkCompostaMedicao PRIMARY KEY (idMedicao, fkSensorMedicao, fkApartame
 CONSTRAINT fkSensorMedicao FOREIGN KEY (fkSensorMedicao) references sensor(idSensor),
 CONSTRAINT fkApartamentoMedicao FOREIGN KEY (fkApartamentoMedicao) references apartamento(idApartamento),
 CONSTRAINT fkPredioMedicao FOREIGN KEY (fkPredioMedicao) references predio(idPredio),
-CONSTRAINT fkAlertaMedicao FOREIGN KEY (fkAlertaMedicao) references alerta(idAlerta),
 data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
 nivel_de_gas FLOAT NOT NULL
 );
 
+-- Tabela Alerta
+CREATE TABLE alerta(
+idAlerta INT PRIMARY KEY AUTO_INCREMENT,
+statusAlerta VARCHAR(12),
+	CONSTRAINT ckStatus
+		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Alerta', 'Emergência')),
+acao varchar(60),
+risco VARCHAR(50),
+fkMedicao INT,
+CONSTRAINT fkMedicao FOREIGN KEY (fkMedicao) references medicao(idMedicao)
+);
 
 
 INSERT INTO condominio (nome_condominio, cep, logradouro, numero_logradouro, cnpj, dt_cadastro_condominio) VALUES
