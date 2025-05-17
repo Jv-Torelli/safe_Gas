@@ -84,15 +84,17 @@ nivel_de_gas FLOAT NOT NULL
 
 -- Tabela Alerta
 CREATE TABLE alerta(
-idAlerta INT PRIMARY KEY AUTO_INCREMENT,
+idAlerta INT AUTO_INCREMENT,
 statusAlerta VARCHAR(12),
 	CONSTRAINT ckStatus
 		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Alerta', 'Emergência')),
 acao varchar(60),
 risco VARCHAR(50),
-fkMedicao INT,
-CONSTRAINT fkMedicao FOREIGN KEY (fkMedicao) references medicao(idMedicao)
-);
+fkSensorMedicao int,
+fkApartamentoMedicao int,
+fkPredioMedicao int,
+constraint chave_primaria primary KEY (idAlerta, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao))
+;
 
 
 INSERT INTO condominio (nome_condominio, cep, logradouro, numero_logradouro, cnpj, dt_cadastro_condominio) VALUES
@@ -148,16 +150,19 @@ INSERT INTO alerta (statusAlerta) VALUES
 ('Emergência'),
 ('Seguro');
 
-INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlertaMedicao, nivel_de_gas) VALUES
-(1, 1, 1, 1, 0.3),
-(2, 2, 2, 2, 0.7),
-(3, 3, 3, 3, 1.5),
-(4, 4, 4, 4, 2.8),
-(5, 5, 5, 5, 3.9);
+INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, nivel_de_gas) VALUES
+(1, 1, 1, 0.3),
+(2, 2, 2, 0.7),
+(3, 3, 3, 1.5),
+(4, 4, 4, 2.8),
+(5, 5, 5, 3.9);
 
-INSERT INTO alerta (risco, fkMedicao) VALUES 
-	('Explosão', 1),
-    ('Asfixia', 2);
+INSERT INTO alerta (risco, acao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao) VALUES 
+	('Explosão', 'Ventilar apartamento',1, 1, 1),
+    ('Asfixia', 'ligar Bombeiros',2, 2, 2);
+
+update alerta set statusAlerta = 'Alerta' where idAlerta = 1;
+update alerta set statusAlerta = 'Emergência' where idAlerta = 2;
 
 
 SELECT * FROM condominio;
