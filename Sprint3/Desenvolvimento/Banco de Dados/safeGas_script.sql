@@ -1,6 +1,7 @@
 CREATE DATABASE sgc;
 USE sgc;
 
+
 -- Tabela Condominio
 CREATE TABLE condominio (
 idCondominio INT PRIMARY KEY AUTO_INCREMENT,
@@ -73,7 +74,6 @@ idMedicao INT AUTO_INCREMENT,
 fkSensorMedicao INT,
 fkApartamentoMedicao INT,
 fkPredioMedicao INT,
-fkAlertaMedicao INT,
 CONSTRAINT pkCompostaMedicao PRIMARY KEY (idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao),
 CONSTRAINT fkSensorMedicao FOREIGN KEY (fkSensorMedicao) references sensor(idSensor),
 CONSTRAINT fkApartamentoMedicao FOREIGN KEY (fkApartamentoMedicao) references apartamento(idApartamento),
@@ -155,7 +155,9 @@ INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkA
 (4, 4, 4, 4, 2.8),
 (5, 5, 5, 5, 3.9);
 
-
+INSERT INTO alerta (risco, fkMedicao) VALUES 
+	('Explosão', 1),
+    ('Asfixia', 2);
 
 
 SELECT * FROM condominio;
