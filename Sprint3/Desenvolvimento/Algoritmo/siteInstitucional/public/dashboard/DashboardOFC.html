@@ -100,7 +100,8 @@
                 <div class="btnNavbar" id="logout"><img src="../assets/icons_navbar/predio_icon.png">Historico de
                     alertas
                 </div>
-                <div class="btnNavbar" id="logout"><img src="../assets/icons_navbar/predio_icon.png"><a href="./dash_portarias.html">Portaria</a></div>
+                <div class="btnNavbar" id="logout"><img src="../assets/icons_navbar/predio_icon.png"><a
+                        href="./dash_portarias.html">Portaria</a></div>
             </div>
 
             <div class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png"> Logout</div>
@@ -384,6 +385,32 @@
 
 </html>
 <script>
+    function buscarDados() {
+        fetch("/dashboard/buscar/").then(function (resposta) {
+
+            if (resposta.ok) {
+                if (resposta.status == 204) {
+                    var feed = document.getElementById("feed_container");
+                    var mensagem = document.createElement("span");
+                    mensagem.innerHTML = "Nenhum resultado encontrado."
+                    feed.appendChild(mensagem);
+                    throw "Nenhum resultado encontrado!!";
+                }
+
+                resposta.json().then(function (resposta) {
+                    console.log("Dados recebidos: ", JSON.stringify(resposta));
+                    alert('foi!')
+                });
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        }).catch(function (resposta) {
+            console.error(resposta);
+
+        });
+    }
+
+
     function abrirModal() {
         document.getElementById('fundoModal').classList.add('ativo');
         setTimeout(inicializarGrafico, 50);
