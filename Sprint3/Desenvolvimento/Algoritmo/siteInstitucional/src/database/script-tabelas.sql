@@ -104,3 +104,68 @@ constraint chave_primaria primary KEY (idAlerta, fkSensorMedicao, fkApartamentoM
 
 alter table alerta add column fkMedicao int;
 alter table alerta add constraint fkMedicao foreign key (fkMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao ) references medicao(idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao);
+
+CREATE VIEW dados as
+    SELECT 
+    c.nome_condominio AS Condomínio, 
+    c.dt_cadastro_condominio AS Data_Cad, 
+    pt.numero_portaria AS Portaria, 
+    
+    /* Total de sensores do condomínio */
+    (SELECT COUNT(DISTINCT s_total.idSensor)
+     FROM sensor s_total
+     JOIN apartamento ap_total ON s_total.fkApartamento = ap_total.idApartamento
+     JOIN predio p_total ON ap_total.fkPredioApto = p_total.idPredio
+     JOIN portaria pt_total ON p_total.fkPortariaPredio = pt_total.idPortaria
+     WHERE pt_total.fkCondominioPortaria = c.idCondominio
+    ) AS Total_Sensores_Condomínio,
+    
+    /* Sensores inativos/em manutenção */
+    (SELECT COUNT(DISTINCT s_inativo.idSensor)
+     FROM sensor s_inativo
+     JOIN apartamento ap_inativo ON s_inativo.fkApartamento = ap_inativo.idApartamento
+     JOIN predio p_inativo ON ap_inativo.fkPredioApto = p_inativo.idPredio
+     JOIN portaria pt_inativo ON p_inativo.fkPortariaPredio = pt_inativo.idPortaria
+     WHERE pt_inativo.fkCondominioPortaria = c.idCondominio
+     AND s_inativo.status_sensor = 'Inativo'
+    ) AS Sensores_Em_Manutencao,
+    
+    MAX(m.data_hora) AS Última_Medição, 
+    p.bloco_predio AS Bloco, 
+    ap.andar_apartamento AS Andar,
+    ap.numero_apartamento AS Numero_Apartamento,
+    m.nivel_de_gas AS Nível_de_Gás,
+    a.acao AS Ação, 
+    a.risco AS Risco, 
+    s.local_instalado,
+    s.status_sensor AS Status_Sensor,
+    
+    /* Alertas críticos */
+    (SELECT COUNT(*) 
+     FROM alerta al 
+     WHERE al.fkMedicao = m.idMedicao
+     AND al.statusAlerta IN ('Alerta', 'Crítico', 'Emergência')
+    ) AS Num_Sensor_Alertas_AP
+    
+FROM condominio c 
+JOIN portaria pt ON c.idCondominio = pt.fkCondominioPortaria
+JOIN predio p ON pt.idPortaria = p.fkPortariaPredio 
+JOIN apartamento ap ON ap.fkPredioApto = p.idPredio 
+JOIN sensor s ON s.fkApartamento = ap.idApartamento 
+JOIN medicao m ON m.fkSensorMedicao = s.idSensor 
+JOIN alerta a ON a.fkMedicao = m.idMedicao
+/* WHERE ap.numero_apartamento = 101 */  --  filtrar por apartamento
+GROUP BY 
+    c.nome_condominio, 
+    c.dt_cadastro_condominio,
+    pt.numero_portaria,
+    p.bloco_predio,
+    ap.andar_apartamento,
+    ap.numero_apartamento,
+    m.nivel_de_gas,
+    a.acao,
+    a.risco,
+    s.local_instalado,
+    s.status_sensor,
+    m.idMedicao,
+    c.idCondominio;
