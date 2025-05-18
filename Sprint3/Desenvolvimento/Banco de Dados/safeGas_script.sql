@@ -93,9 +93,17 @@ risco VARCHAR(50),
 fkSensorMedicao int,
 fkApartamentoMedicao int,
 fkPredioMedicao int,
-constraint chave_primaria primary KEY (idAlerta, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao))
-;
+constraint chave_primaria primary KEY (idAlerta, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao));
 
+alter table alerta add column fkMedicao int;
+alter table alerta add constraint fkMedicao foreign key (fkMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao ) references medicao(idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao);
+select * from alerta;
+UPDATE alerta 
+SET fkMedicao = 9, 
+    fkSensorMedicao = 2, 
+    fkApartamentoMedicao = 2, 
+    fkPredioMedicao = 2
+WHERE idAlerta = 2;
 
 INSERT INTO condominio (nome_condominio, cep, logradouro, numero_logradouro, cnpj, dt_cadastro_condominio) VALUES
 ('Condomínio Sol', '12345678900', 'Rua das Flores', '100', '12345678000101', '2023-01-10'),
@@ -163,6 +171,72 @@ INSERT INTO alerta (risco, acao, fkSensorMedicao, fkApartamentoMedicao, fkPredio
 
 update alerta set statusAlerta = 'Alerta' where idAlerta = 1;
 update alerta set statusAlerta = 'Emergência' where idAlerta = 2;
+
+select c.nome_condominio as Condomínio, c.dt_cadastro_condominio as Data_Cad, pt.numero_portaria as Portaria, count(s.idSensor) as Total_Sensores,
+	m.data_hora as Hora_Medição, p.bloco_predio as Bloco, ap.andar_apartamento as Andar, a.acao as Ação, a.risco as Risco, s.local_instalado from condominio c join portaria pt on c.idCondominio = pt.fkCondominioPortaria
+    join predio p on pt.idPortaria = p.fkPortariaPredio join apartamento ap on ap.fkPredioApto = p.idPredio join sensor s on s.fkApartamento = ap.idApartamento join medicao m on m.fkSensorMedicao = s.idSensor join 
+    alerta a on a.fkSensorMedicao = m.idMedicao group by c.nome_condominio;
+    
+-- seletão é o de cima --  
+
+
+SELECT 
+    c.nome_condominio AS Condomínio, 
+    c.dt_cadastro_condominio AS Data_Cad, 
+    pt.numero_portaria AS Portaria, 
+    COUNT(DISTINCT s.idSensor) AS Total_Sensores,
+    MAX(m.data_hora) AS Última_Medição,  -- Ou outra função de agregação
+    p.bloco_predio AS Bloco, 
+    ap.andar_apartamento AS Andar, 
+    a.acao AS Ação, 
+    a.risco AS Risco, 
+    s.local_instalado 
+FROM condominio c 
+JOIN portaria pt ON c.idCondominio = pt.fkCondominioPortaria
+JOIN predio p ON pt.idPortaria = p.fkPortariaPredio 
+JOIN apartamento ap ON ap.fkPredioApto = p.idPredio 
+JOIN sensor s ON s.fkApartamento = ap.idApartamento 
+JOIN medicao m ON m.fkSensorMedicao = s.idSensor 
+JOIN alerta a ON a.fkMedicao = m.idMedicao  -- Corrigido aqui
+GROUP BY 
+    c.nome_condominio, 
+    c.dt_cadastro_condominio,
+    pt.numero_portaria,
+    p.bloco_predio,
+    ap.andar_apartamento,
+    a.acao,
+    a.risco,
+    s.local_instalado;
+
+
+/*
+navbar
+seletaoDeApartamentos
+nomeCondominio - condominio
+data_de_cadastro - condominio
+numero_portaria - portaria
+
+Kpi
+count idSensor - sensor -    quantidade total de sensores - count sensores
+select (count(statusAlerta) where statusSensor = ('Alerta' or 'Crítico' or 'Emergência')) - alerta - quantidade de sensores em alerta ( atenção, critico, emergência) - status | tabela alerta ( fkSensor )
+select (count(status_sensor) where statusSensor = 'inativo') - sensor - quantidade de sensores em manutenção - tabela sensor -- FALTA E O DE CIMA
+data_hora - medicao - data/hora - medição - ultima atualização
+
+bloco_predio - tabela prédio
+andar_apartamento - numero apartamento - tabela apartamento
+numero do apartamento - numero_apartamento - tabela apartamento  ( relacionar com a fktorre e fkandar )	
+nivel_de_gas > 2.5 - medicao --- status do prédio - tabela medicao ( if algum prédio com a fk do prédio == nivelMedicao > default, ficar vermelho ) ----FALTA
+nivel_de_gas > 2.5 - medicao  -- status do apartamento - tabela medicao ( if nivelMedicao > default, ficar vermelho ) ---- FALTA
+ 
+notificações
+saber a torre
+saber o numero apto
+saber o andar
+------------||------
+acao e risco - alerta - ação e risco 
+data_hora - medicao - quando foi gerado - tabela alerta
+local_instalado - sensor - local - tabela sensor*/
+
 
 
 SELECT * FROM condominio;
