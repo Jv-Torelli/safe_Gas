@@ -39,7 +39,7 @@
         <div class="modal">
             <div class="cabecalho-modal">
                 <h2 class="titulo-modal">Cadastro de Portaria</h2>
-                <button class="botao-fechar" id="botaoFechar">&times;</button>
+                <button class="botao-fechar" id="botaoFechar" onclick="fecharModal()">&times;</button>
             </div>
             
             <form id="formularioPortaria">
@@ -50,12 +50,12 @@
                 
                 <div class="grupo-form">
                     <label for="telefone">Telefone:</label>
-                    <input type="tel" id="telefone" name="telefone" required>
+                    <input type="tel" id="input_telefone" name="telefone" required>
                 </div>
                 
                 <div class="grupo-form">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="input_email" name="email" required>
                 </div>
                 
                 <div class="grupo-form">
@@ -65,7 +65,7 @@
                 
                 <div class="botoes">
                     <button type="button" class="botao-cancelar" id="botaoCancelar">Cancelar</button>
-                    <button type="submit" class="botao-salvar">Salvar</button>
+                    <button type="button" class="botao-salvar" onclick="cadastrar()">Salvar</button>
                 </div>
             </form>
         </div>
@@ -174,29 +174,55 @@
               fecharModal();
           }
       });
-      
-      // Envia o formulário, vai nos ajudar ao conectar com o banco
-      formularioPortaria.addEventListener('submit', function(e) {
-          e.preventDefault();
-          
-          // Aqui colocariamos a lógica para salvar os dados, por enquanto só um exemplo puxando com id
-          console.log('Dados da portaria:', {
-              numeroPortaria: document.getElementById('numeroPortaria').value,
-              telefone: document.getElementById('telefone').value,
-              email: document.getElementById('email').value,
-              dataCadastro: document.getElementById('dataCadastro').value
+    });
+
+    function cadastrar(){
+      var numPortaria = numeroPortaria.value;
+      var telefone = input_telefone.value;
+      var email = input_email.value;
+      var dtCadastro = dataCadastro.value;
+
+      if(!email.includes('@')){
+          alert('O email deve conter um @')
+      }
+
+      if(telefone.length > 10 || telefone.length < 0){
+        alert('o telefone deve conter 10 caracteres')
+      }
+
+      if(
+        numPortaria == "" ||
+        telefone == "" ||
+        email == "" ||
+        dtCadastro == "" 
+      ){
+        alert('Todos os campos precisam ser preenchidos')
+      }
+
+      fetch("/portaria/cadastrar", {  // <-- Aqui o endpoint ajustado
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        numPortariaServer: numPortaria,
+        telefoneServer: telefone,
+        emailServer: email,
+        dtCadastroServer: dtCadastro,
+      }),
+    })
+      .then((resposta) => {
+        if (resposta.ok) {
+          alert("Cadastro realizado com sucesso!");
+        } else {
+          return resposta.text().then((texto) => {
+            throw new Error(texto || "Erro no cadastro");
           });
-          
-          // Exibe uma mensagem de sucesso
-          mensagemSucesso.classList.add('ativo');
-          
-          // Fecha o modal
-          fecharModal();
-          
-          // Após 3 seg a msg fecha
-          setTimeout(function() {
-              mensagemSucesso.classList.remove('ativo');
-          }, 3000);
+        }
+      })
+      .catch((erro) => {
+        console.error("Erro ao cadastrar:", erro);
+        alert("Erro ao cadastrar: ");
       });
-  });
+  }
   </script>
