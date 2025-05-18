@@ -172,12 +172,8 @@ INSERT INTO alerta (risco, acao, fkSensorMedicao, fkApartamentoMedicao, fkPredio
 update alerta set statusAlerta = 'Alerta' where idAlerta = 1;
 update alerta set statusAlerta = 'Emergência' where idAlerta = 2;
 
-select c.nome_condominio as Condomínio, c.dt_cadastro_condominio as Data_Cad, pt.numero_portaria as Portaria, count(s.idSensor) as Total_Sensores,
-	m.data_hora as Hora_Medição, p.bloco_predio as Bloco, ap.andar_apartamento as Andar, a.acao as Ação, a.risco as Risco, s.local_instalado from condominio c join portaria pt on c.idCondominio = pt.fkCondominioPortaria
-    join predio p on pt.idPortaria = p.fkPortariaPredio join apartamento ap on ap.fkPredioApto = p.idPredio join sensor s on s.fkApartamento = ap.idApartamento join medicao m on m.fkSensorMedicao = s.idSensor join 
-    alerta a on a.fkSensorMedicao = m.idMedicao group by c.nome_condominio;
     
--- seletão é o de cima --  
+-- seletão é o de baixo --  
 
 
 SELECT 
@@ -185,7 +181,7 @@ SELECT
     c.dt_cadastro_condominio AS Data_Cad, 
     pt.numero_portaria AS Portaria, 
     COUNT(DISTINCT s.idSensor) AS Total_Sensores,
-    MAX(m.data_hora) AS Última_Medição,  -- Ou outra função de agregação
+    MAX(m.data_hora) AS Última_Medição, 
     p.bloco_predio AS Bloco, 
     ap.andar_apartamento AS Andar, 
     a.acao AS Ação, 
@@ -197,7 +193,7 @@ JOIN predio p ON pt.idPortaria = p.fkPortariaPredio
 JOIN apartamento ap ON ap.fkPredioApto = p.idPredio 
 JOIN sensor s ON s.fkApartamento = ap.idApartamento 
 JOIN medicao m ON m.fkSensorMedicao = s.idSensor 
-JOIN alerta a ON a.fkMedicao = m.idMedicao  -- Corrigido aqui
+JOIN alerta a ON a.fkMedicao = m.idMedicao  
 GROUP BY 
     c.nome_condominio, 
     c.dt_cadastro_condominio,
