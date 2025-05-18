@@ -90,20 +90,29 @@ statusAlerta VARCHAR(12),
 		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Alerta', 'Emergência')),
 acao varchar(60),
 risco VARCHAR(50),
+fkMedicao int,
 fkSensorMedicao int,
 fkApartamentoMedicao int,
 fkPredioMedicao int,
-constraint chave_primaria primary KEY (idAlerta, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao));
+constraint chave_primaria primary KEY (idAlerta, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao),
+foreign key (fkMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao ) references medicao(idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao)
+);
 
 alter table alerta add column fkMedicao int;
 alter table alerta add constraint fkMedicao foreign key (fkMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao ) references medicao(idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao);
-select * from alerta;
+-- esses dois de cima eu só fiz pq tava errado a tabela antes, mas ja add na prórpia tabela alerta, ent NÃO precisa fazer nada, so deixei para caso precise fazer algo, mais para nosso controle
+
 UPDATE alerta 
-SET fkMedicao = 9, 
-    fkSensorMedicao = 2, 
-    fkApartamentoMedicao = 2, 
-    fkPredioMedicao = 2
-WHERE idAlerta = 2;
+SET fkMedicao = 12, 
+    fkSensorMedicao = 5, 
+    fkApartamentoMedicao = 5, 
+    fkPredioMedicao = 5,
+    statusAlerta = 'Emergência'
+WHERE idAlerta = 3;  -- isso tem q mudar de acordo com o que está na própria tabela.... mas em tese n precisa fazer uso disso, basta fazer os inserts corretamente.
+
+
+insert into alerta values 
+	(default,'Alerta', 'Ventilar apartamento', 'Explosão alto', 3,3,3,10);
 
 INSERT INTO condominio (nome_condominio, cep, logradouro, numero_logradouro, cnpj, dt_cadastro_condominio) VALUES
 ('Condomínio Sol', '12345678900', 'Rua das Flores', '100', '12345678000101', '2023-01-10'),
@@ -173,65 +182,101 @@ update alerta set statusAlerta = 'Alerta' where idAlerta = 1;
 update alerta set statusAlerta = 'Emergência' where idAlerta = 2;
 
     
--- seletão é o de baixo --  
-
-
-SELECT 
+-- seletão/view é o de baixo --  
+CREATE VIEW dados as
+    SELECT 
     c.nome_condominio AS Condomínio, 
     c.dt_cadastro_condominio AS Data_Cad, 
     pt.numero_portaria AS Portaria, 
-    COUNT(DISTINCT s.idSensor) AS Total_Sensores,
+    
+    /* Total de sensores do condomínio */
+    (SELECT COUNT(DISTINCT s_total.idSensor)
+     FROM sensor s_total
+     JOIN apartamento ap_total ON s_total.fkApartamento = ap_total.idApartamento
+     JOIN predio p_total ON ap_total.fkPredioApto = p_total.idPredio
+     JOIN portaria pt_total ON p_total.fkPortariaPredio = pt_total.idPortaria
+     WHERE pt_total.fkCondominioPortaria = c.idCondominio
+    ) AS Total_Sensores_Condomínio,
+    
+    /* Sensores inativos/em manutenção */
+    (SELECT COUNT(DISTINCT s_inativo.idSensor)
+     FROM sensor s_inativo
+     JOIN apartamento ap_inativo ON s_inativo.fkApartamento = ap_inativo.idApartamento
+     JOIN predio p_inativo ON ap_inativo.fkPredioApto = p_inativo.idPredio
+     JOIN portaria pt_inativo ON p_inativo.fkPortariaPredio = pt_inativo.idPortaria
+     WHERE pt_inativo.fkCondominioPortaria = c.idCondominio
+     AND s_inativo.status_sensor = 'Inativo'
+    ) AS Sensores_Em_Manutencao,
+    
     MAX(m.data_hora) AS Última_Medição, 
     p.bloco_predio AS Bloco, 
-    ap.andar_apartamento AS Andar, 
+    ap.andar_apartamento AS Andar,
+    ap.numero_apartamento AS Numero_Apartamento,
+    m.nivel_de_gas AS Nível_de_Gás,
     a.acao AS Ação, 
     a.risco AS Risco, 
-    s.local_instalado 
+    s.local_instalado,
+    s.status_sensor AS Status_Sensor,
+    
+    /* Alertas críticos */
+    (SELECT COUNT(*) 
+     FROM alerta al 
+     WHERE al.fkMedicao = m.idMedicao
+     AND al.statusAlerta IN ('Alerta', 'Crítico', 'Emergência')
+    ) AS Num_Sensor_Alertas_AP
+    
 FROM condominio c 
 JOIN portaria pt ON c.idCondominio = pt.fkCondominioPortaria
 JOIN predio p ON pt.idPortaria = p.fkPortariaPredio 
 JOIN apartamento ap ON ap.fkPredioApto = p.idPredio 
 JOIN sensor s ON s.fkApartamento = ap.idApartamento 
 JOIN medicao m ON m.fkSensorMedicao = s.idSensor 
-JOIN alerta a ON a.fkMedicao = m.idMedicao  
+JOIN alerta a ON a.fkMedicao = m.idMedicao
+/* WHERE ap.numero_apartamento = 101 */  --  filtrar por apartamento
 GROUP BY 
     c.nome_condominio, 
     c.dt_cadastro_condominio,
     pt.numero_portaria,
     p.bloco_predio,
     ap.andar_apartamento,
+    ap.numero_apartamento,
+    m.nivel_de_gas,
     a.acao,
     a.risco,
-    s.local_instalado;
+    s.local_instalado,
+    s.status_sensor,
+    m.idMedicao,
+    c.idCondominio;
 
-
+select Numero_Apartamento from dados; -- teste para mostrar que a view funciona
 /*
+ISSO AQUI É O QUE A GENTE PRECISAVA PARA CRIAR A VIEW E USAR NA DASH, DECIDI POR MANTER.
 navbar
 seletaoDeApartamentos
-nomeCondominio - condominio
-data_de_cadastro - condominio
-numero_portaria - portaria
+nomeCondominio - condominio  -- ok
+data_de_cadastro - condominio   -- ok
+numero_portaria - portaria  -- ok
 
 Kpi
-count idSensor - sensor -    quantidade total de sensores - count sensores
-select (count(statusAlerta) where statusSensor = ('Alerta' or 'Crítico' or 'Emergência')) - alerta - quantidade de sensores em alerta ( atenção, critico, emergência) - status | tabela alerta ( fkSensor )
-select (count(status_sensor) where statusSensor = 'inativo') - sensor - quantidade de sensores em manutenção - tabela sensor -- FALTA E O DE CIMA
-data_hora - medicao - data/hora - medição - ultima atualização
+count idSensor - sensor -    quantidade total de sensores - count sensores -- quase não está retornando o total de sensor, so o total de cada id
+select (count(statusAlerta) where statusSensor = ('Alerta','Crítico', 'Emergência')) - alerta - quantidade de sensores em alerta ( atenção, critico, emergência) - status | tabela alerta ( fkSensor ) -- ok
+select (count(status_sensor) where statusSensor = 'inativo') - sensor - quantidade de sensores em manutenção - tabela sensor -- ok
+data_hora - medicao - data/hora - medição - ultima atualização -- ok
 
-bloco_predio - tabela prédio
-andar_apartamento - numero apartamento - tabela apartamento
-numero do apartamento - numero_apartamento - tabela apartamento  ( relacionar com a fktorre e fkandar )	
-nivel_de_gas > 2.5 - medicao --- status do prédio - tabela medicao ( if algum prédio com a fk do prédio == nivelMedicao > default, ficar vermelho ) ----FALTA
-nivel_de_gas > 2.5 - medicao  -- status do apartamento - tabela medicao ( if nivelMedicao > default, ficar vermelho ) ---- FALTA
+bloco_predio - tabela prédio -- ok
+andar_apartamento - numero apartamento - tabela apartamento -- ok
+numero do apartamento - numero_apartamento - tabela apartamento  ( relacionar com a fktorre e fkandar )	-- ok
+nivel_de_gas > 2.5 - medicao --- status do prédio - tabela medicao ( if algum prédio com a fk do prédio == nivelMedicao > default, ficar vermelho ) -- ok - mas tem que ver se esse > seria de fato la no JS
+nivel_de_gas > 2.5 - medicao  -- status do apartamento - tabela medicao ( if nivelMedicao > default, ficar vermelho ) -- ok
  
 notificações
-saber a torre
-saber o numero apto
-saber o andar
+saber a torre -- ok
+saber o numero apto -- ok
+saber o andar -- ok
 ------------||------
-acao e risco - alerta - ação e risco 
-data_hora - medicao - quando foi gerado - tabela alerta
-local_instalado - sensor - local - tabela sensor*/
+acao e risco - alerta - ação e risco -- ok
+data_hora - medicao - quando foi gerado - tabela alerta   -- ok
+local_instalado - sensor - local - tabela sensor*/ -- ok
 
 
 
@@ -253,32 +298,12 @@ SELECT * FROM alerta;
 
 SELECT * FROM condominio WHERE nome_condominio LIKE '%A';
 
-SELECT * FROM apartamento WHERE numero_apartamento = '1202';
+SELECT * FROM apartamento WHERE numero_apartamento = '202';
 
 SELECT * FROM condominio AS c JOIN predio AS p
 ON c.idCondominio = p.fkCondominio JOIN andar AS a
 ON p.idPredio = a.fkPredio JOIN apartamento AS ap
 ON a.idAndar = ap.fkAndar;
-
-SELECT 
-  c.nome_condominio AS nome_condominio,
-  p.numero_portaria AS portaria,
-  predio.numero_predio AS predio,
-  a.piso AS andar,
-  ap.numero_apartamento as apartamento,
-  s.statusSensor AS status_sensor,
-  s.local_instalado,
-  m.nivel_de_gas AS concentracao_gases,
-  m.dataHora,
-  al.statusAlerta
-FROM portaria AS p 
-JOIN condominio AS c ON c.idCondominio = p.fkCondominio
-JOIN predio ON c.idCondominio = predio.fkCondominio
-JOIN andar AS a ON predio.idPredio = a.fkPredio
-JOIN apartamento AS ap ON a.idAndar = ap.fkAndar
-JOIN sensor AS s ON ap.idApartamento = s.fkApartamento
-JOIN medicao AS m ON s.idSensor = m.fkSensor
-JOIN alerta AS al ON m.idMedicao = al.fkMedicao;
 
 
 /* SELECT 
