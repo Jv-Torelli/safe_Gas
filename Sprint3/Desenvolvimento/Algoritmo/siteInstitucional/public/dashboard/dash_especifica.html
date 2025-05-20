@@ -208,22 +208,22 @@
       });
   }
 
-  // Converte a data e hora para o formato mais fácil de entender
+  // Converte a data e hora para o formato mais fácil de entender e mais curto
   // Exibe "Hoje, hh:mm" ou "Ontem, hh:mm" ou "dd MMM, hh:mm"
   function formatarDataHora(dataHoraStr) {
     if (!dataHoraStr) return "";
 
-    const meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-    const dataHora = new Date(dataHoraStr.replace(" ", "T"));
+    var meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+    var dataHora = new Date(dataHoraStr.replace(" ", "T"));
 
-    const agora = new Date();
-    const hoje = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
-    const data = new Date(dataHora.getFullYear(), dataHora.getMonth(), dataHora.getDate());
+    var agora = new Date();
+    var hoje = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
+    var data = new Date(dataHora.getFullYear(), dataHora.getMonth(), dataHora.getDate());
 
-    const diffDias = Math.floor((hoje - data) / (1000 * 60 * 60 * 24));
+    var diffDias = Math.floor((hoje - data) / (1000 * 60 * 60 * 24));
 
-    const hora = dataHora.getHours().toString().padStart(2, "0");
-    const min = dataHora.getMinutes().toString().padStart(2, "0");
+    var hora = dataHora.getHours().toString().padStart(2, "0");
+    var min = dataHora.getMinutes().toString().padStart(2, "0");
 
     if (diffDias === 0) {
       return `Hoje, ${hora}:${min}`;
@@ -234,6 +234,8 @@
     }
   }
 
+  // Função para os dados do gráfico de medição de gás e relacionar o maior nível de gás
+  // com o local onde está instalado o sensor
   function retornar_dados_niveisEmLocais() {
     fetch(`/sensor/por-apartamento?numero_apartamento=${numero_apartamento}`, {
       method: "GET",
@@ -302,12 +304,12 @@
       });
   }
 
-
+  // Função para os dados do gráfico de medição de gás e o local onde está instalado o sensor
   document.addEventListener("DOMContentLoaded", retornar_dados_niveisEmLocais);
+  // quando a página é carregada e a cada 5 segundos
   setInterval(retornar_dados_niveisEmLocais, 5000);
 
-
-
+ // Função para o gráfico de medição de gás
   const ctx = document.getElementById('canvas_grafico').getContext('2d');
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 500);
@@ -388,6 +390,4 @@
     }]
   });
 
-  const nome = sessionStorage.NOME_CONDOMINIO;
-  document.getElementById("span_nome_condominio").textContent = nome;
 </script>
