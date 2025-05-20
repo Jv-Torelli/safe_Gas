@@ -86,11 +86,11 @@
     }
 </style>
 
-<body>
+<body onload="buscarDados()">
     <div class="main">
         <div class="navbar">
             <div class="welcome_navbar">
-                <h5>Olá, <span> ${nome} </span>!</h5>
+                <h5>Olá, <span id="nomeCondominio"></span>!</h5>
                 <h5>Bem-vindo de volta.</h5>
             </div>
 
@@ -219,7 +219,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="container_notificacoes">
+                <div class="container_notificacoes" id="alertasDash">
                     <div id="alertas_recentes">Alertas Recentes</div>
                     <div class="div_notificacoes_emergencia" id="notificacoes_emergencia">
                         <div class="informacao_notificacao">
@@ -245,66 +245,6 @@
                         <div class="informacao_notificacao">
                             <div class="notificacao_critica">
                                 <div class="informacao_alerta">Torre C, Apto 802</div>
-                                <div class="nivel_gas">Nível elevado de gás detectado</div>
-                                <button class="btn_verificar">Verificar</button>
-                            </div>
-                        </div>
-                        <div class="horario_notificacao">
-                            Agora
-                        </div>
-                    </div>
-                    <div class="div_notificacoes_alerta">
-                        <div class="notificacao_alerta">
-                            <div class="informacao_notificacao">
-                                <div class="informacao_alerta">Torre A, Apto 302</div>
-                                <div class="nivel_gas">Nível elevado de gás detectado</div>
-                                <button class="btn_verificar">Verificar</button>
-                            </div>
-                        </div>
-                        <div class="horario_notificacao">
-                            Agora
-                        </div>
-                    </div>
-                    <div class="div_notificacoes_alerta">
-                        <div class="notificacao_alerta">
-                            <div class="informacao_notificacao">
-                                <div class="informacao_alerta">Torre A, Apto 302</div>
-                                <div class="nivel_gas">Nível elevado de gás detectado</div>
-                                <button class="btn_verificar">Verificar</button>
-                            </div>
-                        </div>
-                        <div class="horario_notificacao">
-                            Agora
-                        </div>
-                    </div>
-                    <div class="div_notificacoes_alerta">
-                        <div class="notificacao_alerta">
-                            <div class="informacao_notificacao">
-                                <div class="informacao_alerta">Torre A, Apto 302</div>
-                                <div class="nivel_gas">Nível elevado de gás detectado</div>
-                                <button class="btn_verificar">Verificar</button>
-                            </div>
-                        </div>
-                        <div class="horario_notificacao">
-                            Agora
-                        </div>
-                    </div>
-                    <div class="div_notificacoes_alerta">
-                        <div class="notificacao_alerta">
-                            <div class="informacao_notificacao">
-                                <div class="informacao_alerta">Torre A, Apto 302</div>
-                                <div class="nivel_gas">Nível elevado de gás detectado</div>
-                                <button class="btn_verificar">Verificar</button>
-                            </div>
-                        </div>
-                        <div class="horario_notificacao">
-                            Agora
-                        </div>
-                    </div>
-                    <div class="div_notificacoes_alerta">
-                        <div class="notificacao_alerta">
-                            <div class="informacao_notificacao">
-                                <div class="informacao_alerta">Torre A, Apto 302</div>
                                 <div class="nivel_gas">Nível elevado de gás detectado</div>
                                 <button class="btn_verificar">Verificar</button>
                             </div>
@@ -379,14 +319,15 @@
 
 </html>
 <script>
-
-    function obterNumero(numero_apartamento){
+    var dados = [];
+    function obterNumero(numero_apartamento) {
         var numero_apartamento = numero_apartamento.innerText.trim();
-        localStorage.setItem("numero_apartamento",numero_apartamento);
+        localStorage.setItem("numero_apartamento", numero_apartamento);
         return numero_apartamento;
     }
 
     function buscarDados() {
+        alertasDash.innerHTML = " ";
         fetch("/dashboard/buscar/").then(function (resposta) {
 
             if (resposta.ok) {
@@ -398,17 +339,41 @@
                     throw "Nenhum resultado encontrado!!";
                 }
 
-                resposta.json().then(function (resposta) {
-                    console.log("Dados recebidos: ", JSON.stringify(resposta));
-                    alert('foi!')
-                });
+
+                return resposta.json();
             } else {
                 throw ('Houve um erro na API!');
             }
-        }).catch(function (resposta) {
-            console.error(resposta);
+        })
+            .then(function (respostaJson) {
+                dados = respostaJson; // agora a variável `dados` contém o JSON
+                console.log("Dados recebidos: ", JSON.stringify(dados));
 
-        });
+                for (var i = 0; i < dados.length; i++) {
+                    if (dados[i].Risco != 'Sem risco') {
+
+                        alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia">
+                    <div class="informacao_notificacao">
+                        <div class="informacao_emergencia">Torre ${dados[i].Bloco} Apto ${dados[i].Numero_Apartamento}</div>
+                        <div class="nivel_gas">${dados[i].Risco}</div>
+                        <button class="btn_verificar">Verificar</button>
+                    </div>
+                    <div class="horario_notificacao">
+                        Agora
+                    </div>
+                </div>
+                `
+                    }
+                }
+
+                nomeCondominio.innerHTML = `${dados[0].Condomínio}`
+            })
+            .catch(function (resposta) {
+                console.error(resposta); 9
+
+            });
+
+
     }
 
 
