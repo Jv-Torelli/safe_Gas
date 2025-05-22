@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="../css/dash_portarias.css">
 </head>
 
-<body>
+<body onload="exibir()">
 
   <div class="main">
     <div class="navbar">
@@ -37,42 +37,55 @@
 
       <div class="fundo-modal" id="fundoModal">
         <div class="modal">
-            <div class="cabecalho-modal">
-                <h2 class="titulo-modal">Cadastro de Portaria</h2>
-                <button class="botao-fechar" id="botaoFechar" onclick="fecharModal()">&times;</button>
+          <div class="cabecalho-modal">
+            <h2 class="titulo-modal">Cadastro de Portaria</h2>
+            <button class="botao-fechar" id="botaoFechar" onclick="fecharModal()">&times;</button>
+          </div>
+
+          <form id="formularioPortaria">
+            <div class="grupo-form">
+              <label for="numeroPortaria">Número da Portaria:</label>
+              <input type="text" id="numeroPortaria" name="numeroPortaria" required>
             </div>
-            
-            <form id="formularioPortaria">
-                <div class="grupo-form">
-                    <label for="numeroPortaria">Número da Portaria:</label>
-                    <input type="text" id="numeroPortaria" name="numeroPortaria" required>
-                </div>
-                
-                <div class="grupo-form">
-                    <label for="telefone">Telefone:</label>
-                    <input type="tel" id="input_telefone" name="telefone" required>
-                </div>
-                
-                <div class="grupo-form">
-                    <label for="email">Email:</label>
-                    <input type="email" id="input_email" name="email" required>
-                </div>
-                
-                <div class="grupo-form">
-                    <label for="dataCadastro">Data de Cadastro:</label>
-                    <input type="date" id="dataCadastro" name="dataCadastro" required>
-                </div>
-                
-                <div class="botoes">
-                    <button type="button" class="botao-cancelar" id="botaoCancelar">Cancelar</button>
-                    <button type="button" class="botao-salvar" onclick="cadastrar()">Salvar</button>
-                </div>
-            </form>
+
+            <div class="grupo-form">
+              <label for="telefone">Telefone:</label>
+              <input type="tel" id="input_telefone" name="telefone" required>
+            </div>
+
+            <div class="grupo-form">
+              <label for="email">Email:</label>
+              <input type="email" id="input_email" name="email" required>
+            </div>
+
+            <div class="grupo-form">
+              <label for="dataCadastro">Data de Cadastro:</label>
+              <input type="date" id="dataCadastro" name="dataCadastro" required>
+            </div>
+
+            <div class="botoes">
+              <button type="button" class="botao-cancelar" id="botaoCancelar">Cancelar</button>
+              <button type="button" class="botao-salvar" onclick="cadastrar()">Salvar</button>
+            </div>
+          </form>
         </div>
-    </div>
+      </div>
 
       <div class="tabela">
-        <table class="tabela-fisica">
+        <!-- <table border="1">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Telefone</th>
+                <th>Email</th>
+                <th>Data de Cadastro</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-portaria">
+            Dados serão inseridos aqui via JS
+        </tbody>
+    </table> -->
+        <table border="1" class="tabela-fisica">
           <thead>
             <tr>
               <th>Portaria</th>
@@ -83,123 +96,95 @@
               <th>Excluir</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
+          <tbody id="tabela-portaria">
+            <!-- Dados serão inseridos aqui via JS -->
+          </tbody>
+          <!-- <tr>
               <td>1</td>
               <td>1125478996</td>
               <td>slaoq@email.com</td>
               <td>25-03-2025</td>
               <td><img src="../assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
               <td><img src="../assets/icons_cadastro/lixeira.png" alt=""></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>1125478996</td>
-              <td>slaoq@email.com</td>
-              <td>25-03-2025</td>
-              <td><img src="../assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
-              <td><img src="../assets/icons_cadastro/lixeira.png" alt=""></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>1125478996</td>
-              <td>slaoq@email.com</td>
-              <td>25-03-2025</td>
-              <td class="image-cadastro"><img src="../assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
-              <td><img src="../assets/icons_cadastro/lixeira.png" alt=""></td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>1125478996</td>
-              <td>slaoq@email.com</td>
-              <td>25-03-2025</td>
-              <td class="image-cadastro"><img src="../assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
-              <td><img src="../assets/icons_cadastro/lixeira.png" alt=""></td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>1125478996</td>
-              <td>slaoq@email.com</td>
-              <td>25-03-2025</td>
-              <td class="image-cadastro"><img src="../assets/icons_cadastro/papel_e_caneta.png" alt=""></td>
-              <td><img src="../assets/icons_cadastro/lixeira.png" alt=""></td>
-            </tr>
-          </tbody>
+            </tr> -->
         </table>
       </div>
     </div>
 
+    </button>
 
-  </div> 
+  </div>
 </body>
 
 </html>
 
 <script>
-  
-  document.addEventListener('DOMContentLoaded', function() {
-      // Elementos do DOM
-      const botaoCriar = document.getElementById('button-criar');
-      const fundoModal = document.getElementById('fundoModal');
-      const botaoFechar = document.getElementById('botaoFechar');
-      const botaoCancelar = document.getElementById('botaoCancelar');
-      const formularioPortaria = document.getElementById('formularioPortaria');
-      const mensagemSucesso = document.getElementById('mensagemSucesso');
-      const dataCadastro = document.getElementById('dataCadastro');
-      
-      // Deixa como data podrão a do dia de hoje
-      const hoje = new Date().toISOString().split('T')[0];
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Elementos do DOM
+    const botaoCriar = document.getElementById('button-criar');
+    const botaoEditar = document.getElementById('button-editar')
+    const fundoModal = document.getElementById('fundoModal');
+    const botaoFechar = document.getElementById('botaoFechar');
+    const botaoCancelar = document.getElementById('botaoCancelar');
+    const formularioPortaria = document.getElementById('formularioPortaria');
+    const mensagemSucesso = document.getElementById('mensagemSucesso');
+    const dataCadastro = document.getElementById('dataCadastro');
+
+    // Deixa como data podrão a do dia de hoje
+    const hoje = new Date().toISOString().split('T')[0];
+    dataCadastro.value = hoje;
+
+    // Função que faz o modal abrir
+    function abrirModal() {
+      fundoModal.classList.add('ativo');
+    }
+
+    // Função que fecha o modal
+    function fecharModal() {
+      fundoModal.classList.remove('ativo');
+      formularioPortaria.reset();
       dataCadastro.value = hoje;
-      
-      // Função que faz o modal abrir
-      function abrirModal() {
-          fundoModal.classList.add('ativo');
+    }
+
+    // Adiciona as funções dos botões que fecham ou abrem o modal
+    botarEditar.addEventListener('click', abrirModal)
+    botaoCriar.addEventListener('click', abrirModal);
+    botaoFechar.addEventListener('click', fecharModal);
+    botaoCancelar.addEventListener('click', fecharModal);
+
+    // Fecha o modal ao clicar fora dele
+    fundoModal.addEventListener('click', function (e) {
+      if (e.target === fundoModal) {
+        fecharModal();
       }
-      
-      // Função que fecha o modal
-      function fecharModal() {
-          fundoModal.classList.remove('ativo');
-          formularioPortaria.reset();
-          dataCadastro.value = hoje;
-      }
-      
-      // Adiciona as funções dos botões que fecham ou abrem o modal
-      botaoCriar.addEventListener('click', abrirModal);
-      botaoFechar.addEventListener('click', fecharModal);
-      botaoCancelar.addEventListener('click', fecharModal);
-      
-      // Fecha o modal ao clicar fora dele
-      fundoModal.addEventListener('click', function(e) {
-          if (e.target === fundoModal) {
-              fecharModal();
-          }
-      });
     });
+  });
 
-    function cadastrar(){
-      var numPortaria = numeroPortaria.value;
-      var telefone = input_telefone.value;
-      var email = input_email.value;
-      var dtCadastro = dataCadastro.value;
+  function cadastrar() {
+    var numPortaria = numeroPortaria.value;
+    var telefone = input_telefone.value;
+    var email = input_email.value;
+    var dtCadastro = dataCadastro.value;
 
-      if(!email.includes('@')){
-          alert('O email deve conter um @')
-      }
+    if (!email.includes('@')) {
+      alert('O email deve conter um @')
+    }
 
-      if(telefone.length > 10 || telefone.length < 0){
-        alert('o telefone deve conter 10 caracteres')
-      }
+    if (telefone.length > 10 || telefone.length < 0) {
+      alert('o telefone deve conter 10 caracteres')
+    }
 
-      if(
-        numPortaria == "" ||
-        telefone == "" ||
-        email == "" ||
-        dtCadastro == "" 
-      ){
-        alert('Todos os campos precisam ser preenchidos')
-      }
+    if (
+      numPortaria == "" ||
+      telefone == "" ||
+      email == "" ||
+      dtCadastro == ""
+    ) {
+      alert('Todos os campos precisam ser preenchidos')
+    }
 
-      fetch("/portaria/cadastrar", {  // <-- Aqui o endpoint ajustado
+    fetch("/portaria/cadastrar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -225,4 +210,46 @@
         alert("Erro ao cadastrar: ");
       });
   }
-  </script>
+
+  function exibir() {
+
+    fetch("/portaria/exibir", {
+      method: "GET"
+    })
+      .then(resultado => {
+        if (!resultado.ok) {
+          throw new Error("Erro ao buscar dados da portaria.");
+        }
+        return resultado.json();
+      })
+      .then(dados => {
+        // Você pode usar os dados aqui, por exemplo:
+        const tabela = document.getElementById("tabela-portaria");
+        tabela.innerHTML = ""; // limpa antes de adicionar
+        dados.forEach(portaria => {
+          const linha = document.createElement("tr");
+
+          linha.innerHTML = `
+          <td>${portaria.numero_portaria}</td>
+          <td>${portaria.telefone}</td>
+          <td>${portaria.email}</td>
+          <td>${new Date(portaria.dt_cadastro_port).toLocaleDateString()}</td>
+          <td><button onclick="editar()" id = "button-editar" style="background-color: transparent; border: none"><img src="../assets/icons_cadastro/papel_e_caneta.png"alt="Editar"> </button></td>
+          <td><img src="../assets/icons_cadastro/lixeira.png" alt="Excluir"></td>
+        `;
+
+          tabela.appendChild(linha);
+        })
+        console.log(dados);
+      })
+      .catch(erro => {
+        console.error("Erro ao carregar dados:", erro);
+      });
+  }
+
+
+  function editar() {
+
+  }
+
+</script>

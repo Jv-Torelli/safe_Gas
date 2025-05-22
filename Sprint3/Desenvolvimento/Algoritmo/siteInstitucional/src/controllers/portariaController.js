@@ -39,6 +39,23 @@ function cadastrar(req, res) {
     }
 }
 
+function exibir(req, res) {
+      portariaModel.exibir()
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!");
+            }
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("\nHouve um erro ao exibir os dados da portaria! Erro: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
 module.exports = {
-    cadastrar
+    cadastrar,
+    exibir
 }

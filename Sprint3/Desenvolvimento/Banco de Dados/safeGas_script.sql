@@ -98,8 +98,8 @@ constraint chave_primaria primary KEY (idAlerta, fkSensorMedicao, fkApartamentoM
 foreign key (fkMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao ) references medicao(idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao)
 );
 
-alter table alerta add column fkMedicao int;
-alter table alerta add constraint fkMedicao foreign key (fkMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao ) references medicao(idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao);
+-- alter table alerta add column fkMedicao int;
+-- alter table alerta add constraint fkMedicao foreign key (fkMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao ) references medicao(idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao);
 -- esses dois de cima eu só fiz pq tava errado a tabela antes, mas ja add na prórpia tabela alerta, ent NÃO precisa fazer nada, so deixei para caso precise fazer algo, mais para nosso controle
 
 UPDATE alerta 
@@ -286,8 +286,6 @@ SELECT * FROM portaria;
 
 SELECT * FROM predio;
 
-SELECT * FROM atendimento;
-
 SELECT * FROM apartamento;
 
 SELECT * FROM sensor;
@@ -299,71 +297,3 @@ SELECT * FROM alerta;
 SELECT * FROM condominio WHERE nome_condominio LIKE '%A';
 
 SELECT * FROM apartamento WHERE numero_apartamento = '202';
-
-SELECT * FROM condominio AS c JOIN predio AS p
-ON c.idCondominio = p.fkCondominio JOIN andar AS a
-ON p.idPredio = a.fkPredio JOIN apartamento AS ap
-ON a.idAndar = ap.fkAndar;
-
-
-/* SELECT 
-  c.nome AS nome_condominio,
-  l.cnpj AS cnpj_login,
-  s.nome AS nome_sensor,
-  al.statusAlerta AS status_alerta,
-  m.concentracaoGases AS concentracao_gases,
-  CONCAT(a.blocoApartamento, '-', a.numApartamento) AS apartamento
-FROM condominio AS c
-JOIN login AS l ON c.idCondominio = l.fkCondominio
-JOIN sensor AS s ON c.idCondominio = s.fkApartamento
-JOIN alerta AS al ON s.idSensor = al.fkSensorAlerta
-JOIN medicao AS m ON s.idSensor = m.fkSensor
-JOIN apartamento AS a ON c.idCondominio = a.fkCondominioApartamento
-WHERE c.nome LIKE '%o%';
-
-
-SELECT 
-  c.nome AS nome_condominio,
-  l.cnpj AS cnpj_login,
-  s.nome AS nome_sensor,
-  al.statusAlerta AS status_alerta,
-  m.concentracaoGases AS concentracao_gases,
-  CONCAT(a.blocoApartamento, '-', a.numApartamento) AS apartamento,
-  CASE
-    WHEN m.concentracaoGases < 2 THEN 'Baixa'
-    WHEN m.concentracaoGases BETWEEN 2 AND 4.9 THEN 'Moderada'
-    WHEN m.concentracaoGases BETWEEN 5 AND 7.9 THEN 'Alta'
-    ELSE 'Crítica'
-  END AS classificacao_gas
-FROM condominio AS c
-JOIN login AS l ON c.idCondominio = l.fkCondominio
-JOIN sensor AS s ON c.idCondominio = s.fkApartamento
-JOIN alerta AS al ON s.idSensor = al.fkSensorAlerta
-JOIN medicao AS m ON s.idSensor = m.fkSensor
-JOIN apartamento AS a ON c.idCondominio = a.fkCondominioApartamento
-ORDER BY c.nome, classificacao_gas DESC;
-
-
-SELECT 
-  c.nome AS nome_condominio,
-  IFNULL(c.email, 'sem email') AS email_condominio,
-  l.cnpj AS cnpj_login,
-  s.nome AS nome_sensor,
-  IFNULL(s.statusSensor, 'Desconhecido') AS status_sensor,
-  al.statusAlerta AS status_alerta,
-  m.concentracaoGases AS concentracao_gases,
-  CONCAT(a.blocoApartamento, '-', a.numApartamento) AS apartamento,
-  CASE
-    WHEN m.concentracaoGases < 2 THEN 'Baixa'
-    WHEN m.concentracaoGases BETWEEN 2 AND 4.9 THEN 'Moderada'
-    WHEN m.concentracaoGases BETWEEN 5 AND 7.9 THEN 'Alta'
-    ELSE 'Crítica'
-  END AS classificacao_gas
-FROM condominio AS c
-JOIN login AS l ON c.idCondominio = l.fkCondominio
-JOIN sensor AS s ON c.idCondominio = s.fkApartamento
-JOIN alerta AS al ON s.idSensor = al.fkSensorAlerta
-JOIN medicao AS m ON s.idSensor = m.fkSensor
-JOIN apartamento AS a ON c.idCondominio = a.fkCondominioApartamento
-ORDER BY c.nome, classificacao_gas DESC;
-*/
