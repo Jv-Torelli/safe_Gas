@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/Dash_ofc_layout.css">
     <link rel="stylesheet" href="../css/Dash_ofc_layout_notificacoes.css">
@@ -112,17 +112,17 @@
             <div class="header">
                 <div class="item-cabecalho">
                     <div class="icone-container">⚙️</div>
-                    <span class="valor-principal">150</span>
+                    <span class="valor-principal" id="qtd_sensores"></span>
                     <span class="descricao">Total de Sensores</span>
                 </div>
                 <div class="item-cabecalho">
                     <div class="icone-container">❗</div>
-                    <span class="valor-principal">4</span>
+                    <span class="valor-principal" id="qtd_alerta"></span>
                     <span class="descricao">Sensor em Alertas</span>
                 </div>
                 <div class="item-cabecalho">
                     <div class="icone-container">🛠️</div>
-                    <span class="valor-principal">3</span>
+                    <span class="valor-principal" id="qtd_manutencao"></span>
                     <span class="descricao">Em Manutenção</span>
                 </div>
                 <div class="item-cabecalho">
@@ -348,6 +348,9 @@
             .then(function (respostaJson) {
                 dados = respostaJson; // agora a variável `dados` contém o JSON
                 console.log("Dados recebidos: ", JSON.stringify(dados));
+                qtd_sensores.innerHTML = dados[0].Total_Sensores_Condomínio;
+                qtd_alerta.innerHTML = dados[0].Sensores_Em_Manutencao;
+                qtd_manutencao.innerHTML = dados[0].Sensores_Em_Manutencao;
 
                 for (var i = 0; i < dados.length; i++) {
                     if (dados[i].Risco != 'Sem risco') {
