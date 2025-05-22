@@ -7,4 +7,9 @@ router.post("/cadastrar", function (req, res) {
     portariaController.cadastrar(req, res);
 });
 
+router.get("/exibir", function (req, res) {
+    portariaController.exibir(req, res);
+});
+
+
 module.exports = router;
