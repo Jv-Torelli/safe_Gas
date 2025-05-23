@@ -1,6 +1,6 @@
 CREATE DATABASE sgc;
 USE sgc;
-
+-- drop database sgc;
 
 -- Tabela Condominio
 CREATE TABLE condominio (
@@ -34,18 +34,6 @@ fkPortariaPredio INT,
 CONSTRAINT fkPortariaPredio FOREIGN KEY(fkPortariaPredio) REFERENCES portaria(idPortaria)
 );
 
--- Tabela Atendimento
-CREATE TABLE atendimento(
-idAtendimento INT,
-fkPortaria INT,
-fkPredio INT,
-fkCondominio INT,
-CONSTRAINT pkComposta PRIMARY KEY (idAtendimento, fkPortaria, fkPredio, fkCondominio),
-CONSTRAINT fkPortaria FOREIGN KEY(fkPortaria) REFERENCES portaria(idPortaria),
-CONSTRAINT fkPredio FOREIGN KEY(fkPredio) REFERENCES predio(idPredio),
-CONSTRAINT fkCondominio FOREIGN KEY(fkCondominio) REFERENCES condominio(idCondominio)
-);
-
 -- Tabela Apartamento
 CREATE TABLE apartamento (
 idApartamento INT PRIMARY KEY auto_increment,
@@ -68,51 +56,42 @@ fkPredio INT,
 CONSTRAINT fkPredioSensor FOREIGN KEY (fkPredio) references predio(idPredio)
 );
 
+-- Tabela Alerta
+CREATE TABLE alerta(
+idAlerta INT PRIMARY KEY AUTO_INCREMENT,
+statusAlerta VARCHAR(12),
+	CONSTRAINT ckStatus
+		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Perigo', 'Emergência')),
+risco VARCHAR(50),
+	CONSTRAINT ckRisco
+		CHECK (risco IN ('Nenhum risco', 'Possível vazamento', 'Possibilidade de explosão', 'Possibilidade de asfixia')),
+acao varchar(60),
+	CONSTRAINT ckAcao
+		CHECK (acao IN ('Nenhuma ação necessária', 'Ventilar o apartamento', 'Evacuar o local imediatamente', 'Ligar para os bombeiros'))
+
+);
+
 -- Tabela Medicao
 CREATE TABLE medicao (
 idMedicao INT AUTO_INCREMENT,
 fkSensorMedicao INT,
 fkApartamentoMedicao INT,
 fkPredioMedicao INT,
-CONSTRAINT pkCompostaMedicao PRIMARY KEY (idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao),
+fkAlertaMedicao INT,
+CONSTRAINT pkCompostaMedicao PRIMARY KEY (idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlertaMedicao),
 CONSTRAINT fkSensorMedicao FOREIGN KEY (fkSensorMedicao) references sensor(idSensor),
 CONSTRAINT fkApartamentoMedicao FOREIGN KEY (fkApartamentoMedicao) references apartamento(idApartamento),
 CONSTRAINT fkPredioMedicao FOREIGN KEY (fkPredioMedicao) references predio(idPredio),
+CONSTRAINT fkAlertaMedicao FOREIGN KEY (fkAlertaMedicao) references alerta(idAlerta),
 data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
 nivel_de_gas FLOAT NOT NULL
 );
 
--- Tabela Alerta
-CREATE TABLE alerta(
-idAlerta INT AUTO_INCREMENT,
-statusAlerta VARCHAR(12),
-	CONSTRAINT ckStatus
-		CHECK (statusAlerta IN ('Seguro', 'Atenção', 'Alerta', 'Emergência')),
-acao varchar(60),
-risco VARCHAR(50),
-fkMedicao int,
-fkSensorMedicao int,
-fkApartamentoMedicao int,
-fkPredioMedicao int,
-constraint chave_primaria primary KEY (idAlerta, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao),
-foreign key (fkMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao ) references medicao(idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao)
-);
+
 
 -- alter table alerta add column fkMedicao int;
 -- alter table alerta add constraint fkMedicao foreign key (fkMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao ) references medicao(idMedicao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao);
 -- esses dois de cima eu só fiz pq tava errado a tabela antes, mas ja add na prórpia tabela alerta, ent NÃO precisa fazer nada, so deixei para caso precise fazer algo, mais para nosso controle
-
-UPDATE alerta 
-SET fkMedicao = 12, 
-    fkSensorMedicao = 5, 
-    fkApartamentoMedicao = 5, 
-    fkPredioMedicao = 5,
-    statusAlerta = 'Emergência'
-WHERE idAlerta = 3;  -- isso tem q mudar de acordo com o que está na própria tabela.... mas em tese n precisa fazer uso disso, basta fazer os inserts corretamente.
-
-
-insert into alerta values 
-	(default,'Alerta', 'Ventilar apartamento', 'Explosão alto', 3,3,3,10);
 
 INSERT INTO condominio (nome_condominio, cep, logradouro, numero_logradouro, cnpj, dt_cadastro_condominio) VALUES
 ('Condomínio Sol', '12345678900', 'Rua das Flores', '100', '12345678000101', '2023-01-10'),
@@ -138,14 +117,6 @@ INSERT INTO predio (bloco_predio, fkPortariaPredio) VALUES
 ('B', 5), 
 ('C', 7); 
 
-
-INSERT INTO atendimento (idAtendimento, fkPortaria, fkPredio, fkCondominio) VALUES
-(1, 1, 1, 1),
-(2, 2, 2, 2),
-(3, 3, 3, 3),
-(4, 4, 4, 4),
-(5, 5, 5, 5);
-
 INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES
 ('101', 1, 1),
 ('202', 2, 2),
@@ -160,27 +131,18 @@ INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VAL
 ('Ativo', 'Área de Serviço', 4, 4),
 ('Inativo', 'Banheiro', 5, 5);
 
-INSERT INTO alerta (statusAlerta) VALUES
-('Seguro'),
-('Atenção'),
-('Alerta'),
-('Emergência'),
-('Seguro');
+INSERT INTO alerta (statusAlerta, risco, acao) VALUES
+('Seguro', 'Nenhum risco', 'Nenhuma ação necessária'),
+('Atenção', 'Possível vazamento', 'Ventilar o apartamento'),
+('Perigo', 'Possibilidade de explosão', 'Evacuar o local imediatamente'),
+('Emergência', 'Possibilidade de asfixia', 'Ligar para os bombeiros');
 
-INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, nivel_de_gas) VALUES
-(1, 1, 1, 0.3),
-(2, 2, 2, 0.7),
-(3, 3, 3, 1.5),
-(4, 4, 4, 2.8),
-(5, 5, 5, 3.9);
-
-INSERT INTO alerta (risco, acao, fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao) VALUES 
-	('Explosão', 'Ventilar apartamento',1, 1, 1),
-    ('Asfixia', 'ligar Bombeiros',2, 2, 2);
-
-update alerta set statusAlerta = 'Alerta' where idAlerta = 1;
-update alerta set statusAlerta = 'Emergência' where idAlerta = 2;
-
+-- INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlertaMedicao, nivel_de_gas) VALUES
+-- (1, 1, 1, 1, 0.3),
+-- (2, 2, 2, 2, 0.7),
+-- (3, 3, 3, 3, 1.5),
+-- (4, 4, 4, 4, 2.8),
+-- (5, 5, 5, 5, 3.9);
     
 -- seletão/view é o de baixo --  
 CREATE VIEW dados as
@@ -221,7 +183,7 @@ CREATE VIEW dados as
     /* Alertas críticos */
     (SELECT COUNT(*) 
      FROM alerta al 
-     WHERE al.fkMedicao = m.idMedicao
+     WHERE m.fkAlertaMedicao = al.idAlerta           -- POSSÍVEL ERRO AQUI
      AND al.statusAlerta IN ('Alerta', 'Crítico', 'Emergência')
     ) AS Num_Sensor_Alertas_AP
     
@@ -231,7 +193,7 @@ JOIN predio p ON pt.idPortaria = p.fkPortariaPredio
 JOIN apartamento ap ON ap.fkPredioApto = p.idPredio 
 JOIN sensor s ON s.fkApartamento = ap.idApartamento 
 JOIN medicao m ON m.fkSensorMedicao = s.idSensor 
-JOIN alerta a ON a.fkMedicao = m.idMedicao
+JOIN alerta a ON m.fkAlertaMedicao = a.idAlerta
 /* WHERE ap.numero_apartamento = 101 */  --  filtrar por apartamento
 GROUP BY 
     c.nome_condominio, 
