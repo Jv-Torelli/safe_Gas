@@ -92,7 +92,7 @@
           <div class="div_nivel">
             <span class="span_titulo">Nivel de Gás (Últimas 2h)</span>
             <span class="span_identificacao">Torre <span id="span_bloco_predio"></span>, Apto <span
-                id="span_numero_apartamento"></span></span>
+                id="span_numero_apartamento"></span>, <span id="span_sensor_local_selecionado"></span></span>
             <hr>
             <canvas id="canvas_grafico"></canvas>
           </div>
@@ -106,7 +106,7 @@
                 <img src="../assets/dashEspecifica/icon_alerta.png" alt="">
               </div>
               <div class="div_sobre_alerta">
-                <span class="span_titulo">Alerta <span class="span_alerta_status"></span></span>
+                <span class="span_titulo">Alerta de Risco<span class="span_alerta_status"></span></span>
                 <!-- KPI Alerta com Risco -->
                 <span class="span_subtitulo" id="span_alerta_risco"></span>
               </div>
@@ -124,21 +124,21 @@
               <div class="div_opcao_sensor"> <!-- Seleção de sensor 1 -->
                 <span class="span_sensor" id="span_local_sensor1">--------</span>
                 <span class="span_medicao" id="span_medicao1">--------</span>
-                <button class="btn_sensor" id="btn_sensor1">Mostrar Gráfico</button>
+                <button class="btn_sensor" id="btn_sensor1">Ver Gráfico</button>
               </div>
               <hr>
 
               <div class="div_opcao_sensor"> <!-- Seleção de sensor 2 -->
                 <span class="span_sensor" id="span_local_sensor2">--------</span>
                 <span class="span_medicao" id="span_medicao2">--------</span>
-                <button class="btn_sensor" id="btn_sensor2">Mostrar Gráfico</button>
+                <button class="btn_sensor" id="btn_sensor2">Ver Gráfico</button>
               </div>
               <hr>
 
               <div class="div_opcao_sensor"> <!-- Seleção de sensor 3 -->
                 <span class="span_sensor" id="span_local_sensor3">--------</span>
                 <span class="span_medicao" id="span_medicao3">--------</span>
-                <button class="btn_sensor" id="btn_sensor3">Mostrar Gráfico</button>
+                <button class="btn_sensor" id="btn_sensor3">Ver Gráfico</button>
               </div>
 
             </div>
@@ -287,6 +287,8 @@
         if (medicaoMaior >= 0) {
           document.getElementById("span_local_medicaoMaior").innerText = `${local_MedicaoMaior}`;
           document.getElementById("span_dataHora").innerText = formatarDataHora(dataHora_MedicaoMaior);
+          document.getElementById("span_sensor_local_selecionado").innerText = local_MedicaoMaior;
+          
           if (btn_cor == 1) {
             document.getElementById("btn_sensor1").style.backgroundColor = "rgb(50, 51, 56)";
             document.getElementById("btn_sensor1").innerHTML = "Gráfico Atual";
@@ -308,6 +310,35 @@
   document.addEventListener("DOMContentLoaded", retornar_dados_niveisEmLocais);
   // quando a página é carregada e a cada 5 segundos
   setInterval(retornar_dados_niveisEmLocais, 5000);
+
+  document.addEventListener("DOMContentLoaded", function () {
+  // Função para atualizar o botão e o span ao clicar
+  function configurarBotoesSensores() {
+    for (let i = 1; i <= 3; i++) {
+      const btn = document.getElementById(`btn_sensor${i}`);
+      btn.addEventListener("click", function () {
+        // Atualiza o span com o local do sensor clicado
+        const local = document.getElementById(`span_local_sensor${i}`).innerText;
+        document.getElementById("span_sensor_local_selecionado").innerText = local;
+
+        // Atualiza os botões
+        for (let j = 1; j <= 3; j++) {
+          const btnOutros = document.getElementById(`btn_sensor${j}`);
+          if (i === j) {
+            btnOutros.innerText = "Gráfico Atual";
+            btnOutros.style.backgroundColor = "rgb(50, 51, 56)";
+          } else {
+            btnOutros.innerText = "Ver Gráfico";
+            btnOutros.style.backgroundColor = "#2563eb";
+          }
+        }
+      });
+    }
+  }
+
+  configurarBotoesSensores();
+});
+
 
  // Função para o gráfico de medição de gás
   const ctx = document.getElementById('canvas_grafico').getContext('2d');

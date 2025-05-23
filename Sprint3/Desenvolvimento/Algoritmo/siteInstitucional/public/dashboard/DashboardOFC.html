@@ -235,7 +235,7 @@
                         <div class="informacao_notificacao">
                             <div class="informacao_critica">Torre C, Apto 402</div>
                             <div class="nivel_gas">Nível crítico de gás detectado</div>
-                            <button class="btn_verificar">Verificar</button>
+                            <button class="btn_verificar ">Verificar</button>
                         </div>
                         <div class="horario_notificacao">
                             Agora
@@ -359,7 +359,7 @@
                     <div class="informacao_notificacao">
                         <div class="informacao_emergencia">Torre ${dados[i].Bloco} Apto ${dados[i].Numero_Apartamento}</div>
                         <div class="nivel_gas">${dados[i].Risco}</div>
-                        <button class="btn_verificar">Verificar</button>
+                        <button class="btn_verificar" onclick="verificarApto('${dados[i].Numero_Apartamento}')">Verificar</button>
                     </div>
                     <div class="horario_notificacao">
                         Agora
@@ -375,10 +375,12 @@
                 console.error(resposta); 9
 
             });
-
-
     }
 
+    function verificarApto(numeroApto) {
+        localStorage.setItem("numero_apartamento", numeroApto);
+        window.location.href = "dash_especifica.html";
+    }
 
     function abrirModal() {
         document.getElementById('fundoModal').classList.add('ativo');
