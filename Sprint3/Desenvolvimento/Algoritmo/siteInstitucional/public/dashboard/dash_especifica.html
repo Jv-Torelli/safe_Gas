@@ -10,7 +10,7 @@
   <title>Dashboard Específica</title>
 </head>
 
-<body>
+<body onload="grafico_de_linha()"> <!-- Carrega o gráfico de linha -->
 
   <div class="main"> <!-- Contêiner principal -->
     <div class="navbar"> <!-- Barra lateral de Menu -->
@@ -349,6 +349,106 @@
   gradient.addColorStop(0.6, 'rgba(37, 99, 235, 0.01)');
   gradient.addColorStop(0.6, 'rgb(255, 255, 255)');
 
+  var dadosGrafico = []
+function grafico_de_linha() {
+    fetch(`/grafico/medicoes-gas?numero_apartamento=${numero_apartamento}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    .then(resposta => resposta.json())
+    .then(data => {
+
+      
+
+        // Atualiza os dados do gráfico
+        const labels = data.map(item => item.data_hora); // Supondo que 'data_hora' é o campo com os horários
+        const valores = data.map(item => item.nivel_de_gas); // Supondo que 'nivel_de_gas' é o campo com os valores
+
+        // Atualiza o gráfico
+        canvas_grafico.data.labels = labels;
+        canvas_grafico.data.datasets[0].data = valores;
+        canvas_grafico.options.scales.y.max = Math.max(...valores); // Define o máximo do eixo Y com base nos dados 
+        canvas_grafico.update();
+        
+    })
+    .catch(erro => {  
+        console.error("Erro ao buscar dados do gráfico:", erro);
+    });
+
+
+const ctx = document.getElementById('canvas_grafico').getContext('2d');
+const canvas_grafico = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [], // Inicialmente vazio
+        datasets: [{
+            label: 'Nível de Gás (%)',
+            data: [], // Inicialmente vazio
+            borderColor: '#2563eb',
+            
+          tension: 0.3,
+          fill: true,
+          pointRadius: 0.3,
+          borderWidth: 2
+        },
+       {
+         label: 'Limite de Segurança',
+         data: Array(25).fill(5),
+         borderColor: 'red',
+         borderWidth: 1,
+         pointRadius: 0,
+         fill: false,
+       }]
+    },
+    options: {
+     responsive: false,
+     plugins: {
+       legend: {
+         display: false
+       },
+       tooltip: {
+         mode: 'index',
+         intersect: false
+       }
+     },
+     scales: {
+       y: {
+         beginAtZero: true,
+         max: 12,
+         ticks: {
+           callback: function (value) {
+             return value + ' %';
+           }
+         }
+       },
+       x: {
+         title: {
+           display: true,
+           text: 'Hora'
+         }
+       }
+     }
+   },
+   plugins: [{
+     id: 'customLabelPlugin',
+     afterDraw: (chart) => {
+       const { ctx, chartArea: { top, right, width } } = chart;
+       ctx.save();
+       ctx.font = '16px sans-serif';
+       ctx.fillStyle = 'black';
+       ctx.textAlign = 'center';
+       ctx.fillText('Limite de Segurança', right - width / 7.5, top + 65);
+       ctx.restore();
+     }
+   }]
+});
+
+
+}
+
+  /* Gráfico MOCADO
   const graficoGas = new Chart(ctx, {
     type: 'line',
     data: {
@@ -420,5 +520,5 @@
       }
     }]
   });
-
+*/
 </script>

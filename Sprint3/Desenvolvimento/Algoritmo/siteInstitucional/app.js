@@ -22,6 +22,7 @@ var dashboardRouter = require("./src/routes/dashboard");
 var alertaRouter = require("./src/routes/alerta");
 var predioRouter = require("./src/routes/predio");
 var sensorRouter = require("./src/routes/sensor");
+var graficoRouter = require("./src/routes/grafico");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,6 +37,7 @@ app.use("/portaria", portariaRouter);
 app.use("/alerta", alertaRouter);
 app.use("/predio", predioRouter);
 app.use("/sensor", sensorRouter);
+app.use("/grafico", graficoRouter);
 
 
 app.listen(PORTA_APP, function () {
