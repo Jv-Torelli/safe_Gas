@@ -1,6 +1,5 @@
 CREATE DATABASE sgc;
 USE sgc;
--- drop database sgc;
 
 -- Tabela Condominio
 CREATE TABLE condominio (
@@ -137,12 +136,13 @@ INSERT INTO alerta (statusAlerta, risco, acao) VALUES
 ('Perigo', 'Possibilidade de explosão', 'Evacuar o local imediatamente'),
 ('Emergência', 'Possibilidade de asfixia', 'Ligar para os bombeiros');
 
--- INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlertaMedicao, nivel_de_gas) VALUES
--- (1, 1, 1, 1, 0.3),
--- (2, 2, 2, 2, 0.7),
--- (3, 3, 3, 3, 1.5),
--- (4, 4, 4, 4, 2.8),
--- (5, 5, 5, 5, 3.9);
+ INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlertaMedicao, nivel_de_gas) VALUES
+ (1, 1, 1, 1, 0.3),
+ (2, 2, 2, 2, 0.7),
+ (3, 3, 3, 3, 1.5),
+ (4, 4, 4, 4, 2.8);
+ 
+ select * from alerta;
     
 -- seletão/view é o de baixo --  
 CREATE VIEW dados as
@@ -183,8 +183,8 @@ CREATE VIEW dados as
     /* Alertas críticos */
     (SELECT COUNT(*) 
      FROM alerta al 
-     WHERE m.fkAlertaMedicao = al.idAlerta           -- POSSÍVEL ERRO AQUI
-     AND al.statusAlerta IN ('Alerta', 'Crítico', 'Emergência')
+     WHERE m.fkAlertaMedicao = al.idAlerta           -- **
+     AND al.statusAlerta IN ('Seguro', 'Atenção', 'Perigo', 'Emergência')
     ) AS Num_Sensor_Alertas_AP
     
 FROM condominio c 
@@ -210,7 +210,11 @@ GROUP BY
     m.idMedicao,
     c.idCondominio;
 
-select Numero_Apartamento from dados; -- teste para mostrar que a view funciona
+select Numero_Apartamento from dados;
+select Condomínio from dados;
+select * from condominio;
+
+ -- teste para mostrar que a view funciona
 /*
 ISSO AQUI É O QUE A GENTE PRECISAVA PARA CRIAR A VIEW E USAR NA DASH, DECIDI POR MANTER.
 navbar
@@ -242,20 +246,20 @@ local_instalado - sensor - local - tabela sensor*/ -- ok
 
 
 
-SELECT * FROM condominio;
+-- SELECT * FROM condominio;
 
-SELECT * FROM portaria;
+-- SELECT * FROM portaria;
 
-SELECT * FROM predio;
+-- SELECT * FROM predio;
 
-SELECT * FROM apartamento;
+-- SELECT * FROM apartamento;
 
-SELECT * FROM sensor;
+-- SELECT * FROM sensor;
 
-SELECT * FROM medicao;
+ -- SELECT * FROM medicao;
 
-SELECT * FROM alerta;
+-- SELECT * FROM alerta;
 
-SELECT * FROM condominio WHERE nome_condominio LIKE '%A';
+-- SELECT * FROM condominio WHERE nome_condominio LIKE '%A';
 
-SELECT * FROM apartamento WHERE numero_apartamento = '202';
+-- SELECT * FROM apartamento WHERE numero_apartamento = '202';
