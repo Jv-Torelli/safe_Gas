@@ -55,7 +55,49 @@ function exibir(req, res) {
         });
 }
 
+function salvarEdicao(req, res) {
+    var numPortaria = req.params.numPortaria;  // ✅ Corrigido aqui!
+    var telefone = req.body.telefoneServer;
+    var email = req.body.emailServer;
+
+    console.log("Dados recebidos para edição:", { numPortaria, telefone, email });
+
+    if (!numPortaria) return res.status(400).send("Número da portaria é obrigatório!");
+    if (!telefone) return res.status(400).send("Telefone é obrigatório!");
+    if (!email) return res.status(400).send("Email é obrigatório!");
+
+    portariaModel.salvarEdicao(telefone, email, numPortaria)
+        .then(() => res.json({ success: "Edição realizada com sucesso!" }))
+        .catch(erro => {
+            console.error("Erro na edição:", erro);
+            res.status(500).json({
+                error: "Erro interno do servidor",
+                details: erro.sqlMessage || erro.message
+            });
+        });
+}
+
+function deletar(req, res) {
+    var numPortaria = req.params.numPortariaServer;
+
+    if (!numPortaria) {
+        return res.status(400).send("Número da portaria é obrigatório para deletar!");
+    }
+
+    portariaModel.deletar(numPortaria)
+        .then(() => res.json({ success: "Portaria deletada com sucesso!" }))
+        .catch(erro => {
+            console.error("Erro ao deletar:", erro);
+            res.status(500).json({
+                error: "Erro interno ao deletar portaria",
+                details: erro.sqlMessage || erro.message
+            });
+        });
+}
+
 module.exports = {
     cadastrar,
-    exibir
+    exibir,
+    salvarEdicao,
+    deletar
 }
