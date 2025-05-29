@@ -9,54 +9,82 @@
     display: flex;
     flex-direction: row;
     background-color: #f2f2f2;
+    position: relative;
 }
 
 /* nav containers */
 .navbar {
     height: 100vh;
-    width: 299px;
+    width: 350px;
     background: #7bb062;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
-    box-shadow: 1px 1px 10px 1px #0000007d;
+    gap: 20px;
+    padding-top: 10px;
+    color: white;
 }
 
+/* msg */
+.welcome_navbar {
+    width: 90%;
+    height: 65px;
+    border: solid white 1px;
+    display: flex;
+    align-items: flex-start;
+    font-size: 30px;
+    white-space: normal;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+
+.welcome_navbar p {
+    color: #f2f2f2;
+    font-size: 20px;
+}
+
+/* container */
 .container_btn {
-    height: 350px;
-    width: 100%;
+    width: 95%;
+    height: 70%;
+    gap: 30px;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    padding: 5px;
 }
 
-/* buttons */
+/* btns */
 
 .btnNavbar {
-    width: 80%;
-    height: 80px;
-    background: white;
+    width: 95%;
+    height: 45px;
+    border-left: solid 3px white;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    border: 1px solid black;
-    border-radius: 25px;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+    border-radius: 5px;
+    padding: 5px;
+    transition: 0.5s;
+    cursor: pointer;
 }
 
-/* welcome */
-
-.welcome_navbar {
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-size: 30px;
-    width: 80%;
+.btnNavbar:hover {
+    background: white;
+    color: green;
 }
 
-.navbar span {
-    color: white;
+.select {
+    background: white;
+    color: green;
+}
+
+#logout {
+    position: absolute;
+    bottom: 0;
 }

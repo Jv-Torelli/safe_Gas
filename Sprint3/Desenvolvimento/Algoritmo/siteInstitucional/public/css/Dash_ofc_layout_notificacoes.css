@@ -21,13 +21,28 @@
     align-items: center;
 }
 
+
 .compenentesDiv {
     height: 80%;
     width: 100%;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-around;
+    overflow: hidden;
+}
+
+.container_predios {
+    background-color: white;
+    width: 65%;
+    min-height: 90%;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    border-radius: 15px;
+    padding: 20px;
 }
 
 .container_notificacoes {
@@ -41,9 +56,10 @@
     align-items: center;
     box-shadow: 2px 2px 2px 2px #0e0e0e20;
     overflow-y: scroll;
+    padding-top: 20px;
 }
 
-#alertas_recentes{
+#alertas_recentes {
     width: 89%;
     justify-content: start;
     font-size: 19px;
@@ -90,26 +106,26 @@
     margin-bottom: 25px;
 }
 
-.informacao_notificacao{
-display: flex;
-  flex-direction: column; 
-  gap: 6px;
-  justify-content: center;
+.informacao_notificacao {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
 }
 
-.informacao_emergencia{
+.informacao_emergencia {
     color: rgb(0, 0, 0);
 }
 
-.informacao_critica{
+.informacao_critica {
     color: rgb(191, 4, 4);
 }
 
-.informacao_alerta{
+.informacao_alerta {
     color: rgb(157, 130, 9);
 }
 
-.btn_verificar{
+.btn_verificar {
     background-color: rgb(51, 51, 255);
     color: white;
     width: 64px;

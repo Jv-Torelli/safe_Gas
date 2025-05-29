@@ -36,7 +36,10 @@
     .header-p {
         font-weight: bold;
         text-align: center;
+        display: flex;
+        align-items: center;
     }
+
 
     .andar-p {
         color: black;
@@ -84,24 +87,97 @@
         height: 15px;
         border-radius: 3px;
     }
+
+    .container-aps {
+        width: 100%;
+        min-height: 50%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .andarIndice {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        height: 40px;
+    }
+
+    .aptoIndice {
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        height: 100%;
+    }
+
+    .listaDeApto {
+        width: 80%;
+        height: 100%;
+        display: grid;
+        align-items: center;
+        justify-content: space-around;
+        grid-template-columns: 90px repeat(2, 100px);
+        gap: 20px;
+    }
+
+    .containerLista {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-around;
+        max-height: 500px;
+    }
+
+    .listaAndares {
+        height: auto;
+        width: 3%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
 </style>
 
-<body onload="buscarDados()">
+<body onload="buscarDados(), buscarKpis(), buscarTorre(), buscarApto(), buscarAndares()">
     <div class="main">
         <div class="navbar">
             <div class="welcome_navbar">
-                <h5>Olá, <span id="nomeCondominio"></span>!</h5>
-                <h5>Bem-vindo de volta.</h5>
+                <h5>Bem-vindo!</h5>
+                <p>Olá, <span id="nomeCondominio"></span></p>
             </div>
 
             <div class="container_btn">
-                <div class="btnNavbar" id="logout"><img src="../assets/icons_navbar/predio_icon.png">Dashboard geral
+                <div class="btnNavbar select">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                        fill="currentcolor">
+                        <path
+                            d="M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z" />
+                    </svg>
+
+                    Dashboard geral
                 </div>
-                <div class="btnNavbar" id="logout"><img src="../assets/icons_navbar/predio_icon.png">Historico de
+                <div class="btnNavbar">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                        fill="currentcolor">
+                        <path
+                            d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z" />
+                    </svg>
+
+                    Historico de
                     alertas
                 </div>
-                <div class="btnNavbar" id="logout"><img src="../assets/icons_navbar/predio_icon.png"><a
-                        href="./dash_portarias.html">Portaria</a></div>
+                <div class="btnNavbar">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                        fill="currentcolor">
+                        <path
+                            d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q14-36 44-58t68-22q38 0 68 22t44 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm280-670q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790ZM200-246q54-53 125.5-83.5T480-360q83 0 154.5 30.5T760-246v-514H200v514Zm280-194q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41ZM280-200h400v-10q-42-35-93-52.5T480-280q-56 0-107 17.5T280-210v10Zm200-320q-25 0-42.5-17.5T420-580q0-25 17.5-42.5T480-640q25 0 42.5 17.5T540-580q0 25-17.5 42.5T480-520Zm0 17Z" />
+                    </svg>
+
+                    <a href="./dash_portarias.html">Portaria</a>
+                </div>
             </div>
 
             <div class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png"> Logout</div>
@@ -127,80 +203,29 @@
                 </div>
                 <div class="item-cabecalho">
                     <div class="icone-container">✅</div>
-                    <span class="valor-principal">Hoje, 15:38</span>
+                    <span class="valor-principal" id="ultimaAtualizacao_div">Hoje, 15:38</span>
                     <span class="descricao">Última Verificação</span>
                 </div>
             </div>
             <div class="compenentesDiv">
                 <div class="container_predios">
 
-                    <div class="navbar-p">
-                        <div class="tab-p">Torre A</div>
-                        <div class="tab-p">Torre B</div>
-                        <div class="tab-p">Torre C</div>
-                        <div class="tab-p">Torre D</div>
-                        <div class="tab-p">Torre E</div>
+                    <div class="navbar-p" id="torresDiv">
+
                     </div>
 
-                    <div class="grid-p">
-                        <div class="header-p">Andar</div>
-                        <div class="header-p">Apto 01</div>
-                        <div class="header-p">Apto 02</div>
-                        <div class="header-p">Apto 03</div>
-                        <!-- Linhas dos andares de 10 a 1 -->
-                        <!-- Andar 10 -->
-                        <div class="andar-p" onclick="abrirModal()">1</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">101</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">102</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">103</div>
-
-                        <!-- Andar-p 9 -->
-                        <div class="andar-p">2</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">201</div>
-                        <div class="andar-p alerta" onclick="abrirModal(),obterNumero(this)">202</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">203</div>
-
-                        <!-- Andar-p 8 -->
-                        <div class="andar-p">3</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">301</div>
-                        <div class="andar-p critico" onclick="abrirModal(),obterNumero(this)">302</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">303</div>
-
-                        <!-- Andar-p 7 -->
-                        <div class="andar-p">4</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">401</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">402</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">403</div>
-
-                        <!-- Andar-p 6 -->
-                        <div class="andar-p">5</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">501</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">502</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">503</div>
-
-                        <!-- Andar-p 5 -->
-                        <div class="andar-p">6</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">601</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">602</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">603</div>
-
-                        <!-- Andar-p 4 -->
-                        <div class="andar-p">7</div>
-                        <div class="andar-p alerta" onclick="abrirModal(),obterNumero(this)">701</div>
-                        <div class="andar-p alerta" onclick="abrirModal(),obterNumero(this)">702</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">703</div>
-
-                        <!-- Andar-p 3 -->
-                        <div class="andar-p">8</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">801</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">802</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">803</div>
-
-                        <!-- Andar-p 2 -->
-                        <div class="andar-p">9</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">901</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">902</div>
-                        <div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">903</div>
+                    <div class="container-aps">
+                        <div class="andarIndice">
+                            <div class="header-p">Andar</div>
+                            <div class="aptoIndice" id="indiceApto">
+                            </div>
+                        </div>
+                        <div class="containerLista">
+                            <div class="listaAndares" id="andaresLista">
+                            </div>
+                            <div class="listaDeApto" id="aptoLista">
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Legenda -->
@@ -222,109 +247,210 @@
                 <div class="container_notificacoes" id="alertasDash">
                     <div id="alertas_recentes">Alertas Recentes</div>
                     <div class="div_notificacoes_emergencia" id="notificacoes_emergencia">
-                        <div class="informacao_notificacao">
-                            <div class="informacao_emergencia">Torre B, Apto 703</div>
-                            <div class="nivel_gas">Nível emergencial de gás detectado</div>
-                            <button class="btn_verificar">Verificar</button>
-                        </div>
-                        <div class="horario_notificacao">
-                            Agora
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="fundo-modal" id="fundoModal">
+
+            <div class="modal">
+                <div class="cabecalho-modal">
+                    <h2 class="titulo-modal">Apartamento 801-A</h2>
+                    <button class="botao-fechar" id="botaoFechar">&times;</button>
+                </div>
+
+                <div class="conteudo-modal">
+                    <div class="localizacao">
+                        <span class="infoLoc">Localização:</span>
+                        <div class="apto">
+                            Torre A, Apartamento 801
                         </div>
                     </div>
-                    <div class="div_notificacoes_critico">
-                        <div class="informacao_notificacao">
-                            <div class="informacao_critica">Torre C, Apto 402</div>
-                            <div class="nivel_gas">Nível crítico de gás detectado</div>
-                            <button class="btn_verificar ">Verificar</button>
+
+                    <div class="status-container">
+                        <span class="status">Status:</span>
+                        <div class="local">
+                            <span class="comodo">Cozinha</span>
                         </div>
-                        <div class="horario_notificacao">
-                            Agora
+                        <div class="status-label">
+                            <div class="indicador-status"></div>
+                            <span class="status-critico">Crítico</span>
                         </div>
                     </div>
-                    <div class="div_notificacoes_alerta">
-                        <div class="informacao_notificacao">
-                            <div class="notificacao_critica">
-                                <div class="informacao_alerta">Torre C, Apto 802</div>
-                                <div class="nivel_gas">Nível elevado de gás detectado</div>
-                                <button class="btn_verificar">Verificar</button>
-                            </div>
+
+                    <div class="nivel-container">
+                        <div class="nivel-label">
+                            <span>Nível de Gás:</span>
+                            <span class="nivel-valor">13%</span>
                         </div>
-                        <div class="horario_notificacao">
-                            Agora
+                        <div class="barra-progresso-container">
+                            <div class="barra-progresso"></div>
                         </div>
+                    </div>
+
+                    <div class="ultima-leitura">
+                        Última leitura: <span class="leitura-hora">Hoje, 15:38</span>
+                    </div>
+
+                    <div class="historico-label">
+                        <span>Histórico (2h)</span>
+                    </div>
+
+                    <div class="grafico-container">
+                        <canvas id="graficoGas"></canvas>
+                    </div>
+
+                    <div class="botoes-acoes">
+                        <a class="botao-azul" href="./dash_especifica.html">Verificar Sensor</a>
+                        <button class="botao-amarelo">Agendar Manutenção</button>
                     </div>
                 </div>
             </div>
 
         </div>
-    </div>
-    <div class="fundo-modal" id="fundoModal">
-
-        <div class="modal">
-            <div class="cabecalho-modal">
-                <h2 class="titulo-modal">Apartamento 801-A</h2>
-                <button class="botao-fechar" id="botaoFechar">&times;</button>
-            </div>
-
-            <div class="conteudo-modal">
-                <div class="localizacao">
-                    <span class="infoLoc">Localização:</span>
-                    <div class="apto">
-                        Torre A, Apartamento 801
-                    </div>
-                </div>
-
-                <div class="status-container">
-                    <span class="status">Status:</span>
-                    <div class="local">
-                        <span class="comodo">Cozinha</span>
-                    </div>
-                    <div class="status-label">
-                        <div class="indicador-status"></div>
-                        <span class="status-critico">Crítico</span>
-                    </div>
-                </div>
-
-                <div class="nivel-container">
-                    <div class="nivel-label">
-                        <span>Nível de Gás:</span>
-                        <span class="nivel-valor">13%</span>
-                    </div>
-                    <div class="barra-progresso-container">
-                        <div class="barra-progresso"></div>
-                    </div>
-                </div>
-
-                <div class="ultima-leitura">
-                    Última leitura: <span class="leitura-hora">Hoje, 15:38</span>
-                </div>
-
-                <div class="historico-label">
-                    <span>Histórico (2h)</span>
-                </div>
-
-                <div class="grafico-container">
-                    <canvas id="graficoGas"></canvas>
-                </div>
-
-                <div class="botoes-acoes">
-                    <a class="botao-azul" href="./dash_especifica.html">Verificar Sensor</a>
-                    <button class="botao-amarelo">Agendar Manutenção</button>
-                </div>
-            </div>
-        </div>
-
-    </div>
 </body>
 
 </html>
 <script>
+    var qtd_total_apto_andar = 3;
     var dados = [];
     function obterNumero(numero_apartamento) {
         var numero_apartamento = numero_apartamento.innerText.trim();
         localStorage.setItem("numero_apartamento", numero_apartamento);
         return numero_apartamento;
     }
+    function buscarKpis() {
+
+        fetch("/dashboard/kpi/").then(function (resposta) {
+            if (resposta.ok) {
+                if (resposta.status == 204) {
+                    throw "Nenhum resultado encontrado!!";
+                }
+                return resposta.json();
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        })
+            .then(function (respostaJson) {
+                dadosKpi = respostaJson; // agora a variável `dados` contém o JSON
+                console.log("Dados recebidos: ", JSON.stringify(dadosKpi));
+
+                qtd_sensores.innerHTML = dadosKpi[0].Total_Sensores;
+                qtd_alerta.innerHTML = dadosKpi[0].Sensores_Alarmantes;
+                qtd_manutencao.innerHTML = dadosKpi[0].Sensores_Inativos;
+                ultimaAtualizacao_div.innerHTML = `${new Date(dadosKpi[0].Ultima_Verificacao).toLocaleString('pt-BR', {
+                    dateStyle: 'short',
+                    timeStyle: 'short'
+                })
+                    }`
+
+
+
+            })
+            .catch(function (resposta) {
+                console.error(resposta);
+
+            });
+
+
+    }
+
+
+    function buscarTorre() {
+
+        fetch("/dashboard/torre/").then(function (retorno) {
+            if (retorno.ok) {
+                if (retorno.status == 204) {
+                    throw "Nenhum resultado encontrado!!";
+                }
+                return retorno.json();
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        })
+            .then(function (respostaTorre) {
+                dadosTorre = respostaTorre; // agora a variável `dados` contém o JSON
+                console.log("Dados recebidos: ", JSON.stringify(dadosTorre));
+
+                for (i = 0; i < dadosTorre.length; i++) {
+                    torresDiv.innerHTML += `<button onclick="var predioSelecionado = ${dadosTorre[i].idPredio}" class="tab-p">Torre ${dadosTorre[i].bloco_predio}</button>`
+                }
+
+
+            })
+            .catch(function (retorno) {
+                console.error(retorno);
+
+            });
+
+
+    }
+    function buscarApto() {
+        fetch("/dashboard/apto/").then(function (retornoApto) {
+            if (retornoApto.ok) {
+                if (retornoApto.status == 204) {
+                    throw "Nenhum resultado encontrado!!";
+                }
+                return retornoApto.json();
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        })
+            .then(function (retornoJson) {
+                dadosApto = retornoJson; // agora a variável `dados` contém o JSON
+                console.log("Dados recebidos Apto: ", JSON.stringify(dadosApto));
+                var qtd_andarApto = dadosApto[dadosApto.length - 1].Andar;
+
+                for (contador = 0; contador < qtd_total_apto_andar; contador++) {
+                    indiceApto.innerHTML += `<div class="header-p">Apto 0${contador + 1}</div>`
+                }
+
+                for (cont2 = 0; cont2 < dadosApto.length; cont2++) {
+                    aptoLista.innerHTML += `<div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">${dadosApto[cont2].numero_apartamento}</div>`
+                }
+
+
+
+
+
+            })
+            .catch(function (retornoApto) {
+                console.error(retornoApto);
+
+            });
+
+    }
+
+
+    function buscarAndares() {
+        fetch("/dashboard/andares/").then(function (retornoAndar) {
+            if (retornoAndar.ok) {
+                if (retornoAndar.status == 204) {
+                    throw "Nenhum resultado encontrado!!";
+                }
+                return retornoAndar.json();
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        })
+            .then(function (retornoJson) {
+                dadosAndar = retornoJson; // agora a variável `dados` contém o JSON
+                console.log("Dados recebidos andar: ", JSON.stringify(dadosAndar));
+                for (contador = 0; contador < dadosAndar.length; contador++) {
+                    andaresLista.innerHTML += `<div class="andar-p" onclick="abrirModal()">${contador + 1}</div>`
+                }
+
+
+            })
+            .catch(function (retornoAndar) {
+                console.error(retornoAndar);
+
+            });
+    }
+
+
 
     function buscarDados() {
         alertasDash.innerHTML = " ";
@@ -348,28 +474,25 @@
             .then(function (respostaJson) {
                 dados = respostaJson; // agora a variável `dados` contém o JSON
                 console.log("Dados recebidos: ", JSON.stringify(dados));
-                qtd_sensores.innerHTML = dados[0].Total_Sensores_Condomínio;
-                qtd_alerta.innerHTML = dados[0].Sensores_Em_Manutencao;
-                qtd_manutencao.innerHTML = dados[0].Sensores_Em_Manutencao;
 
                 for (var i = 0; i < dados.length; i++) {
-                    if (dados[i].Risco != 'Sem risco') {
 
-                        alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia">
+                    alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia">
                     <div class="informacao_notificacao">
-                        <div class="informacao_emergencia">Torre ${dados[i].Bloco} Apto ${dados[i].Numero_Apartamento}</div>
-                        <div class="nivel_gas">${dados[i].Risco}</div>
+                        <div class="informacao_emergencia">Torre ${dados[i].Torre} Apto ${dados[i].Numero_Apartamento}</div>
+                        <div class="nivel_gas">${dados[i].Descricao_Status}</div>
                         <button class="btn_verificar" onclick="verificarApto('${dados[i].Numero_Apartamento}')">Verificar</button>
                     </div>
-                    <div class="horario_notificacao">
-                        Agora
-                    </div>
+                  <div class="horario_notificacao">
+                    ${new Date(dados[i].Horario_Consulta).toLocaleString('pt-BR', {
+                        dateStyle: 'short',
+                        timeStyle: 'medium'
+                    })}
+                </div>
+
                 </div>
                 `
-                    }
                 }
-
-                nomeCondominio.innerHTML = `${dados[0].Condomínio}`
             })
             .catch(function (resposta) {
                 console.error(resposta); 9
