@@ -19,7 +19,32 @@ function exibir() {
     return database.executar(instrucaoSql);
 }
 
+function salvarEdicao(telefone, email, numPortaria) {
+    console.log("ACESSEI A EDIÇÃO MODEL: ", telefone, email, numPortaria);
+    
+    var instrucaoSql = `
+        UPDATE portaria 
+        SET telefone = '${telefone}', 
+            email = '${email}' 
+        WHERE numero_portaria = '${numPortaria}';
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function deletar(numPortaria) {
+    console.log("ACESSEI O MODEL DE DELETAR: ", numPortaria);
+
+    var instrucaoSql = `
+        DELETE FROM portaria WHERE numero_portaria = '${numPortaria}';
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     cadastrar,
-    exibir
+    exibir,
+    salvarEdicao,
+    deletar
 };
