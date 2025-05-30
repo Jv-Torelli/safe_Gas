@@ -32,19 +32,6 @@
     overflow: hidden;
 }
 
-.container_predios {
-    background-color: white;
-    width: 65%;
-    min-height: 90%;
-    gap: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    flex-direction: column;
-    border-radius: 15px;
-    padding: 20px;
-}
-
 .container_notificacoes {
     background-color: rgb(255, 255, 255);
     display: flex;
@@ -53,19 +40,26 @@
     max-height: 90%;
     height: 90%;
     border-radius: 5px;
-    align-items: center;
+    align-items: flex-start;
     box-shadow: 2px 2px 2px 2px #0e0e0e20;
     overflow-y: scroll;
-    padding-top: 20px;
+    padding-top: 50px;
+    position: relative;
 }
 
 #alertas_recentes {
-    width: 89%;
-    justify-content: start;
+    width: 95%;
     font-size: 19px;
     font-weight: bolder;
-    margin: 15px 0px;
+    position: absolute;
+    top: 0;
+    background: green;
+    color: white;
+    padding: 10px;
+    border-top-left-radius: 10px;
 }
+
+
 
 .div_notificacoes_emergencia {
     width: 84%;
@@ -78,6 +72,7 @@
     color: gray;
     background-color: rgba(0, 0, 0, 0.167);
     margin-bottom: 25px;
+    margin-left: 10px;
 }
 
 .div_notificacoes_critico {

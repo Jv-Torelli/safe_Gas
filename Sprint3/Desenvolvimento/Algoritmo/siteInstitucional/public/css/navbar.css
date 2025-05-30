@@ -24,13 +24,14 @@
     gap: 20px;
     padding-top: 10px;
     color: white;
+    position: relative;
 }
 
 /* msg */
 .welcome_navbar {
     width: 90%;
     height: 65px;
-    border: solid white 1px;
+    border-bottom: solid white 1px;
     display: flex;
     align-items: flex-start;
     font-size: 30px;
@@ -86,5 +87,17 @@
 
 #logout {
     position: absolute;
-    bottom: 0;
+    bottom: 15px;
+    background: white;
+    max-width: 90%;
+    color: black;
+    cursor: pointer;
+    transition: 0.5s;
+
+}
+
+#logout:hover {
+    transform: scale(1.01);
+    background: green;
+    color: white;
 }
