@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="contatoForm">
+  <input name="nome" placeholder="Primeiro nome" required />
+  <input name="sobrenome" placeholder="Sobrenome" required />
+  <input name="email" placeholder="Email" required />
+  <select name="assunto" required>
+    <option value="Dúvida">Dúvida</option>
+    <option value="Suporte">Suporte</option>
+  </select>
+  <textarea name="mensagem" placeholder="Mensagem" required></textarea>
+  <button type="submit">Enviar</button>
+</form>
+
+<script>
+  document.getElementById("contatoForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(this));
+    const response = await fetch("/api/jira-ticket", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+    alert(result.message);
+  });
+</script>
+</a>
+</body>
+</html>
+<script></script>
