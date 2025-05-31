@@ -1,5 +1,4 @@
 var usuarioModel = require("../models/usuarioModel");
-var aquarioModel = require("../models/aquarioModel");
 
 function autenticar(req, res) {
     var cnpj = req.body.cnpjServer;

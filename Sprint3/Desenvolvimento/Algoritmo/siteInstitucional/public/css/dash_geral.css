@@ -24,16 +24,7 @@
     padding: 30px 0;
 }
 
-.container_btn {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-    flex-grow: 1;
-    margin: 20px 0;
-}
+
 
 .btnNavbar {
     width: 80%;
@@ -137,26 +128,26 @@
     top: 8px;
 }
 
-#vaza{
+#vaza {
     font-size: 20px;
     font-weight: 600;
     color: black;
 }
 
-#textP{
+#textP {
     position: relative;
     left: 6px;
     font-size: 17px;
     color: rgb(0, 0, 0, 0.6);
 }
 
-.detalhes{
+.detalhes {
     position: relative;
     left: 150px;
     bottom: 20px;
 }
 
-.detalhes a{
+.detalhes a {
     font-size: 17px;
     color: #27548A;
 }
@@ -170,7 +161,7 @@
     border-left: solid 6px #E52020;
 }
 
-.statusCard{
+.statusCard {
     position: relative;
     width: 65px;
     height: 20px;
@@ -178,29 +169,29 @@
     top: 7px;
     text-align: center;
     background-color: rgba(243, 198, 35, 0.3);
-    border-radius: 23px;    
+    border-radius: 23px;
 }
 
-.statusCard p{
+.statusCard p {
     position: relative;
-    top: 1px    ;
+    top: 1px;
     font-size: 15px;
     color: #FEBA17;
     font-weight: bold;
 }
 
-.statusCardCritico{
+.statusCardCritico {
     position: relative;
     width: 65px;
     height: 20px;
     left: 15px;
-    top:6px;
+    top: 6px;
     text-align: center;
     background-color: rgba(229, 32, 32, 0.3);
-    border-radius: 23px;    
+    border-radius: 23px;
 }
 
-.statusCardCritico p{
+.statusCardCritico p {
     position: relative;
     top: 1px;
     font-size: 15px;
@@ -243,12 +234,12 @@
     top: 40px;
 }
 
-.container-predios .predio p{
+.container-predios .predio p {
     position: relative;
     top: 13px;
 }
 
-.container-predios .predio img{
+.container-predios .predio img {
     width: 90px;
     height: 90px;
     top: 20px;

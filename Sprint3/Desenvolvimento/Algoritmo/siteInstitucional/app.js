@@ -17,10 +17,12 @@ var app = express();
 
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
-var avisosRouter = require("./src/routes/avisos");
-var medidasRouter = require("./src/routes/medidas");
-var aquariosRouter = require("./src/routes/aquarios");
-var empresasRouter = require("./src/routes/empresas");
+var portariaRouter = require("./src/routes/portaria")
+var dashboardRouter = require("./src/routes/dashboard");
+var alertaRouter = require("./src/routes/alerta");
+var predioRouter = require("./src/routes/predio");
+var sensorRouter = require("./src/routes/sensor");
+var graficoRouter = require("./src/routes/grafico");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -29,11 +31,14 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 app.use("/", indexRouter);
+app.use("/dashboard", dashboardRouter);
 app.use("/usuarios", usuarioRouter);
-app.use("/avisos", avisosRouter);
-app.use("/medidas", medidasRouter);
-app.use("/aquarios", aquariosRouter);
-app.use("/empresas", empresasRouter);
+app.use("/portaria", portariaRouter);
+app.use("/alerta", alertaRouter);
+app.use("/predio", predioRouter);
+app.use("/sensor", sensorRouter);
+app.use("/grafico", graficoRouter);
+
 
 app.listen(PORTA_APP, function () {
     console.log(`

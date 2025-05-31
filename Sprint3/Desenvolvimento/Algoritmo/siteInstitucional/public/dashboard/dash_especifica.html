@@ -10,12 +10,12 @@
   <title>Dashboard Específica</title>
 </head>
 
-<body>
+<body onload="grafico_de_linha()"> <!-- Carrega o gráfico de linha -->
 
   <div class="main"> <!-- Contêiner principal -->
     <div class="navbar"> <!-- Barra lateral de Menu -->
       <div class="welcome_navbar">
-        <h5>Olá, <span> ${nome} </span>!</h5>
+        <h5>Olá, <span id="span_nome_condominio"></span>!</h5>
         <h5>Bem-vindo de volta.</h5>
       </div>
 
@@ -49,8 +49,8 @@
             <img src="../assets/dashEspecifica/icon_acao.png" alt="">
           </div>
           <div class="div_informacao">
-            <span class="span_titulo">Ação Rápida</span>
-            <span class="span_resposta">Ventilação</span>
+            <span class="span_titulo">Ação Rápida</span> <!-- KPI Ação -->
+            <span class="span_resposta" id="span_alerta_acao"></span>
           </div>
         </div>
 
@@ -59,8 +59,8 @@
             <img src="../assets/dashEspecifica/icon_status.png" alt="">
           </div>
           <div class="div_informacao">
-            <span class="span_titulo">Status de Alerta</span>
-            <span class="span_resposta">Crítico</span>
+            <span class="span_titulo">Status de Alerta</span> <!-- KPI Status de Alerta -->
+            <span class="span_resposta span_alerta_status"></span>
           </div>
         </div>
 
@@ -69,8 +69,8 @@
             <img src="../assets/dashEspecifica/icon_local.png" alt="">
           </div>
           <div class="div_informacao">
-            <span class="span_titulo">No Local</span>
-            <span class="span_resposta">Cozinha</span>
+            <span class="span_titulo">No Local</span> <!-- KPI Local que está anormal e com maior nível de gás -->
+            <span class="span_resposta" id="span_local_medicaoMaior"></span>
           </div>
         </div>
 
@@ -79,18 +79,20 @@
             <img src="../assets/dashEspecifica/icon_atualizacao.png" alt="">
           </div>
           <div class="div_informacao">
-            <span class="span_titulo">Última Verificação</span>
-            <span class="span_resposta">Hoje, 15:45</span>
+            <span class="span_titulo">Última Atualização</span>
+            <!-- KPI Última data e hora quando maior nível de gás -->
+            <span class="span_resposta" id="span_dataHora"></span>
           </div>
         </div>
 
       </div>
 
       <div class="container_inferior">
-        <div class="div_grafico">
+        <div class="div_grafico"> <!-- Gráfico de medição de um sensor selecionado -->
           <div class="div_nivel">
-            <span class="span_titulo">Nivel de Gás (Últimas 24h)</span>
-            <span class="span_identificacao">Torre B, Apto 307</span>
+            <span class="span_titulo">Nivel de Gás (Últimas 2h)</span>
+            <span class="span_identificacao">Torre <span id="span_bloco_predio"></span>, Apto <span
+                id="span_numero_apartamento"></span>, <span id="span_sensor_local_selecionado"></span></span>
             <hr>
             <canvas id="canvas_grafico"></canvas>
           </div>
@@ -104,38 +106,39 @@
                 <img src="../assets/dashEspecifica/icon_alerta.png" alt="">
               </div>
               <div class="div_sobre_alerta">
-                <span class="span_titulo">Alerta Crítico</span>
-                <span class="span_subtitulo">Alta concentração de gás</span>
+                <span class="span_titulo">Alerta de Risco<span class="span_alerta_status"></span></span>
+                <!-- KPI Alerta com Risco -->
+                <span class="span_subtitulo" id="span_alerta_risco"></span>
               </div>
             </div>
 
           </div>
           <div class="div_medicao">
             <div class="div_titulo_medicao">
-              <span class="span_titulo">Sensores</span>
+              <span class="span_titulo">Sensores</span> <!-- Seleção de sensores do apartamento -->
               <span class="span_subtitulo">NIVEL DE GÁS (%)</span>
             </div>
             <hr>
 
             <div class="div_sensores_medicao">
-              <div class="div_opcao_sensor">
-                <span class="span_sensor">MQ2-001</span>
-                <span class="span_medicao">6,3</span>
-                <button class="btn_sensor">Detalhes</button>
+              <div class="div_opcao_sensor"> <!-- Seleção de sensor 1 -->
+                <span class="span_sensor" id="span_local_sensor1">--------</span>
+                <span class="span_medicao" id="span_medicao1">--------</span>
+                <button class="btn_sensor" id="btn_sensor1">Ver Gráfico</button>
               </div>
               <hr>
 
-              <div class="div_opcao_sensor">
-                <span class="span_sensor">MQ2-002</span>
-                <span class="span_medicao">8,5</span>
-                <button class="btn_sensor">Detalhes</button>
+              <div class="div_opcao_sensor"> <!-- Seleção de sensor 2 -->
+                <span class="span_sensor" id="span_local_sensor2">--------</span>
+                <span class="span_medicao" id="span_medicao2">--------</span>
+                <button class="btn_sensor" id="btn_sensor2">Ver Gráfico</button>
               </div>
               <hr>
 
-              <div class="div_opcao_sensor">
-                <span class="span_sensor">MQ2-003</span>
-                <span class="span_medicao">7,1</span>
-                <button class="btn_sensor">Detalhes</button>
+              <div class="div_opcao_sensor"> <!-- Seleção de sensor 3 -->
+                <span class="span_sensor" id="span_local_sensor3">--------</span>
+                <span class="span_medicao" id="span_medicao3">--------</span>
+                <button class="btn_sensor" id="btn_sensor3">Ver Gráfico</button>
               </div>
 
             </div>
@@ -150,6 +153,194 @@
 
 </html>
 <script>
+
+  // Recupera o número do apartamento do localStorage
+  var numero_apartamento = localStorage.getItem("numero_apartamento");  
+  // e exibe na span_numero_apartamento
+  document.getElementById("span_numero_apartamento").innerText = numero_apartamento;
+
+  // Carrega os dados do KPI de alerta e título do gráfico
+  document.addEventListener("DOMContentLoaded", retornar_dados_kpi_alerta);
+  // quando a página é carregada e a cada 5 segundos
+  setInterval(retornar_dados_kpi_alerta, 5000);
+
+  // Função para retornar os dados do alerta das KPIs de Status, Ação e Risco
+  function retornar_dados_kpi_alerta() {
+    fetch(`/alerta/retornar?numero_apartamento=${numero_apartamento}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(resposta => resposta.json())
+      .then(data => {
+        document.getElementById("span_alerta_acao").innerText = data.acao;
+        document.querySelectorAll('.span_alerta_status').forEach(span => {
+          span.innerText = data.statusAlerta;
+        });
+        document.getElementById("span_alerta_risco").innerText = data.risco;
+      })
+      .catch(erro => {
+        console.log(`#ERRO: ${erro}`);
+      });
+  }
+
+
+  // Carrega os dados do título do gráfico
+  document.addEventListener("DOMContentLoaded", retornar_dados_tituloGrafico);
+  // quando a página é carregada e a cada 5 segundos
+  setInterval(retornar_dados_tituloGrafico, 5000);
+
+  // Função para retornar os dados do título do gráfico: Torre e N° de apartamento
+  function retornar_dados_tituloGrafico() {
+    fetch(`/predio/retornar?numero_apartamento=${numero_apartamento}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(resposta => resposta.json())
+      .then(data => {
+        document.getElementById("span_bloco_predio").innerText = data.bloco_predio;
+      })
+      .catch(erro => {
+        console.log(`#ERRO: ${erro}`);
+      });
+  }
+
+  // Converte a data e hora para o formato mais fácil de entender e mais curto
+  // Exibe "Hoje, hh:mm" ou "Ontem, hh:mm" ou "dd MMM, hh:mm"
+  function formatarDataHora(dataHoraStr) {
+    if (!dataHoraStr) return "";
+
+    var meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+    var dataHora = new Date(dataHoraStr.replace(" ", "T"));
+
+    var agora = new Date();
+    var hoje = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
+    var data = new Date(dataHora.getFullYear(), dataHora.getMonth(), dataHora.getDate());
+
+    var diffDias = Math.floor((hoje - data) / (1000 * 60 * 60 * 24));
+
+    var hora = dataHora.getHours().toString().padStart(2, "0");
+    var min = dataHora.getMinutes().toString().padStart(2, "0");
+
+    if (diffDias === 0) {
+      return `Hoje, ${hora}:${min}`;
+    } else if (diffDias === 1) {
+      return `Ontem, ${hora}:${min}`;
+    } else {
+      return `${data.getDate()} ${meses[data.getMonth()]}, ${hora}:${min}`;
+    }
+  }
+
+  // Função para os dados do gráfico de medição de gás e relacionar o maior nível de gás
+  // com o local onde está instalado o sensor
+  function retornar_dados_niveisEmLocais() {
+    fetch(`/sensor/por-apartamento?numero_apartamento=${numero_apartamento}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(resposta => resposta.json())
+      .then(data => {
+        var medicaoMaior = -1;
+        var local_MedicaoMaior = "";
+        var dataHora_MedicaoMaior = "";
+        var btn_cor = 0;
+
+        if (data[0]) {
+          document.getElementById("span_local_sensor1").innerText = data[0].local_instalado;
+          document.getElementById("span_medicao1").innerText = data[0].nivel_de_gas + " %";
+          if (data[0].nivel_de_gas > medicaoMaior) {
+            medicaoMaior = data[0].nivel_de_gas;
+            local_MedicaoMaior = data[0].local_instalado;
+            dataHora_MedicaoMaior = data[0].data_hora;
+            btn_cor = 1;
+          }
+        }
+
+        if (data[1]) {
+          document.getElementById("span_local_sensor2").innerText = data[1].local_instalado;
+          document.getElementById("span_medicao2").innerText = data[1].nivel_de_gas + " %";
+          if (data[1].nivel_de_gas > medicaoMaior) {
+            medicaoMaior = data[1].nivel_de_gas;
+            local_MedicaoMaior = data[1].local_instalado;
+            dataHora_MedicaoMaior = data[1].data_hora;
+            btn_cor = 2;
+          }
+        }
+
+        if (data[2]) {
+          document.getElementById("span_local_sensor3").innerText = data[2].local_instalado;
+          document.getElementById("span_medicao3").innerText = data[2].nivel_de_gas + " %";
+          if (data[2].nivel_de_gas > medicaoMaior) {
+            medicaoMaior = data[2].nivel_de_gas;
+            local_MedicaoMaior = data[2].local_instalado;
+            dataHora_MedicaoMaior = data[2].data_hora;
+            btn_cor = 3;
+          }
+        }
+
+        // Exibe o maior nível e o local correspondente
+        if (medicaoMaior >= 0) {
+          document.getElementById("span_local_medicaoMaior").innerText = `${local_MedicaoMaior}`;
+          document.getElementById("span_dataHora").innerText = formatarDataHora(dataHora_MedicaoMaior);
+          document.getElementById("span_sensor_local_selecionado").innerText = local_MedicaoMaior;
+          
+          if (btn_cor == 1) {
+            document.getElementById("btn_sensor1").style.backgroundColor = "rgb(50, 51, 56)";
+            document.getElementById("btn_sensor1").innerHTML = "Gráfico Atual";
+          } else if (btn_cor == 2) {
+            document.getElementById("btn_sensor2").style.backgroundColor = "rgb(50, 51, 56)";
+            document.getElementById("btn_sensor2").innerHTML = "Gráfico Atual";
+          } else if (btn_cor == 3) {
+            document.getElementById("btn_sensor3").style.backgroundColor = "rgb(50, 51, 56)";
+            document.getElementById("btn_sensor3").innerHTML = "Gráfico Atual";
+          }
+        }
+      })
+      .catch(erro => {
+        console.log(`#ERRO: ${erro}`);
+      });
+  }
+
+  // Função para os dados do gráfico de medição de gás e o local onde está instalado o sensor
+  document.addEventListener("DOMContentLoaded", retornar_dados_niveisEmLocais);
+  // quando a página é carregada e a cada 5 segundos
+  setInterval(retornar_dados_niveisEmLocais, 5000);
+
+  document.addEventListener("DOMContentLoaded", function () {
+  // Função para atualizar o botão e o span ao clicar
+  function configurarBotoesSensores() {
+    for (let i = 1; i <= 3; i++) {
+      const btn = document.getElementById(`btn_sensor${i}`);
+      btn.addEventListener("click", function () {
+        // Atualiza o span com o local do sensor clicado
+        const local = document.getElementById(`span_local_sensor${i}`).innerText;
+        document.getElementById("span_sensor_local_selecionado").innerText = local;
+
+        // Atualiza os botões
+        for (let j = 1; j <= 3; j++) {
+          const btnOutros = document.getElementById(`btn_sensor${j}`);
+          if (i === j) {
+            btnOutros.innerText = "Gráfico Atual";
+            btnOutros.style.backgroundColor = "rgb(50, 51, 56)";
+          } else {
+            btnOutros.innerText = "Ver Gráfico";
+            btnOutros.style.backgroundColor = "#2563eb";
+          }
+        }
+      });
+    }
+  }
+
+  configurarBotoesSensores();
+});
+
+
+ // Função para o gráfico de medição de gás
   const ctx = document.getElementById('canvas_grafico').getContext('2d');
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 500);
@@ -158,14 +349,118 @@
   gradient.addColorStop(0.6, 'rgba(37, 99, 235, 0.01)');
   gradient.addColorStop(0.6, 'rgb(255, 255, 255)');
 
+  var dadosGrafico = []
+function grafico_de_linha() {
+    fetch(`/grafico/medicoes-gas?numero_apartamento=${numero_apartamento}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    .then(resposta => resposta.json())
+    .then(data => {
+
+      
+
+        // Atualiza os dados do gráfico
+        const labels = data.map(item => item.data_hora); // Supondo que 'data_hora' é o campo com os horários
+        const valores = data.map(item => item.nivel_de_gas); // Supondo que 'nivel_de_gas' é o campo com os valores
+
+        // Atualiza o gráfico
+        canvas_grafico.data.labels = labels;
+        canvas_grafico.data.datasets[0].data = valores;
+        canvas_grafico.options.scales.y.max = Math.max(...valores); // Define o máximo do eixo Y com base nos dados 
+        canvas_grafico.update();
+        
+    })
+    .catch(erro => {  
+        console.error("Erro ao buscar dados do gráfico:", erro);
+    });
+
+
+const ctx = document.getElementById('canvas_grafico').getContext('2d');
+const canvas_grafico = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [], // Inicialmente vazio
+        datasets: [{
+            label: 'Nível de Gás (%)',
+            data: [], // Inicialmente vazio
+            borderColor: '#2563eb',
+            
+          tension: 0.3,
+          fill: true,
+          pointRadius: 0.3,
+          borderWidth: 2
+        },
+       {
+         label: 'Limite de Segurança',
+         data: Array(25).fill(5),
+         borderColor: 'red',
+         borderWidth: 1,
+         pointRadius: 0,
+         fill: false,
+       }]
+    },
+    options: {
+     responsive: false,
+     plugins: {
+       legend: {
+         display: false
+       },
+       tooltip: {
+         mode: 'index',
+         intersect: false
+       }
+     },
+     scales: {
+       y: {
+         beginAtZero: true,
+         max: 12,
+         ticks: {
+           callback: function (value) {
+             return value + ' %';
+           }
+         }
+       },
+       x: {
+         title: {
+           display: true,
+           text: 'Hora'
+         }
+       }
+     }
+   },
+   plugins: [{
+     id: 'customLabelPlugin',
+     afterDraw: (chart) => {
+       const { ctx, chartArea: { top, right, width } } = chart;
+       ctx.save();
+       ctx.font = '16px sans-serif';
+       ctx.fillStyle = 'black';
+       ctx.textAlign = 'center';
+       ctx.fillText('Limite de Segurança', right - width / 7.5, top + 65);
+       ctx.restore();
+     }
+   }]
+});
+
+
+}
+
+  /* Gráfico MOCADO
   const graficoGas = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: ['0:00', '2:00', '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'],
+      labels: ['13:45', '13:50', '13:55', '14:00', '14:05', '14:10', '14:15', '14:20', '14:25', '14:30',
+        '14:35', '14:40', '14:45', '14:50', '14:55', '15:00', '15:05', '15:10', '15:15', '15:20',
+        '15:25', '15:30', '15:35', '15:40', '15:45'],
       datasets: [
         {
           label: 'Nível de Gás (%)',
-          data: [3.1, 3.3, 3.9, 3.8, 3.0, 3.6, 3.3, 3.2, 4.4, 4.3, 4.2, 4.5, 8.5],
+          data: [3.1, 3.2, 3.3, 3.5, 3.9, 3.8, 3.0, 3.4, 3.6, 3.3,
+            3.2, 3.4, 4.4, 4.3, 4.2, 4.1, 4.5, 5.2, 5.9, 6.8,
+            7.3, 7.9, 8.2, 8.4, 8.5],
           borderColor: '#2563eb',
           backgroundColor: gradient,
           tension: 0.3,
@@ -175,7 +470,7 @@
         },
         {
           label: 'Limite de Segurança',
-          data: Array(13).fill(5),
+          data: Array(25).fill(5),
           borderColor: 'red',
           borderWidth: 1,
           pointRadius: 0,
@@ -225,5 +520,5 @@
       }
     }]
   });
-
+*/
 </script>
