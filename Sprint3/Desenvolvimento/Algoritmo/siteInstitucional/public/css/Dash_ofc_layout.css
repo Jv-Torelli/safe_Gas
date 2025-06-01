@@ -43,21 +43,10 @@
     flex-direction: column;
     border-radius: 15px;
     position: relative;
-    justify-content: center;
+    justify-content: flex-start;
+    padding: 5px;
 }
 
-.container_predios {
-    background-color: white;
-    width: 65%;
-    min-height: 90%;
-    gap: 75px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    border-radius: 15px;
-    position: relative;
-    justify-content: flex-end;
-}
 
 .cabecalho-container {
     display: flex;
@@ -78,7 +67,11 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    transition: 0.5s;
+}
 
+.item-cabecalho:hover {
+    transform: scale(1.05);
 }
 
 .valor-principal {
@@ -109,11 +102,9 @@
     height: 20px;
     display: flex;
     align-items: center;
-    background: green;
     padding: 20px;
     border-radius: 10px 10px 0px 0px;
-    color: white;
+    color: black;
     font-size: 12px;
-    position: absolute;
-    top: 0;
+
 }

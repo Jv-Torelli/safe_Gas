@@ -57,8 +57,10 @@
     color: white;
     padding: 10px;
     border-top-left-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
-
 
 
 .div_notificacoes_emergencia {
@@ -69,10 +71,12 @@
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    color: gray;
-    background-color: rgba(0, 0, 0, 0.167);
+    color: black;
+    /* background-color: rgba(0, 0, 0, 0.167); */
     margin-bottom: 25px;
     margin-left: 10px;
+    border-bottom: 1px solid black;
+    box-shadow: 0px 3px 10px 0px rgb(0 0 0 / 13%);
 }
 
 .div_notificacoes_critico {
@@ -109,7 +113,7 @@
 }
 
 .informacao_emergencia {
-    color: rgb(0, 0, 0);
+    color: black;
 }
 
 .informacao_critica {
@@ -127,4 +131,18 @@
     border-radius: 3px;
     border: none;
     cursor: pointer;
+}
+
+.horario_notificacao {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.comodoNotificacao {
+    height: 25px;
+    border: solid 1px black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

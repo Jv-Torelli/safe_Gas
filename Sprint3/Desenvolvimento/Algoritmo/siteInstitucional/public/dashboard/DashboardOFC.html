@@ -30,6 +30,12 @@
         font-size: 15px;
         font-family: 'Roboto';
         font-weight: bold;
+        cursor: pointer;
+        transition: 0.5s;
+    }
+
+    .tab-p:hover {
+        transform: scale(1.05);
     }
 
     .grid-p {
@@ -293,7 +299,7 @@
             <div class="compenentesDiv">
                 <div class="container_predios">
                     <div class="rowTitleGrafico">
-                        <h1>Gerenciamento de Prédios</h1>
+                        <h1>Visualização do Condomínio</h1>
                     </div>
                     <div class="navbar-p" id="torresDiv">
 
@@ -339,7 +345,7 @@
 
             <div class="modal">
                 <div class="cabecalho-modal">
-                    <h2 class="titulo-modal">Apartamento 801-A</h2>
+                    <h2 class="titulo-modal">Apartamento <span id="numeroApto"> </span>-A</h2>
                     <button class="botao-fechar" id="botaoFechar">&times;</button>
                 </div>
 
@@ -347,33 +353,33 @@
                     <div class="localizacao">
                         <span class="infoLoc">Localização:</span>
                         <div class="apto">
-                            Torre A, Apartamento 801
+                            Torre A, Apartamento <span id="numeroApto2"> </span>
                         </div>
                     </div>
 
                     <div class="status-container">
                         <span class="status">Status:</span>
-                        <div class="local">
-                            <span class="comodo">Cozinha</span>
+                        <div class="local" id="localModal">
+                            <span class="comodo" id="comodoModal"></span>
                         </div>
                         <div class="status-label">
-                            <div class="indicador-status"></div>
-                            <span class="status-critico">Crítico</span>
+                            <div id="indicadorStatusModal"></div>
+                            <span class="status-critico" id="statusModal"></span>
                         </div>
                     </div>
 
                     <div class="nivel-container">
                         <div class="nivel-label">
                             <span>Nível de Gás:</span>
-                            <span class="nivel-valor">13%</span>
+                            <span class="nivel-valor" id="nivelModal"></span>
                         </div>
                         <div class="barra-progresso-container">
-                            <div class="barra-progresso"></div>
+                            <div class="barra-progresso" id="barraprogresso"></div>
                         </div>
                     </div>
 
                     <div class="ultima-leitura">
-                        Última leitura: <span class="leitura-hora">Hoje, 15:38</span>
+                        Última leitura: <span class="leitura-hora" id="horaModal"></span>
                     </div>
 
                     <div class="historico-label">
@@ -397,9 +403,57 @@
 </html>
 <script>
     var qtd_total_apto_andar = 3;
+    var dadosApartamentoGeral = [];
     var dados = [];
+    var dadosModal;
+    var numero_apartamentoAtual = 0;
     function obterNumero(numero_apartamento) {
-        var numero_apartamento = numero_apartamento.innerText.trim();
+        numero_apartamento = numero_apartamento.innerText.trim();
+
+        numero_apartamentoAtual = numero_apartamento
+
+        numeroApto.innerHTML = numero_apartamentoAtual;
+        numeroApto2.innerHTML = numero_apartamentoAtual;
+
+        for (let i = 0; i < dados.length; i++) {
+            if (dados[i].Numero_Apartamento == numero_apartamentoAtual) {
+                dadosModal = dados[i];
+                console.log("achei o modal", dadosModal)
+            }
+        }
+        comodoModal.innerHTML = `${dadosModal.Local_do_Sensor}`;
+        statusModal.innerHTML = `${dadosModal.tatus_Alerta}`;
+        nivelModal.innerHTML = `${dadosModal.Maior_Nivel_de_Gas}%`;
+        horaModal.innerHTML = `${new Date(dadosModal.Hora_da_ultima_Medicao).toLocaleString('pt-BR', {
+            dateStyle: 'short',
+            timeStyle: 'short'
+        })
+            }`
+        barraprogresso.style.width = `${(dadosModal.Maior_Nivel_de_Gas * 5)}% `;
+
+
+        if (dadosModal.Maior_Nivel_de_Gas < 2.5) {
+            indicadorStatusModal.style.backgroundColor = 'green';
+            statusModal.style.color = 'green';
+            barraprogresso.style.background = 'green';
+            localModal.style.background = 'green';
+        } else if (dadosModal.Maior_Nivel_de_Gas < 5) {
+            barraprogresso.style.background = '#FFEB3B';
+            indicadorStatusModal.style.backgroundColor = '#FFEB3B';
+            statusModal.style.color = '#FFEB3B';
+            localModal.style.background = '#FFEB3B';
+
+
+        } else if (dadosModal.Maior_Nivel_de_Gas < 15) {
+            barraprogresso.style.background = '#FF9800';
+            indicadorStatusModal.style.backgroundColor = '#FF9800';
+            statusModal.style.color = '#FF9800';
+            localModal.style.background = '#FF9800';
+
+
+        } else {
+        }
+
         localStorage.setItem("numero_apartamento", numero_apartamento);
         return numero_apartamento;
     }
@@ -535,7 +589,7 @@
 
 
     function buscarDados() {
-        alertasDash.innerHTML = "<div id='alertas_recentes'>Alertas Recentes</div> ";
+        alertasDash.innerHTML = `<div id='alertas_recentes'>Alertas Recentes <span id="qtd_totalNotificacoes"> </span> </div> `;
         fetch("/dashboard/buscar/").then(function (resposta) {
 
             if (resposta.ok) {
@@ -556,24 +610,79 @@
             .then(function (respostaJson) {
                 dados = respostaJson; // agora a variável `dados` contém o JSON
                 console.log("Dados recebidos: ", JSON.stringify(dados));
+                dadosApartamentoGeral = dados;
+                var coresBackGround = "white";
+                var totalNotificacoes = 0;
 
                 for (var i = 0; i < dados.length; i++) {
 
-                    alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia">
+                    if (dados[i].Descricao_Risco == "Nenhum risco") {
+                        coresBackGround = "#00800038";
+                    } else if (dados[i].Descricao_Risco == "Possível vazamento") {
+                        coresBackGround = "#FFEB3B";
+                        alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia" style="border-left:4px solid ${coresBackGround};">
                     <div class="informacao_notificacao">
-                        <div class="informacao_emergencia">Torre ${dados[i].Torre} Apto ${dados[i].Numero_Apartamento}</div>
-                        <div class="nivel_gas">${dados[i].Descricao_Status}</div>
+                        <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
+                        <div class="nivel_gas">${dados[i].Descricao_Risco}</div>
                         <button class="btn_verificar" onclick="verificarApto('${dados[i].Numero_Apartamento}')">Verificar</button>
                     </div>
                   <div class="horario_notificacao">
-                    ${new Date(dados[i].Horario_Consulta).toLocaleString('pt-BR', {
-                        dateStyle: 'short',
-                        timeStyle: 'medium'
-                    })}
+                    ${new Date(dados[i].Hora_da_ultima_Medicao).toLocaleString('pt-BR', {
+                            dateStyle: 'short',
+                            timeStyle: 'medium'
+                        })}
+                                                <div class="comodoNotificacao">${dados[i].Local_do_Sensor} </div>
+
                 </div>
 
                 </div>
                 `
+                        totalNotificacoes++;
+
+                    } else if (dados[i].Descricao_Risco == "Possibilidade de asfixia") {
+                        coresBackGround = "#F44336";
+                        alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};">
+                    <div class="informacao_notificacao">
+                        <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
+                        <div class="nivel_gas">${dados[i].Descricao_Risco}</div>
+                        <button class="btn_verificar" onclick="verificarApto('${dados[i].Numero_Apartamento}')">Verificar</button>
+                    </div>
+                  <div class="horario_notificacao">
+                    ${new Date(dados[i].Hora_da_ultima_Medicao).toLocaleString('pt-BR', {
+                            dateStyle: 'short',
+                            timeStyle: 'medium'
+                        })}
+
+                        <div class="comodoNotificacao">${dados[i].Local_do_Sensor} </div>
+                </div>
+
+                </div>
+                `
+                        totalNotificacoes++;
+
+                    } else {
+                        totalNotificacoes++;
+
+                        coresBackGround = "#FF9800";
+                        alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};">
+                    <div class="informacao_notificacao">
+                        <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
+                        <div class="nivel_gas">${dados[i].Descricao_Risco}</div>
+                        <button class="btn_verificar" onclick="verificarApto('${dados[i].Numero_Apartamento}')">Verificar</button>
+                    </div>
+                  <div class="horario_notificacao">
+                    ${new Date(dados[i].Hora_da_ultima_Medicao).toLocaleString('pt-BR', {
+                            dateStyle: 'short',
+                            timeStyle: 'medium'
+                        })}
+                                                <div class="comodoNotificacao">${dados[i].Local_do_Sensor} </div>
+
+                </div>
+
+                </div>
+                `
+                    }
+                    qtd_totalNotificacoes.innerHTML = ` ${totalNotificacoes} alertas`;
                 }
             })
             .catch(function (resposta) {
