@@ -159,6 +159,46 @@
   // e exibe na span_numero_apartamento
   document.getElementById("span_numero_apartamento").innerText = numero_apartamento;
 
+  var sensores_estaticos = {
+    sensor2: {
+      local: "Cozinha",
+      nivel: 5.2
+    },
+    sensor3: {
+      local: "Quarto",
+      nivel: 14.8
+    }
+  };
+
+  function obterCorPorNivel(nivel) {
+    if (nivel <= 2.4) {
+      return "#22c55e"; // Verde
+    } else if (nivel <= 4.9) {
+      return "#eab308"; // Amarelo
+    } else if (nivel <= 14.9) {
+      return "#ef4444"; 
+    } else {
+      return "#7f1d1d"; 
+    }
+  }
+
+
+  var sensorGraficoAtual = null;
+  var primeiraExecucao = true;
+
+
+  function atualizarSensoresEstaticos() {
+    // Sensor 2 - Cozinha
+    var variacao2 = (Math.random() - 0.5) * 0.6; // Variação de -0.3 a +0.3
+    sensores_estaticos.sensor2.nivel = Math.max(0, sensores_estaticos.sensor2.nivel + variacao2);
+    sensores_estaticos.sensor2.nivel = Math.round(sensores_estaticos.sensor2.nivel * 10) / 10;
+
+    // Sensor 3 - Quarto
+    var variacao3 = (Math.random() - 0.5) * 0.4; // Variação de -0.2 a +0.2
+    sensores_estaticos.sensor3.nivel = Math.max(0, sensores_estaticos.sensor3.nivel + variacao3);
+    sensores_estaticos.sensor3.nivel = Math.round(sensores_estaticos.sensor3.nivel * 10) / 10;
+  }
+
   // Carrega os dados do KPI de alerta e título do gráfico
   document.addEventListener("DOMContentLoaded", retornar_dados_kpi_alerta);
   // quando a página é carregada e a cada 5 segundos
@@ -183,15 +223,31 @@
       .catch(erro => {
         console.log(`#ERRO: ${erro}`);
       });
+      
+
+    if (primeiraExecucao) {
+      primeiraExecucao = false;
+    }
   }
 
+  function atualizarTextosBotoes() {
+    for (let j = 1; j <= 3; j++) {
+      const btn = document.getElementById(`btn_sensor${j}`);
+      if (j === sensorGraficoAtual) {
+        btn.innerText = "Gráfico Atual";
+        btn.style.opacity = "0.8";
+        btn.style.fontWeight = "bold";
+      } else {
+        btn.innerText = "Ver Gráfico";
+        btn.style.opacity = "1";
+        btn.style.fontWeight = "normal";
+      }
+    }
+  }
 
-  // Carrega os dados do título do gráfico
   document.addEventListener("DOMContentLoaded", retornar_dados_tituloGrafico);
-  // quando a página é carregada e a cada 5 segundos
   setInterval(retornar_dados_tituloGrafico, 5000);
 
-  // Função para retornar os dados do título do gráfico: Torre e N° de apartamento
   function retornar_dados_tituloGrafico() {
     fetch(`/predio/retornar?numero_apartamento=${numero_apartamento}`, {
       method: "GET",
@@ -208,8 +264,7 @@
       });
   }
 
-  // Converte a data e hora para o formato mais fácil de entender e mais curto
-  // Exibe "Hoje, hh:mm" ou "Ontem, hh:mm" ou "dd MMM, hh:mm"
+
   function formatarDataHora(dataHoraStr) {
     if (!dataHoraStr) return "";
 
@@ -234,8 +289,7 @@
     }
   }
 
-  // Função para os dados do gráfico de medição de gás e relacionar o maior nível de gás
-  // com o local onde está instalado o sensor
+
   function retornar_dados_niveisEmLocais() {
     fetch(`/sensor/por-apartamento?numero_apartamento=${numero_apartamento}`, {
       method: "GET",
@@ -250,9 +304,16 @@
         var dataHora_MedicaoMaior = "";
         var btn_cor = 0;
 
+        atualizarSensoresEstaticos();
+
         if (data[0]) {
           document.getElementById("span_local_sensor1").innerText = data[0].local_instalado;
           document.getElementById("span_medicao1").innerText = data[0].nivel_de_gas + " %";
+          
+          
+          var cor1 = obterCorPorNivel(data[0].nivel_de_gas);
+          document.getElementById("btn_sensor1").style.backgroundColor = cor1;
+          
           if (data[0].nivel_de_gas > medicaoMaior) {
             medicaoMaior = data[0].nivel_de_gas;
             local_MedicaoMaior = data[0].local_instalado;
@@ -261,44 +322,46 @@
           }
         }
 
-        if (data[1]) {
-          document.getElementById("span_local_sensor2").innerText = data[1].local_instalado;
-          document.getElementById("span_medicao2").innerText = data[1].nivel_de_gas + " %";
-          if (data[1].nivel_de_gas > medicaoMaior) {
-            medicaoMaior = data[1].nivel_de_gas;
-            local_MedicaoMaior = data[1].local_instalado;
-            dataHora_MedicaoMaior = data[1].data_hora;
-            btn_cor = 2;
-          }
+        // Sensor 2 - Dados estáticos (Cozinha)
+        document.getElementById("span_local_sensor2").innerText = sensores_estaticos.sensor2.local;
+        document.getElementById("span_medicao2").innerText = sensores_estaticos.sensor2.nivel + " %";
+        
+        
+        var cor2 = obterCorPorNivel(sensores_estaticos.sensor2.nivel);
+        document.getElementById("btn_sensor2").style.backgroundColor = cor2;
+        
+        if (sensores_estaticos.sensor2.nivel > medicaoMaior) {
+          medicaoMaior = sensores_estaticos.sensor2.nivel;
+          local_MedicaoMaior = sensores_estaticos.sensor2.local;
+          dataHora_MedicaoMaior = new Date().toISOString().slice(0, 19).replace('T', ' ');
+          btn_cor = 2;
         }
 
-        if (data[2]) {
-          document.getElementById("span_local_sensor3").innerText = data[2].local_instalado;
-          document.getElementById("span_medicao3").innerText = data[2].nivel_de_gas + " %";
-          if (data[2].nivel_de_gas > medicaoMaior) {
-            medicaoMaior = data[2].nivel_de_gas;
-            local_MedicaoMaior = data[2].local_instalado;
-            dataHora_MedicaoMaior = data[2].data_hora;
-            btn_cor = 3;
-          }
+        // Sensor 3 - Dados estáticos (Quarto)
+        document.getElementById("span_local_sensor3").innerText = sensores_estaticos.sensor3.local;
+        document.getElementById("span_medicao3").innerText = sensores_estaticos.sensor3.nivel + " %";
+        
+        var cor3 = obterCorPorNivel(sensores_estaticos.sensor3.nivel);
+        document.getElementById("btn_sensor3").style.backgroundColor = cor3;
+        
+        if (sensores_estaticos.sensor3.nivel > medicaoMaior) {
+          medicaoMaior = sensores_estaticos.sensor3.nivel;
+          local_MedicaoMaior = sensores_estaticos.sensor3.local;
+          dataHora_MedicaoMaior = new Date().toISOString().slice(0, 19).replace('T', ' ');
+          btn_cor = 3;
         }
 
-        // Exibe o maior nível e o local correspondente
         if (medicaoMaior >= 0) {
           document.getElementById("span_local_medicaoMaior").innerText = `${local_MedicaoMaior}`;
           document.getElementById("span_dataHora").innerText = formatarDataHora(dataHora_MedicaoMaior);
-          document.getElementById("span_sensor_local_selecionado").innerText = local_MedicaoMaior;
           
-          if (btn_cor == 1) {
-            document.getElementById("btn_sensor1").style.backgroundColor = "rgb(50, 51, 56)";
-            document.getElementById("btn_sensor1").innerHTML = "Gráfico Atual";
-          } else if (btn_cor == 2) {
-            document.getElementById("btn_sensor2").style.backgroundColor = "rgb(50, 51, 56)";
-            document.getElementById("btn_sensor2").innerHTML = "Gráfico Atual";
-          } else if (btn_cor == 3) {
-            document.getElementById("btn_sensor3").style.backgroundColor = "rgb(50, 51, 56)";
-            document.getElementById("btn_sensor3").innerHTML = "Gráfico Atual";
+          if (primeiraExecucao) {
+            sensorGraficoAtual = btn_cor;
+            document.getElementById("span_sensor_local_selecionado").innerText = local_MedicaoMaior;
+            atualizarGraficoParaSensor(btn_cor);
           }
+          
+          atualizarTextosBotoes();
         }
       })
       .catch(erro => {
@@ -306,41 +369,82 @@
       });
   }
 
-  // Função para os dados do gráfico de medição de gás e o local onde está instalado o sensor
+
   document.addEventListener("DOMContentLoaded", retornar_dados_niveisEmLocais);
   // quando a página é carregada e a cada 5 segundos
   setInterval(retornar_dados_niveisEmLocais, 5000);
 
   document.addEventListener("DOMContentLoaded", function () {
-  // Função para atualizar o botão e o span ao clicar
-  function configurarBotoesSensores() {
-    for (let i = 1; i <= 3; i++) {
-      const btn = document.getElementById(`btn_sensor${i}`);
-      btn.addEventListener("click", function () {
-        // Atualiza o span com o local do sensor clicado
-        const local = document.getElementById(`span_local_sensor${i}`).innerText;
-        document.getElementById("span_sensor_local_selecionado").innerText = local;
+    function configurarBotoesSensores() {
+      for (let i = 1; i <= 3; i++) {
+        const btn = document.getElementById(`btn_sensor${i}`);
+        btn.addEventListener("click", function () {
 
-        // Atualiza os botões
-        for (let j = 1; j <= 3; j++) {
-          const btnOutros = document.getElementById(`btn_sensor${j}`);
-          if (i === j) {
-            btnOutros.innerText = "Gráfico Atual";
-            btnOutros.style.backgroundColor = "rgb(50, 51, 56)";
-          } else {
-            btnOutros.innerText = "Ver Gráfico";
-            btnOutros.style.backgroundColor = "#2563eb";
-          }
-        }
+          sensorGraficoAtual = i;
+          
+          // Atualiza o span com o local do sensor clicado
+          const local = document.getElementById(`span_local_sensor${i}`).innerText;
+          document.getElementById("span_sensor_local_selecionado").innerText = local;
+
+          // Atualiza os textos dos botões
+          atualizarTextosBotoes();
+          
+          // Atualizar o gráfico para o sensor selecionado
+          atualizarGraficoParaSensor(i);
+        });
+      }
+    }
+
+    configurarBotoesSensores();
+  });
+
+  // Função para gerar dados aleatórios para sensores estáticos
+  function gerarDadosAleatorios(sensorNum, horasAtras = 2) {
+    var dados = [];
+    var agora = new Date();
+    var nivelBase = sensorNum === 2 ? sensores_estaticos.sensor2.nivel : sensores_estaticos.sensor3.nivel;
+    
+    for (let i = horasAtras * 12; i >= 0; i--) {
+      var tempo = new Date(agora.getTime() - (i * 10 * 60000)); // 10 minutos de intervalo
+      var hora = tempo.getHours().toString().padStart(2, "0");
+      var minuto = tempo.getMinutes().toString().padStart(2, "0");
+      
+      // Gerar variação baseada no nível base
+      var variacao = (Math.random() - 0.5) * (nivelBase * 0.3);
+      var nivel = Math.max(0, nivelBase + variacao);
+      nivel = Math.round(nivel * 10) / 10;
+      
+      dados.push({
+        data_hora: `${hora}:${minuto}`,
+        nivel_de_gas: nivel
       });
+    }
+    
+    return dados;
+  }
+
+  // Função para atualizar gráfico baseado no sensor selecionado
+  function atualizarGraficoParaSensor(sensorNum) {
+    if (sensorNum === 1) {
+      // Sensor 1 - dados do banco
+      grafico_de_linha();
+    } else {
+      // Sensores 2 e 3 - dados aleatórios
+      var dadosAleatorios = gerarDadosAleatorios(sensorNum);
+      
+      const labels = dadosAleatorios.map(item => item.data_hora);
+      const valores = dadosAleatorios.map(item => item.nivel_de_gas);
+
+      if (canvas_grafico) {
+        canvas_grafico.data.labels = labels;
+        canvas_grafico.data.datasets[0].data = valores;
+        canvas_grafico.options.scales.y.max = Math.max(Math.max(...valores), 5) + 2;
+        canvas_grafico.update();
+      }
     }
   }
 
-  configurarBotoesSensores();
-});
-
-
- // Função para o gráfico de medição de gás
+  // Função para o gráfico de medição de gás
   const ctx = document.getElementById('canvas_grafico').getContext('2d');
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 500);
@@ -349,118 +453,51 @@
   gradient.addColorStop(0.6, 'rgba(37, 99, 235, 0.01)');
   gradient.addColorStop(0.6, 'rgb(255, 255, 255)');
 
-  var dadosGrafico = []
-function grafico_de_linha() {
+  var canvas_grafico;
+
+  function grafico_de_linha() {
     fetch(`/grafico/medicoes-gas?numero_apartamento=${numero_apartamento}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
     .then(resposta => resposta.json())
     .then(data => {
+      // Atualiza os dados do gráfico
+      const labels = data.map(item => item.data_hora);
+      const valores = data.map(item => item.nivel_de_gas);
 
-      
+      if (canvas_grafico) {
 
-        // Atualiza os dados do gráfico
-        const labels = data.map(item => item.data_hora); // Supondo que 'data_hora' é o campo com os horários
-        const valores = data.map(item => item.nivel_de_gas); // Supondo que 'nivel_de_gas' é o campo com os valores
-
-        // Atualiza o gráfico
-        canvas_grafico.data.labels = labels;
-        canvas_grafico.data.datasets[0].data = valores;
-        canvas_grafico.options.scales.y.max = Math.max(...valores); // Define o máximo do eixo Y com base nos dados 
-        canvas_grafico.update();
-        
+        if (sensorGraficoAtual === 1) {
+          canvas_grafico.data.labels = labels;
+          canvas_grafico.data.datasets[0].data = valores;
+          canvas_grafico.options.scales.y.max = Math.max(Math.max(...valores), 5) + 2;
+          canvas_grafico.update();
+        }
+      } else {
+        // Cria o gráfico pela primeira vez
+        criarGrafico(labels, valores);
+      }
     })
     .catch(erro => {  
-        console.error("Erro ao buscar dados do gráfico:", erro);
+      console.error("Erro ao buscar dados do gráfico:", erro);
+      // Em caso de erro, criar gráfico com dados vazios
+      if (!canvas_grafico) {
+        criarGrafico([], []);
+      }
     });
+  }
 
-
-const ctx = document.getElementById('canvas_grafico').getContext('2d');
-const canvas_grafico = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: [], // Inicialmente vazio
+  function criarGrafico(labels, valores) {
+    canvas_grafico = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
         datasets: [{
-            label: 'Nível de Gás (%)',
-            data: [], // Inicialmente vazio
-            borderColor: '#2563eb',
-            
-          tension: 0.3,
-          fill: true,
-          pointRadius: 0.3,
-          borderWidth: 2
-        },
-       {
-         label: 'Limite de Segurança',
-         data: Array(25).fill(5),
-         borderColor: 'red',
-         borderWidth: 1,
-         pointRadius: 0,
-         fill: false,
-       }]
-    },
-    options: {
-     responsive: false,
-     plugins: {
-       legend: {
-         display: false
-       },
-       tooltip: {
-         mode: 'index',
-         intersect: false
-       }
-     },
-     scales: {
-       y: {
-         beginAtZero: true,
-         max: 12,
-         ticks: {
-           callback: function (value) {
-             return value + ' %';
-           }
-         }
-       },
-       x: {
-         title: {
-           display: true,
-           text: 'Hora'
-         }
-       }
-     }
-   },
-   plugins: [{
-     id: 'customLabelPlugin',
-     afterDraw: (chart) => {
-       const { ctx, chartArea: { top, right, width } } = chart;
-       ctx.save();
-       ctx.font = '16px sans-serif';
-       ctx.fillStyle = 'black';
-       ctx.textAlign = 'center';
-       ctx.fillText('Limite de Segurança', right - width / 7.5, top + 65);
-       ctx.restore();
-     }
-   }]
-});
-
-
-}
-
-  /* Gráfico MOCADO
-  const graficoGas = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['13:45', '13:50', '13:55', '14:00', '14:05', '14:10', '14:15', '14:20', '14:25', '14:30',
-        '14:35', '14:40', '14:45', '14:50', '14:55', '15:00', '15:05', '15:10', '15:15', '15:20',
-        '15:25', '15:30', '15:35', '15:40', '15:45'],
-      datasets: [
-        {
           label: 'Nível de Gás (%)',
-          data: [3.1, 3.2, 3.3, 3.5, 3.9, 3.8, 3.0, 3.4, 3.6, 3.3,
-            3.2, 3.4, 4.4, 4.3, 4.2, 4.1, 4.5, 5.2, 5.9, 6.8,
-            7.3, 7.9, 8.2, 8.4, 8.5],
+          data: valores,
           borderColor: '#2563eb',
           backgroundColor: gradient,
           tension: 0.3,
@@ -470,55 +507,64 @@ const canvas_grafico = new Chart(ctx, {
         },
         {
           label: 'Limite de Segurança',
-          data: Array(25).fill(5),
+          data: Array(labels.length || 25).fill(5),
           borderColor: 'red',
           borderWidth: 1,
           pointRadius: 0,
           fill: false,
-        }
-      ]
-    },
-    options: {
-      responsive: false,
-      plugins: {
-        legend: {
-          display: false
         },
-        tooltip: {
-          mode: 'index',
-          intersect: false
-        }
+        {
+          label: 'Atenção',
+          data: Array(labels.length || 25).fill(2.5),
+          borderColor: '#FF9F00',
+          borderWidth: 1,
+          pointRadius: 0,
+          fill: false,
+        }]
       },
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: 12,
-          ticks: {
-            callback: function (value) {
-              return value + ' %';
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: Math.max(Math.max(...valores), 5) + 2 || 12,
+            ticks: {
+              callback: function (value) {
+                return value + ' %';
+              }
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Hora'
             }
           }
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Hora'
-          }
         }
-      }
-    },
-    plugins: [{
-      id: 'customLabelPlugin',
-      afterDraw: (chart) => {
-        const { ctx, chartArea: { top, right, width } } = chart;
-        ctx.save();
-        ctx.font = '16px sans-serif';
-        ctx.fillStyle = 'black';
-        ctx.textAlign = 'center';
-        ctx.fillText('Limite de Segurança', right - width / 7.5, top + 65);
-        ctx.restore();
-      }
-    }]
-  });
-*/
+      },
+      plugins: [{
+        id: 'customLabelPlugin',
+        afterDraw: (chart) => {
+          const { ctx, chartArea: { top, right, width } } = chart;
+          ctx.save();
+          ctx.font = '16px sans-serif';
+          ctx.fillStyle = 'black';
+          ctx.textAlign = 'center';
+          ctx.fillText('Limite de Segurança', right - width / 7.5, top + 65);
+          ctx.restore();
+        }
+      }]
+    });
+  }
+
+
 </script>

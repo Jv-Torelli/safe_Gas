@@ -1,78 +1,57 @@
 var database = require("../database/config")
+var database = require("../database/config");
 
-// function grafico_dados(numero_apartamento) {
-//     var instrucaoSql = `
-//     SELECT Última_Medição Bloco Andar Numero_Apartamento Nível_de_Gás
-//         FROM dados where Número_Apartamento = ${numero_apartamento}`;
-// 
-//     console.log("Executando a instrução SQL: \n" + instrucaoSql);
-//     return database.executar(instrucaoSql);
-//   }
-// 
-// 
-// module.exports = {
-//     grafico_dados,
-// };
+function buscarMedicoesGas(numero_apartamento) {
+    const instrucaoSql = `
+        SELECT m.nivel_de_gas, m.data_hora, s.local_instalado, s.idSensor
+        FROM medicao m
+        JOIN sensor s ON m.fkSensor = s.idSensor
+        JOIN apartamento a ON s.fkApartamento = a.idApartamento
+        WHERE a.numero_apartamento = ? 
+        ORDER BY m.data_hora DESC
+        LIMIT 75;  -- 25 medições por sensor (3 sensores)
+    `;
+    
+    console.log("Executando SQL do gráfico:", instrucaoSql);
+    return database.executar(instrucaoSql, [numero_apartamento]);
+}
 
-//class GraficoModel {
-//    static async buscarMedicoesGas(numero_apartamento) {
-//        const instrucaoSql = `
-//    select m.nivel_de_gas, m.data_hora, a.numero_apartamento, p.bloco_predio from medicao m join 
-//    apartamento a on m.fkApartamentoMedicao = a.idApartamento join predio p on a.fkPredioApto = p.idPredio 
-//    where a.numero_apartamento = ${numero_apartamento}
-//            `;
-//
-//        console.log("Executando SQL do gráfico:", instrucaoSql);
-//        return database.executar(instrucaoSql,  [numero_apartamento]);
-//    }
-//}
-                  //class GraficoModel {
-                  //    static async buscarMedicoesGas(numero_apartamento) {
-                  //        try { // Seguir o padrão do data viz
-                  //            const instrucaoSql = `
-                  //                SELECT m.nivel_de_gas, m.data_hora, a.numero_apartamento, p.bloco_predio 
-                  //                FROM medicao m 
-                  //                JOIN apartamento a ON m.fkApartamentoMedicao = a.idApartamento 
-                  //                JOIN predio p ON a.fkPredioApto = p.idPredio 
-                  //                WHERE a.numero_apartamento = ${numero_apartamento}`;
-                  //
-                  //            console.log("Executando SQL do gráfico:", instrucaoSql);
-                  //            return await database.executar(instrucaoSql, [numero_apartamento]);
-                  //        } catch (erro) {
-                  //            console.error("Erro ao executar a query:", erro);
-                  //            throw erro; // Repassa o erro para ser tratado no nível superior
-                  //        }
-                  //    }
-                  //}
-
-/*function buscarMedicoesGas(numero_apartamento) {
-        try { // Seguir o padrão do data viz
-            const instrucaoSql = `
+function buscarUltimasMedicoesPorSensor(numero_apartamento) {
+    const instrucaoSql = `
                 SELECT m.nivel_de_gas, m.data_hora, a.numero_apartamento, p.bloco_predio 
                 FROM medicao m 
                 JOIN apartamento a ON m.fkApartamentoMedicao = a.idApartamento 
                 JOIN predio p ON a.fkPredioApto = p.idPredio 
-                WHERE a.numero_apartamento = ${numero_apartamento}`;
+                WHERE a.numero_apartamento = ${numero_apartamento};
+    `;
+    
+    return database.executar(instrucaoSql, [numero_apartamento]);
+}
 
-            console.log("Executando SQL do gráfico:", instrucaoSql);
-            return database.executar(instrucaoSql, [numero_apartamento]);
-        } catch (erro) {
-            console.error("Erro ao executar a query:", erro);
-            throw erro; // Repassa o erro para ser tratado no nível superior
-        }
-    }*/
+function buscarDadosAlerta(numero_apartamento) {
+    const instrucaoSql = `
+        SELECT 
+            MAX(m.nivel_de_gas) as maior_nivel,
+            s.local_instalado as local_maior_nivel,
+            MAX(m.data_hora) as data_hora_maior_nivel
+        FROM medicao m
+        JOIN sensor s ON m.fkSensor = s.idSensor
+        JOIN apartamento a ON s.fkApartamento = a.idApartamento
+        WHERE a.numero_apartamento = ?
+        GROUP BY s.local_instalado
+        ORDER BY maior_nivel DESC
+        LIMIT 1;
+    `;
+    
+    return database.executar(instrucaoSql, [numero_apartamento]);
+}
 
-        function buscarMedicoesGas(numero_apartamento) {
-            const instrucaoSql = `
-                SELECT m.nivel_de_gas, m.data_hora, a.numero_apartamento, p.bloco_predio 
-                FROM medicao m 
-                JOIN apartamento a ON m.fkApartamentoMedicao = a.idApartamento 
-                JOIN predio p ON a.fkPredioApto = p.idPredio 
-                WHERE a.numero_apartamento = ${numero_apartamento}`;
-        
-            console.log("Executando SQL do gráfico:", instrucaoSql);
-            return database.executar(instrucaoSql, [numero_apartamento]); // Passa o parâmetro de forma segura
-        }
+module.exports = {
+    buscarMedicoesGas,
+    buscarUltimasMedicoesPorSensor,
+    buscarDadosAlerta
+};
+
+       
 
 
-module.exports = {buscarMedicoesGas};
