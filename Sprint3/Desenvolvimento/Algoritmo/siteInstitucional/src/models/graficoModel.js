@@ -1,19 +1,26 @@
 var database = require("../database/config")
 var database = require("../database/config");
 
-function buscarMedicoesGas(numero_apartamento) {
-    const instrucaoSql = `
-        SELECT m.nivel_de_gas, m.data_hora, s.local_instalado, s.idSensor
-        FROM medicao m
-        JOIN sensor s ON m.fkSensor = s.idSensor
-        JOIN apartamento a ON s.fkApartamento = a.idApartamento
-        WHERE a.numero_apartamento = ? 
-        ORDER BY m.data_hora DESC
-        LIMIT 75;  -- 25 medições por sensor (3 sensores)
-    `;
-    
-    console.log("Executando SQL do gráfico:", instrucaoSql);
-    return database.executar(instrucaoSql, [numero_apartamento]);
+// ...existing code...
+// ...existing code...
+async function buscarMedicoesGas(numero_apartamento, idSensor) {
+    let instrucaoSql = 
+        'SELECT m.nivel_de_gas, m.data_hora, s.local_instalado, s.idSensor ' +
+        'FROM medicao m ' +
+        'JOIN sensor s ON m.fkSensorMedicao = s.idSensor ' +
+        'JOIN apartamento a ON s.fkApartamento = a.idApartamento ' +
+        'WHERE a.numero_apartamento = ?';
+    let params = [numero_apartamento];
+
+    // Só adiciona o filtro do sensor se idSensor for realmente informado e não vazio
+    if (idSensor !== undefined && idSensor !== null && idSensor !== '') {
+        instrucaoSql += ' AND s.idSensor = ?';
+        params.push(idSensor);
+    }
+
+    instrucaoSql += ' ORDER BY m.data_hora ASC;';
+
+    return database.executar(instrucaoSql, params);
 }
 
 function buscarUltimasMedicoesPorSensor(numero_apartamento) {
