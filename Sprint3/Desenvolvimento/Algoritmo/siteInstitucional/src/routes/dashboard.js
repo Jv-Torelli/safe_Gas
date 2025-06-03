@@ -24,6 +24,11 @@ router.get("/andares", function (req, res) {
     dashboardController.buscarAndares(req, res);
 });
 
+router.get("/modal/:idModalGrafico", function (req, res) {
+    dashboardController.buscarMedicaoModal(req, res);
+});
+
+
 
 
 module.exports = router;

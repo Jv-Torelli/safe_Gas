@@ -14,10 +14,11 @@
 <style>
     .navbar-p {
         display: flex;
-        width: 99%;
+        width: 80%;
         justify-content: space-around;
         padding: 14px;
         border-bottom: 1px solid #f2f2f2;
+        margin-left: 120px;
     }
 
     .tab-p {
@@ -404,9 +405,13 @@
 <script>
     var qtd_total_apto_andar = 3;
     var dadosApartamentoGeral = [];
+    var dadosGrafico = [];
     var dados = [];
-    var dadosModal;
+    var idModalGrafico = 0;
+    var dadosModal = [];
+    let chartInstance = null; // Definir como variável global
     var numero_apartamentoAtual = 0;
+
     function obterNumero(numero_apartamento) {
         numero_apartamento = numero_apartamento.innerText.trim();
 
@@ -421,39 +426,8 @@
                 console.log("achei o modal", dadosModal)
             }
         }
-        comodoModal.innerHTML = `${dadosModal.Local_do_Sensor}`;
-        statusModal.innerHTML = `${dadosModal.tatus_Alerta}`;
-        nivelModal.innerHTML = `${dadosModal.Maior_Nivel_de_Gas}%`;
-        horaModal.innerHTML = `${new Date(dadosModal.Hora_da_ultima_Medicao).toLocaleString('pt-BR', {
-            dateStyle: 'short',
-            timeStyle: 'short'
-        })
-            }`
-        barraprogresso.style.width = `${(dadosModal.Maior_Nivel_de_Gas * 5)}% `;
-
-
-        if (dadosModal.Maior_Nivel_de_Gas < 2.5) {
-            indicadorStatusModal.style.backgroundColor = 'green';
-            statusModal.style.color = 'green';
-            barraprogresso.style.background = 'green';
-            localModal.style.background = 'green';
-        } else if (dadosModal.Maior_Nivel_de_Gas < 5) {
-            barraprogresso.style.background = '#FFEB3B';
-            indicadorStatusModal.style.backgroundColor = '#FFEB3B';
-            statusModal.style.color = '#FFEB3B';
-            localModal.style.background = '#FFEB3B';
-
-
-        } else if (dadosModal.Maior_Nivel_de_Gas < 15) {
-            barraprogresso.style.background = '#FF9800';
-            indicadorStatusModal.style.backgroundColor = '#FF9800';
-            statusModal.style.color = '#FF9800';
-            localModal.style.background = '#FF9800';
-
-
-        } else {
-        }
-
+        idModalGrafico = dadosModal.ID_Apartamento;
+        buscarGraficoModal();
         localStorage.setItem("numero_apartamento", numero_apartamento);
         return numero_apartamento;
     }
@@ -640,7 +614,7 @@
                         totalNotificacoes++;
 
                     } else if (dados[i].Descricao_Risco == "Possibilidade de asfixia") {
-                        coresBackGround = "#F44336";
+                        coresBackGround = "#FF9800";
                         alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};">
                     <div class="informacao_notificacao">
                         <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
@@ -663,7 +637,7 @@
                     } else {
                         totalNotificacoes++;
 
-                        coresBackGround = "#FF9800";
+                        coresBackGround = "#F44336";
                         alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};">
                     <div class="informacao_notificacao">
                         <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
@@ -691,6 +665,11 @@
             });
     }
 
+
+    function buscarGraficoModal() {
+
+    }
+
     function verificarApto(numeroApto) {
         localStorage.setItem("numero_apartamento", numeroApto);
         window.location.href = "dash_especifica.html";
@@ -700,26 +679,73 @@
         document.getElementById('fundoModal').classList.add('ativo');
         setTimeout(inicializarGrafico, 50);
     }
-
     function inicializarGrafico() {
         const ctx = document.getElementById('graficoGas').getContext('2d');
+        const graficoModalNivel = [];
+        const graficoModalLabel = [];
 
-        // Dados das últimas 2 horas com 12 leituras de 10 em 10 minutos
-        const agora = new Date();
-        const labels = [];
-        const dados = [];
+        fetch(`/dashboard/modal/${idModalGrafico}`)
+            .then(function (retornoApto) {
+                if (retornoApto.ok) {
+                    if (retornoApto.status === 204) {
+                        throw "Nenhum resultado encontrado!";
+                    }
+                    return retornoApto.json();
+                } else {
+                    throw "Houve um erro na API!";
+                }
+            })
+            .then(function (retornoJson) {
+                const dadosGrafico = retornoJson;
+                console.log("Dados recebidos modal: ", JSON.stringify(dadosGrafico));
 
-        for (let i = 11; i >= 0; i--) {
-            const tempo = new Date(agora);
-            tempo.setMinutes(tempo.getMinutes() - (i * 10));
+                for (let cont4 = 0; cont4 < dadosGrafico.length; cont4++) {
+                    graficoModalNivel.push(dadosGrafico[cont4].nivel_de_gas);
+                    graficoModalLabel.push(
+                        `${new Date(dadosGrafico[cont4].data_hora).toLocaleString('pt-BR', { timeStyle: 'medium' })}`
+                    );
+                }
 
-            const hora = tempo.getHours().toString().padStart(2, '0');
-            const minutos = tempo.getMinutes().toString().padStart(2, '0');
-            labels.push(`${hora}:${minutos}`);
+                if (!dadosModal) {
+                    console.error("Dados do modal não carregados corretamente.");
+                    return;
+                }
 
-            // Gerar valores aleatórios entre 15% e 20%
-            dados.push(Math.floor(Math.random() * (20 - 15 + 1)) + 15);
-        }
+                comodoModal.innerHTML = `${dadosModal.Local_do_Sensor}`;
+                statusModal.innerHTML = `${dadosModal.tatus_Alerta}`;
+                nivelModal.innerHTML = `${dadosModal.Maior_Nivel_de_Gas}%`;
+                horaModal.innerHTML = `${new Date(dadosModal.Hora_da_ultima_Medicao).toLocaleString('pt-BR', {
+                    dateStyle: 'short',
+                    timeStyle: 'short'
+                })}`;
+                barraprogresso.style.width = `${dadosModal.Maior_Nivel_de_Gas * 5}%`;
+
+                if (dadosModal.Maior_Nivel_de_Gas < 2.5) {
+                    indicadorStatusModal.style.backgroundColor = 'green';
+                    statusModal.style.color = 'green';
+                    barraprogresso.style.background = 'green';
+                    localModal.style.background = 'green';
+                } else if (dadosModal.Maior_Nivel_de_Gas < 5) {
+                    barraprogresso.style.background = '#FFEB3B';
+                    indicadorStatusModal.style.backgroundColor = '#FFEB3B';
+                    statusModal.style.color = '#FFEB3B';
+                    localModal.style.background = '#FFEB3B';
+                } else if (dadosModal.Maior_Nivel_de_Gas < 15) {
+                    barraprogresso.style.background = '#d50000';
+                    indicadorStatusModal.style.backgroundColor = '#d50000';
+                    statusModal.style.color = '#d50000';
+                    localModal.style.background = '#d50000';
+                } else {
+                    barraprogresso.style.background = '#FF9800 ';
+                    indicadorStatusModal.style.backgroundColor = '#FF9800';
+                    statusModal.style.color = '#FF9800';
+                    localModal.style.background = '#FF9800';
+                }
+            })
+            .catch(function (erro) {
+                console.error("Erro ao carregar gráfico:", erro);
+                alert("Não foi possível carregar os dados do gráfico. Tente novamente mais tarde.");
+            });
 
         // Destruir gráfico anterior se existir
         if (window.chartInstance) {
@@ -730,9 +756,9 @@
         window.chartInstance = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: labels,
+                labels: graficoModalLabel,
                 datasets: [{
-                    data: dados,
+                    data: graficoModalNivel,
                     borderColor: '#e53935',
                     backgroundColor: 'rgba(229, 57, 53, 0.1)',
                     borderWidth: 2,
@@ -745,44 +771,25 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: true
-                    }
+                    legend: { display: false },
+                    tooltip: { enabled: true }
                 },
                 scales: {
                     x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            font: {
-                                size: 8
-                            },
-                            maxRotation: 0
-                        }
+                        grid: { display: false },
+                        ticks: { font: { size: 8 }, maxRotation: 0 }
                     },
                     y: {
                         min: 0,
                         max: 20,
-                        ticks: {
-                            stepSize: 5,
-                            font: {
-                                size: 8
-                            }
-                        }
+                        ticks: { stepSize: 5, font: { size: 8 } }
                     }
                 },
-                elements: {
-                    point: {
-                        radius: 1
-                    }
-                }
+                elements: { point: { radius: 1 } }
             }
         });
     }
+
 
     document.addEventListener('DOMContentLoaded', function () {
         const fundoModal = document.getElementById('fundoModal');

@@ -94,6 +94,27 @@ function buscarApto(req, res) {
         );
 }
 
+
+function buscarMedicaoModal(req, res) {
+
+    var idAptoModal = req.params.idModalGrafico;
+
+    dashboardModel.graficoModal(idAptoModal)
+        .then(
+            function (retornoApto) {
+                res.json(retornoApto);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar o cadastro! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
 module.exports = {
-    buscarGeral, buscarKpi, buscarTorre, buscarApto, buscarAndares
+    buscarGeral, buscarKpi, buscarTorre, buscarApto, buscarAndares, buscarMedicaoModal
 }
