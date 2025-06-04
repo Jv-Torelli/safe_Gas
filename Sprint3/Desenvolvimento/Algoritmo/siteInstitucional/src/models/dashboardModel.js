@@ -47,7 +47,17 @@ function buscarAndares() {
     return database.executar(instrucaoSql);
 }
 
+function graficoModal(idAptoModal) {
+    console.log('grafico modal models')
+
+    var instrucaoSql = `
+select * from medicao where fkSensorMedicao = ${idAptoModal} order by data_hora desc;
+`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
-    buscarDados, buscarKpi, buscarTorre, buscarApto, buscarAndares
+    buscarDados, buscarKpi, buscarTorre, buscarApto, buscarAndares, graficoModal
 };
 
