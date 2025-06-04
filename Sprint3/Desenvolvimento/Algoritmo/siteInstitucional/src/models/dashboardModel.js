@@ -57,7 +57,23 @@ select * from medicao where fkSensorMedicao = ${idAptoModal} order by data_hora 
     return database.executar(instrucaoSql);
 }
 
+function graficoMedicao(idAptoModal) {
+    console.log('grafico modal models', idAptoModal)
+
+    var instrucaoSql = `
+SELECT * 
+FROM apartamento AS a
+JOIN medicao AS m ON a.idApartamento = m.fkApartamentoMedicao
+WHERE m.fkApartamentoMedicao = ${idAptoModal}
+ORDER BY m.data_hora DESC
+LIMIT 10;
+`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+
 module.exports = {
-    buscarDados, buscarKpi, buscarTorre, buscarApto, buscarAndares, graficoModal
+    buscarDados, buscarKpi, buscarTorre, buscarApto, buscarAndares, graficoModal, graficoMedicao
 };
 

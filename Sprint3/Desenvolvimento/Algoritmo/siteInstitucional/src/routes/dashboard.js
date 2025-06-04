@@ -28,6 +28,9 @@ router.get("/modal/:idModalGrafico", function (req, res) {
     dashboardController.buscarMedicaoModal(req, res);
 });
 
+router.get("/graficoModal/:idModalGrafico", function (req, res) {
+    dashboardController.buscarGraficoMedicao(req, res);
+});
 
 
 

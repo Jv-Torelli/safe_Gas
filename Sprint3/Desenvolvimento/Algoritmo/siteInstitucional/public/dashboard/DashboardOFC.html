@@ -323,13 +323,13 @@
                     <!-- Legenda -->
                     <div class="legend-p">
                         <div class="legend-item">
-                            <div class="legend-color normal"></div> Normal
+                            <div class="legend-color normal"></div> Atenção
                         </div>
                         <div class="legend-item">
                             <div class="legend-color alerta"></div> Alerta
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color critico"></div> Crítico
+                            <div class="legend-color critico"></div>
                         </div>
                         <div class="legend-item">
                             <div class="legend-color manutencao"></div> Manutenção
@@ -388,7 +388,7 @@
                     </div>
 
                     <div class="grafico-container">
-                        <canvas id="graficoGas"></canvas>
+                        <canvas id="graficoGas" style="height: 100%; width: 100%;"></canvas>
                     </div>
 
                     <div class="botoes-acoes">
@@ -403,6 +403,8 @@
 
 </html>
 <script>
+    let modalAberto = false;
+
     var qtd_total_apto_andar = 3;
     var dadosApartamentoGeral = [];
     var dadosGrafico = [];
@@ -411,6 +413,9 @@
     var dadosModal = [];
     let chartInstance = null; // Definir como variável global
     var numero_apartamentoAtual = 0;
+    var medicaoList = [];
+    var labelList = [];
+    var graficoModalLabel = [];
 
     function obterNumero(numero_apartamento) {
         numero_apartamento = numero_apartamento.innerText.trim();
@@ -444,7 +449,7 @@
             }
         })
             .then(function (respostaJson) {
-                dadosKpi = respostaJson; // agora a variável `dados` contém o JSON
+                dadosKpi = respostaJson;
                 console.log("Dados recebidos: ", JSON.stringify(dadosKpi));
 
                 qtd_sensores.innerHTML = dadosKpi[0].Total_Sensores;
@@ -481,7 +486,7 @@
             }
         })
             .then(function (respostaTorre) {
-                dadosTorre = respostaTorre; // agora a variável `dados` contém o JSON
+                dadosTorre = respostaTorre;
                 console.log("Dados recebidos: ", JSON.stringify(dadosTorre));
 
                 for (i = 0; i < dadosTorre.length; i++) {
@@ -509,7 +514,7 @@
             }
         })
             .then(function (retornoJson) {
-                dadosApto = retornoJson; // agora a variável `dados` contém o JSON
+                dadosApto = retornoJson;
                 console.log("Dados recebidos Apto: ", JSON.stringify(dadosApto));
                 var qtd_andarApto = dadosApto[dadosApto.length - 1].Andar;
 
@@ -546,7 +551,7 @@
             }
         })
             .then(function (retornoJson) {
-                dadosAndar = retornoJson; // agora a variável `dados` contém o JSON
+                dadosAndar = retornoJson;
                 console.log("Dados recebidos andar: ", JSON.stringify(dadosAndar));
                 for (contador = 0; contador < dadosAndar.length; contador++) {
                     andaresLista.innerHTML += `<div class="andar-p">${contador + 1}</div>`
@@ -582,7 +587,7 @@
             }
         })
             .then(function (respostaJson) {
-                dados = respostaJson; // agora a variável `dados` contém o JSON
+                dados = respostaJson;
                 console.log("Dados recebidos: ", JSON.stringify(dados));
                 dadosApartamentoGeral = dados;
                 var coresBackGround = "white";
@@ -666,23 +671,108 @@
     }
 
 
+
     function buscarGraficoModal() {
 
+
+        fetch(`/dashboard/graficoModal/${idModalGrafico}`)
+            .then(function (retornoApto) {
+                if (retornoApto.ok) {
+                    if (retornoApto.status === 204) {
+                        throw "Nenhum resultado encontrado!";
+                    }
+                    return retornoApto.json();
+                } else {
+                    throw "Houve um erro na API!";
+                }
+            })
+            .then(function (retornoJson) {
+                const dadosMedicao = retornoJson;
+                console.log("Dados recebidos medicao grafico: ", JSON.stringify(dadosMedicao));
+                medicaoList = [];
+                labelList = [];
+                for (let i = 0; i < dadosMedicao.length; i++) {
+                    medicaoList.push(dadosMedicao[i].nivel_de_gas);
+                    dataLabel = new Date(dadosMedicao[i].data_hora).toLocaleString('pt-BR', {
+                        timeStyle: 'short'
+                    })
+                    labelList.push(dataLabel);
+                }
+                nivelView = 20;
+                nivelModal.innerHTML = `${dadosMedicao[0].nivel_de_gas}%`;
+
+                medicaoList.reverse();
+                atualizarGrafico();
+
+
+
+            })
+            .catch(function (erro) {
+                console.error("Erro ao carregar gráfico:", erro);
+                alert("Não foi possível carregar os dados do gráfico. Tente novamente mais tarde.");
+            });
+    }
+
+
+
+    function atualizarGrafico() {
+        // Destruir gráfico anterior se existir
+        if (window.chartInstance) {
+            window.chartInstance.destroy();
+        }
+
+        const ctx = document.getElementById('graficoGas').getContext('2d');
+        window.chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labelList,
+                datasets: [{
+                    data: medicaoList,
+                    borderColor: '#e53935',
+                    backgroundColor: 'rgba(229, 57, 53, 0.1)',
+                    borderWidth: 2,
+                    pointRadius: 2,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 8 }, maxRotation: 0 }
+                    },
+                    y: {
+                        min: 0,
+                        max: nivelView,
+                        ticks: { stepSize: 5, font: { size: 8 } }
+                    }
+                },
+                elements: { point: { radius: 1 } }
+            }
+        });
     }
 
     function verificarApto(numeroApto) {
         localStorage.setItem("numero_apartamento", numeroApto);
         window.location.href = "dash_especifica.html";
     }
-
     function abrirModal() {
+        modalAberto = true;
         document.getElementById('fundoModal').classList.add('ativo');
-        setTimeout(inicializarGrafico, 50);
+        if (modalAberto == true) {
+            setInterval(buscarGraficoModal, 1000);
+            setTimeout(inicializarGrafico, 50);
+        }
     }
     function inicializarGrafico() {
-        const ctx = document.getElementById('graficoGas').getContext('2d');
-        const graficoModalNivel = [];
-        const graficoModalLabel = [];
 
         fetch(`/dashboard/modal/${idModalGrafico}`)
             .then(function (retornoApto) {
@@ -699,13 +789,6 @@
                 const dadosGrafico = retornoJson;
                 console.log("Dados recebidos modal: ", JSON.stringify(dadosGrafico));
 
-                for (let cont4 = 0; cont4 < dadosGrafico.length; cont4++) {
-                    graficoModalNivel.push(dadosGrafico[cont4].nivel_de_gas);
-                    graficoModalLabel.push(
-                        `${new Date(dadosGrafico[cont4].data_hora).toLocaleString('pt-BR', { timeStyle: 'medium' })}`
-                    );
-                }
-
                 if (!dadosModal) {
                     console.error("Dados do modal não carregados corretamente.");
                     return;
@@ -713,11 +796,11 @@
 
                 comodoModal.innerHTML = `${dadosModal.Local_do_Sensor}`;
                 statusModal.innerHTML = `${dadosModal.tatus_Alerta}`;
-                nivelModal.innerHTML = `${dadosModal.Maior_Nivel_de_Gas}%`;
                 horaModal.innerHTML = `${new Date(dadosModal.Hora_da_ultima_Medicao).toLocaleString('pt-BR', {
                     dateStyle: 'short',
                     timeStyle: 'short'
                 })}`;
+
                 barraprogresso.style.width = `${dadosModal.Maior_Nivel_de_Gas * 5}%`;
 
                 if (dadosModal.Maior_Nivel_de_Gas < 2.5) {
@@ -741,53 +824,13 @@
                     statusModal.style.color = '#FF9800';
                     localModal.style.background = '#FF9800';
                 }
+
             })
             .catch(function (erro) {
                 console.error("Erro ao carregar gráfico:", erro);
                 alert("Não foi possível carregar os dados do gráfico. Tente novamente mais tarde.");
             });
 
-        // Destruir gráfico anterior se existir
-        if (window.chartInstance) {
-            window.chartInstance.destroy();
-        }
-
-        // Criar novo gráfico
-        window.chartInstance = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: graficoModalLabel,
-                datasets: [{
-                    data: graficoModalNivel,
-                    borderColor: '#e53935',
-                    backgroundColor: 'rgba(229, 57, 53, 0.1)',
-                    borderWidth: 2,
-                    pointRadius: 2,
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { enabled: true }
-                },
-                scales: {
-                    x: {
-                        grid: { display: false },
-                        ticks: { font: { size: 8 }, maxRotation: 0 }
-                    },
-                    y: {
-                        min: 0,
-                        max: 20,
-                        ticks: { stepSize: 5, font: { size: 8 } }
-                    }
-                },
-                elements: { point: { radius: 1 } }
-            }
-        });
     }
 
 
@@ -797,6 +840,8 @@
 
         function fecharModal() {
             fundoModal.classList.remove('ativo');
+            modalAberto = false;
+
         }
 
         botaoFechar.addEventListener('click', fecharModal);
@@ -807,4 +852,6 @@
             }
         });
     });
+
+
 </script>
