@@ -69,12 +69,16 @@
         background-color: #00c292;
     }
 
-    .alerta {
-        background-color: #f8b739;
+    .atencao {
+        background-color: #f5f839;
     }
 
-    .critico {
+    .perigo {
         background-color: #f83a3a;
+    }
+
+    .emergencia {
+        background-color: #f8c53a;
     }
 
     .manutencao {
@@ -158,7 +162,7 @@
     }
 </style>
 
-<body onload="buscarDados(), buscarKpis(), buscarTorre(), buscarApto(), buscarAndares()">
+<body onload="buscarDados(), buscarKpis(), buscarTorre(), buscarApto(), buscarAndares(), atualizarGeral()">
     <div class="main">
         <div class="navbar">
             <div class="welcome_navbar">
@@ -323,13 +327,13 @@
                     <!-- Legenda -->
                     <div class="legend-p">
                         <div class="legend-item">
-                            <div class="legend-color normal"></div> Atenção
+                            <div class="legend-color atencao"></div> Atenção - 2.5% a 4.9%
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color alerta"></div> Alerta
+                            <div class="legend-color perigo"></div> Perigo - 5% a 15 %
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color critico"></div>
+                            <div class="legend-color emergencia"></div> Emergência - acima de 15%
                         </div>
                         <div class="legend-item">
                             <div class="legend-color manutencao"></div> Manutenção
@@ -343,6 +347,19 @@
             </div>
         </div>
         <div class="fundo-modal" id="fundoModal">
+
+            <div class="plantaDiv">
+                <button class="sensorPlanta" id="sensor1">
+                    1
+                </button>
+                <button class="sensorPlanta" id="sensor2">
+                    2
+                </button>
+                <button class="sensorPlanta" id="sensor3">
+                    3
+                </button>
+                <h2 class="titulo-modal">Planta </h2>
+            </div>
 
             <div class="modal">
                 <div class="cabecalho-modal">
@@ -403,6 +420,14 @@
 
 </html>
 <script>
+    function atualizarGeral() {
+        if (modalAberto == false) {
+            buscarKpis();
+            setTimeout(atualizarGeral, 1000);
+        }
+    }
+
+
     let modalAberto = false;
 
     var qtd_total_apto_andar = 3;
@@ -425,6 +450,7 @@
         numeroApto.innerHTML = numero_apartamentoAtual;
         numeroApto2.innerHTML = numero_apartamentoAtual;
 
+
         for (let i = 0; i < dados.length; i++) {
             if (dados[i].Numero_Apartamento == numero_apartamentoAtual) {
                 dadosModal = dados[i];
@@ -432,7 +458,6 @@
             }
         }
         idModalGrafico = dadosModal.ID_Apartamento;
-        buscarGraficoModal();
         localStorage.setItem("numero_apartamento", numero_apartamento);
         return numero_apartamento;
     }
@@ -700,6 +725,8 @@
                 }
                 nivelView = 20;
                 nivelModal.innerHTML = `${dadosMedicao[0].nivel_de_gas}%`;
+                barraprogresso.style.width = `${dadosMedicao[0].nivel_de_gas * 5}%`;
+
 
                 medicaoList.reverse();
                 atualizarGrafico();
@@ -709,7 +736,7 @@
             })
             .catch(function (erro) {
                 console.error("Erro ao carregar gráfico:", erro);
-                alert("Não foi possível carregar os dados do gráfico. Tente novamente mais tarde.");
+                // alert("Não foi possível carregar os dados do gráfico. Tente novamente mais tarde. 1");
             });
     }
 
@@ -764,12 +791,18 @@
         localStorage.setItem("numero_apartamento", numeroApto);
         window.location.href = "dash_especifica.html";
     }
+
     function abrirModal() {
         modalAberto = true;
         document.getElementById('fundoModal').classList.add('ativo');
+        inicializarGrafico()
+        buscarGraficoModalComIntervalo();
+    }
+
+    function buscarGraficoModalComIntervalo() {
         if (modalAberto == true) {
-            setInterval(buscarGraficoModal, 1000);
-            setTimeout(inicializarGrafico, 50);
+            buscarGraficoModal();
+            setTimeout(buscarGraficoModalComIntervalo, 1000);
         }
     }
     function inicializarGrafico() {
@@ -801,7 +834,6 @@
                     timeStyle: 'short'
                 })}`;
 
-                barraprogresso.style.width = `${dadosModal.Maior_Nivel_de_Gas * 5}%`;
 
                 if (dadosModal.Maior_Nivel_de_Gas < 2.5) {
                     indicadorStatusModal.style.backgroundColor = 'green';
@@ -841,6 +873,7 @@
         function fecharModal() {
             fundoModal.classList.remove('ativo');
             modalAberto = false;
+            atualizarGeral();
 
         }
 

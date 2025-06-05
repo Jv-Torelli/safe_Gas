@@ -2,13 +2,18 @@
     margin: 0;
 }
 
+a {
+    text-decoration: none;
+    color: currentColor;
+}
+
 .main {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
     display: flex;
     flex-direction: row;
-    background-color: #f2f2f2;
+    background-color: #f6f9fc;
     position: relative;
 }
 
@@ -16,22 +21,24 @@
 .navbar {
     height: 100vh;
     width: 350px;
-    background: #7bb062;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
     padding-top: 10px;
-    color: white;
+    color: #00c292;
     position: relative;
+    box-shadow: #00000024 1px 0px 5px 2px;
 }
 
 /* msg */
+
 .welcome_navbar {
     width: 90%;
     height: 65px;
-    border-bottom: solid white 1px;
+    border-bottom: solid green 1px;
     display: flex;
     align-items: flex-start;
     font-size: 30px;
@@ -43,7 +50,7 @@
 
 
 .welcome_navbar p {
-    color: #f2f2f2;
+    color: #00bb8d;
     font-size: 20px;
 }
 
@@ -63,7 +70,7 @@
 .btnNavbar {
     width: 95%;
     height: 45px;
-    border-left: solid 3px white;
+    border-left: solid 3px green;
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -76,13 +83,13 @@
 }
 
 .btnNavbar:hover {
-    background: white;
-    color: green;
+    background: green;
+    color: white;
 }
 
 .select {
-    background: white;
-    color: green;
+    background: green;
+    color: white;
 }
 
 #logout {
