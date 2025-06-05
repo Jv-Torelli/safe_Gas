@@ -15,12 +15,13 @@ a {
     flex-direction: row;
     background-color: #f6f9fc;
     position: relative;
+    justify-content: space-between;
 }
 
 /* nav containers */
 .navbar {
     height: 100vh;
-    width: 350px;
+    width: 300px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -46,12 +47,18 @@ a {
     flex-direction: column;
     justify-content: space-around;
     padding: 10px;
+    margin-top: 15px;
 }
 
 
 .welcome_navbar p {
     color: #00bb8d;
     font-size: 20px;
+}
+
+.welcome_navbar img {
+    height: 100%;
+    width: auto;
 }
 
 /* container */
@@ -94,13 +101,12 @@ a {
 
 #logout {
     position: absolute;
-    bottom: 15px;
+    bottom: 30px;
     background: white;
     max-width: 90%;
     color: black;
     cursor: pointer;
     transition: 0.5s;
-
 }
 
 #logout:hover {

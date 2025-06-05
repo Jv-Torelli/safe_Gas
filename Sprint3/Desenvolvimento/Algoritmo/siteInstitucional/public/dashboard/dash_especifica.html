@@ -12,39 +12,38 @@
   <title>Dashboard Específica</title>
 </head>
 
-<body onload="grafico_de_linha()"> 
+<body onload="grafico_de_linha()">
 
-  <div class="main"> 
+  <div class="main">
     <div class="navbar">
-            <div class="welcome_navbar">
-                <h5>Bem-vindo!</h5>
-                <p>Olá, <span id="nomeCondominio"></span></p>
-            </div>
+      <div class="welcome_navbar">
+        <img src="../assets/img_site_institucional/logoSafeGas.png" alt="">
+      </div>
 
-            <div class="container_btn">
-                <div class="btnNavbar select">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                        fill="currentcolor">
-                        <path
-                            d="M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z" />
-                    </svg>
+      <div class="container_btn">
+        <a href="./DashboardOFC.html" class="btnNavbar">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+            fill="currentcolor">
+            <path
+              d="M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z" />
+          </svg>
 
-                    Dashboard geral
-                </div>
-                <div class="btnNavbar">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                        fill="currentcolor">
-                        <path
-                            d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q14-36 44-58t68-22q38 0 68 22t44 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm280-670q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790ZM200-246q54-53 125.5-83.5T480-360q83 0 154.5 30.5T760-246v-514H200v514Zm280-194q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41ZM280-200h400v-10q-42-35-93-52.5T480-280q-56 0-107 17.5T280-210v10Zm200-320q-25 0-42.5-17.5T420-580q0-25 17.5-42.5T480-640q25 0 42.5 17.5T540-580q0 25-17.5 42.5T480-520Zm0 17Z" />
-                    </svg>
+          Dashboard geral
+        </a>
+        <a href="./dash_portarias.html" class="btnNavbar">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+            fill="currentcolor">
+            <path
+              d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q14-36 44-58t68-22q38 0 68 22t44 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm280-670q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790ZM200-246q54-53 125.5-83.5T480-360q83 0 154.5 30.5T760-246v-514H200v514Zm280-194q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41ZM280-200h400v-10q-42-35-93-52.5T480-280q-56 0-107 17.5T280-210v10Zm200-320q-25 0-42.5-17.5T420-580q0-25 17.5-42.5T480-640q25 0 42.5 17.5T540-580q0 25-17.5 42.5T480-520Zm0 17Z" />
+          </svg>
 
-                    <a href="./dash_portarias.html">Portaria</a>
-                </div>
-            </div>
+          Portaria
+        </a>
+      </div>
 
-            <div class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png"> Logout</div>
+      <div class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png"> Logout</div>
 
-        </div>
+    </div>
 
     <main class="painel"> <!-- Painel do todo conteúdo -->
       <div class="container_superior">
@@ -92,7 +91,7 @@
       </div>
 
       <div class="container_inferior">
-        <div class="div_grafico"> 
+        <div class="div_grafico">
           <div class="div_nivel">
             <span class="span_titulo">Nivel de Gás (Últimas 2h)</span>
             <span class="span_identificacao">Torre <span id="span_bloco_predio"></span>, Apto <span
@@ -111,7 +110,7 @@
               </div>
               <div class="div_sobre_alerta">
                 <span class="span_titulo">Alerta de Risco<span class="span_alerta_status"></span></span>
-              
+
                 <span class="span_subtitulo" id="span_alerta_risco"></span>
               </div>
             </div>
@@ -125,21 +124,21 @@
             <hr>
 
             <div class="div_sensores_medicao">
-              <div class="div_opcao_sensor"> 
+              <div class="div_opcao_sensor">
                 <span class="span_sensor" id="span_local_sensor1">--------</span>
                 <span class="span_medicao" id="span_medicao1">--------</span>
                 <button class="btn_sensor" id="btn_sensor1">Ver Gráfico</button>
               </div>
               <hr>
 
-              <div class="div_opcao_sensor"> 
+              <div class="div_opcao_sensor">
                 <span class="span_sensor" id="span_local_sensor2">--------</span>
                 <span class="span_medicao" id="span_medicao2">--------</span>
                 <button class="btn_sensor" id="btn_sensor2">Ver Gráfico</button>
               </div>
               <hr>
 
-              <div class="div_opcao_sensor"> 
+              <div class="div_opcao_sensor">
                 <span class="span_sensor" id="span_local_sensor3">--------</span>
                 <span class="span_medicao" id="span_medicao3">--------</span>
                 <button class="btn_sensor" id="btn_sensor3">Ver Gráfico</button>
@@ -156,511 +155,511 @@
 </body>
 
 </html>
-   <script>
+<script>
 
-const nomesSensores = ["Sala", "Cozinha", "Quarto"];
-let sensorGraficoAtual = 1;
-let canvas_grafico = null;
-let primeiraExecucao = true;
-let intervaloAtualizacao = null;
+  const nomesSensores = ["Sala", "Cozinha", "Quarto"];
+  let sensorGraficoAtual = 1;
+  let canvas_grafico = null;
+  let primeiraExecucao = true;
+  let intervaloAtualizacao = null;
 
 
-const numero_apartamento = "101"; 
-document.getElementById("span_numero_apartamento").innerText = numero_apartamento;
+  const numero_apartamento = "101";
+  document.getElementById("span_numero_apartamento").innerText = numero_apartamento;
 
-const sensores_estaticos = {
-  sensor2: {
-    local: "Cozinha",
-    nivel: 5.2
-  },
-  sensor3: {
-    local: "Quarto", 
-    nivel: 14.8
+  const sensores_estaticos = {
+    sensor2: {
+      local: "Cozinha",
+      nivel: 5.2
+    },
+    sensor3: {
+      local: "Quarto",
+      nivel: 14.8
+    }
+  };
+
+
+  function obterCorPorNivel(nivel) {
+    if (nivel <= 2.4) {
+      return "#22c55e";
+    } else if (nivel <= 4.9) {
+      return "#eab308";
+    } else if (nivel <= 14.9) {
+      return "#ef4444";
+    } else {
+      return "#000000";
+    }
   }
-};
 
 
-function obterCorPorNivel(nivel) {
-  if (nivel <= 2.4) {
-    return "#22c55e"; 
-  } else if (nivel <= 4.9) {
-    return "#eab308"; 
-  } else if (nivel <= 14.9) {
-    return "#ef4444";
-  } else {
-    return "#000000"; 
+  function obterStatusPorNivel(nivel) {
+    if (nivel <= 2.4) {
+      return "Seguro";
+    } else if (nivel <= 4.9) {
+      return "Atenção";
+    } else if (nivel <= 14.9) {
+      return "Perigo";
+    } else {
+      return "Emergência";
+    }
   }
-}
 
+  function atualizarSensoresEstaticos() {
+    // Sensor 2 - Cozinha
+    const variacao2 = (Math.random() - 0.5) * 0.6;
+    sensores_estaticos.sensor2.nivel = Math.max(0, sensores_estaticos.sensor2.nivel + variacao2);
+    sensores_estaticos.sensor2.nivel = Math.round(sensores_estaticos.sensor2.nivel * 10) / 10;
 
-function obterStatusPorNivel(nivel) {
-  if (nivel <= 2.4) {
-    return "Seguro";
-  } else if (nivel <= 4.9) {
-    return "Atenção";
-  } else if (nivel <= 14.9) {
-    return "Perigo";
-  } else {
-    return "Emergência";
+    // Sensor 3 - Quarto
+    const variacao3 = (Math.random() - 0.5) * 0.4;
+    sensores_estaticos.sensor3.nivel = Math.max(0, sensores_estaticos.sensor3.nivel + variacao3);
+    sensores_estaticos.sensor3.nivel = Math.round(sensores_estaticos.sensor3.nivel * 10) / 10;
   }
-}
 
-function atualizarSensoresEstaticos() {
-  // Sensor 2 - Cozinha
-  const variacao2 = (Math.random() - 0.5) * 0.6;
-  sensores_estaticos.sensor2.nivel = Math.max(0, sensores_estaticos.sensor2.nivel + variacao2);
-  sensores_estaticos.sensor2.nivel = Math.round(sensores_estaticos.sensor2.nivel * 10) / 10;
+  // Função para formatar data e hora
+  function formatarDataHora(dataHoraStr) {
+    if (!dataHoraStr) return "Agora";
 
-  // Sensor 3 - Quarto
-  const variacao3 = (Math.random() - 0.5) * 0.4;
-  sensores_estaticos.sensor3.nivel = Math.max(0, sensores_estaticos.sensor3.nivel + variacao3);
-  sensores_estaticos.sensor3.nivel = Math.round(sensores_estaticos.sensor3.nivel * 10) / 10;
-}
+    const meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+    const dataHora = new Date(dataHoraStr.includes("T") ? dataHoraStr : dataHoraStr.replace(" ", "T"));
 
-// Função para formatar data e hora
-function formatarDataHora(dataHoraStr) {
-  if (!dataHoraStr) return "Agora";
-  
-  const meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-  const dataHora = new Date(dataHoraStr.includes("T") ? dataHoraStr : dataHoraStr.replace(" ", "T"));
-  
-  const agora = new Date();
-  const hoje = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
-  const data = new Date(dataHora.getFullYear(), dataHora.getMonth(), dataHora.getDate());
-  
-  const diffDias = Math.floor((hoje - data) / (1000 * 60 * 60 * 24));
-  const hora = dataHora.getHours().toString().padStart(2, "0");
-  const min = dataHora.getMinutes().toString().padStart(2, "0");
+    const agora = new Date();
+    const hoje = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
+    const data = new Date(dataHora.getFullYear(), dataHora.getMonth(), dataHora.getDate());
 
-  if (diffDias === 0) {
-    return `Hoje, ${hora}:${min}`;
-  } else if (diffDias === 1) {
-    return `Ontem, ${hora}:${min}`;
-  } else {
-    return `${data.getDate()} ${meses[data.getMonth()]}, ${hora}:${min}`;
+    const diffDias = Math.floor((hoje - data) / (1000 * 60 * 60 * 24));
+    const hora = dataHora.getHours().toString().padStart(2, "0");
+    const min = dataHora.getMinutes().toString().padStart(2, "0");
+
+    if (diffDias === 0) {
+      return `Hoje, ${hora}:${min}`;
+    } else if (diffDias === 1) {
+      return `Ontem, ${hora}:${min}`;
+    } else {
+      return `${data.getDate()} ${meses[data.getMonth()]}, ${hora}:${min}`;
+    }
   }
-}
 
 
-function retornar_dados_kpi_alerta() {
-  console.log("Atualizando dados de alerta...");
-  
-  
-  fetch(`/alerta/retornar/${numero_apartamento}`)
-    .then(resposta => {
-      if (!resposta.ok) throw new Error("Erro na resposta da API");
-      return resposta.json();
-    })
-    .then(data => {
-      document.getElementById("span_alerta_acao").innerText = data.acao || "Monitorar";
-      document.querySelectorAll('.span_alerta_status').forEach(span => {
-        span.innerText = data.statusAlerta || "Normal";
+  function retornar_dados_kpi_alerta() {
+    console.log("Atualizando dados de alerta...");
+
+
+    fetch(`/alerta/retornar/${numero_apartamento}`)
+      .then(resposta => {
+        if (!resposta.ok) throw new Error("Erro na resposta da API");
+        return resposta.json();
+      })
+      .then(data => {
+        document.getElementById("span_alerta_acao").innerText = data.acao || "Monitorar";
+        document.querySelectorAll('.span_alerta_status').forEach(span => {
+          span.innerText = data.statusAlerta || "Normal";
+        });
+        document.getElementById("span_alerta_risco").innerText = data.risco || "Baixo";
+      })
+      .catch(erro => {
+        console.log(`Erro na API de alerta: ${erro}`);
+        // Dados de fallback
+        document.getElementById("span_alerta_acao").innerText = "Monitorar";
+        document.querySelectorAll('.span_alerta_status').forEach(span => {
+          span.innerText = "Normal";
+        });
+        document.getElementById("span_alerta_risco").innerText = "Baixo";
       });
-      document.getElementById("span_alerta_risco").innerText = data.risco || "Baixo";
-    })
-    .catch(erro => {
-      console.log(`Erro na API de alerta: ${erro}`);
-      // Dados de fallback
-      document.getElementById("span_alerta_acao").innerText = "Monitorar";
-      document.querySelectorAll('.span_alerta_status').forEach(span => {
-        span.innerText = "Normal";
+  }
+
+  // Função para retornar dados do título do gráfico
+  function retornar_dados_tituloGrafico() {
+    console.log("Atualizando título do gráfico...");
+
+    fetch(`/predio/retornar/${numero_apartamento}`)
+      .then(resposta => {
+        if (!resposta.ok) throw new Error("Erro na resposta da API");
+        return resposta.json();
+      })
+      .then(data => {
+        document.getElementById("span_bloco_predio").innerText = data.bloco_predio || "A";
+      })
+      .catch(erro => {
+        console.log(`Erro na API do prédio: ${erro}`);
+        document.getElementById("span_bloco_predio").innerText = "A";
       });
-      document.getElementById("span_alerta_risco").innerText = "Baixo";
-    });
-}
+  }
 
-// Função para retornar dados do título do gráfico
-function retornar_dados_tituloGrafico() {
-  console.log("Atualizando título do gráfico...");
-  
-  fetch(`/predio/retornar/${numero_apartamento}`)
-    .then(resposta => {
-      if (!resposta.ok) throw new Error("Erro na resposta da API");
-      return resposta.json();
-    })
-    .then(data => {
-      document.getElementById("span_bloco_predio").innerText = data.bloco_predio || "A";
-    })
-    .catch(erro => {
-      console.log(`Erro na API do prédio: ${erro}`);
-      document.getElementById("span_bloco_predio").innerText = "A";
-    });
-}
+  // Função para retornar dados dos níveis em locais
+  function retornar_dados_niveisEmLocais() {
+    console.log("Atualizando níveis em locais...");
 
-// Função para retornar dados dos níveis em locais
-function retornar_dados_niveisEmLocais() {
-  console.log("Atualizando níveis em locais...");
-  
-  // Sensor 1 (Sala) - busca do banco
-  fetch(`/sensor/por-apartamento/${numero_apartamento}`)
-    .then(resposta => {
-      if (!resposta.ok) throw new Error("Erro na resposta da API");
-      return resposta.json();
-    })
-    .then(data => {
-      const sensorSala = data.find(item => item.idSensor == 1);
-      
-      if (sensorSala) {
-        const nivel = parseFloat(sensorSala.nivel_de_gas);
-        document.getElementById("span_medicao1").innerText = `${nivel} %`;
-        document.getElementById("btn_sensor1").style.backgroundColor = obterCorPorNivel(nivel);
-        document.getElementById("span_local_sensor1").innerText = nomesSensores[0];
-        document.getElementById("span_local_medicaoMaior").innerText = nomesSensores[0];
-        document.getElementById("span_dataHora").innerText = formatarDataHora(sensorSala.data_hora);
-      } else {
-        // Dados de fallback para o sensor 1
-        const nivelFallback = 2.1;
-        document.getElementById("span_medicao1").innerText = `${nivelFallback} %`;
-        document.getElementById("btn_sensor1").style.backgroundColor = obterCorPorNivel(nivelFallback);
-        document.getElementById("span_local_sensor1").innerText = nomesSensores[0];
+    // Sensor 1 (Sala) - busca do banco
+    fetch(`/sensor/por-apartamento/${numero_apartamento}`)
+      .then(resposta => {
+        if (!resposta.ok) throw new Error("Erro na resposta da API");
+        return resposta.json();
+      })
+      .then(data => {
+        const sensorSala = data.find(item => item.idSensor == 1);
+
+        if (sensorSala) {
+          const nivel = parseFloat(sensorSala.nivel_de_gas);
+          document.getElementById("span_medicao1").innerText = `${nivel} %`;
+          document.getElementById("btn_sensor1").style.backgroundColor = obterCorPorNivel(nivel);
+          document.getElementById("span_local_sensor1").innerText = nomesSensores[0];
+          document.getElementById("span_local_medicaoMaior").innerText = nomesSensores[0];
+          document.getElementById("span_dataHora").innerText = formatarDataHora(sensorSala.data_hora);
+        } else {
+          // Dados de fallback para o sensor 1
+          const nivelFallback = 2.1;
+          document.getElementById("span_medicao1").innerText = `${nivelFallback} %`;
+          document.getElementById("btn_sensor1").style.backgroundColor = obterCorPorNivel(nivelFallback);
+          document.getElementById("span_local_sensor1").innerText = nomesSensores[0];
+          document.getElementById("span_local_medicaoMaior").innerText = nomesSensores[0];
+          document.getElementById("span_dataHora").innerText = formatarDataHora(new Date().toISOString());
+        }
+
+        // Atualiza sensores estáticos
+        atualizarSensoresEstaticos();
+
+        // Sensor 2 - Cozinha
+        document.getElementById("span_local_sensor2").innerText = sensores_estaticos.sensor2.local;
+        document.getElementById("span_medicao2").innerText = `${sensores_estaticos.sensor2.nivel} %`;
+        document.getElementById("btn_sensor2").style.backgroundColor = obterCorPorNivel(sensores_estaticos.sensor2.nivel);
+
+        // Sensor 3 - Quarto
+        document.getElementById("span_local_sensor3").innerText = sensores_estaticos.sensor3.local;
+        document.getElementById("span_medicao3").innerText = `${sensores_estaticos.sensor3.nivel} %`;
+        document.getElementById("btn_sensor3").style.backgroundColor = obterCorPorNivel(sensores_estaticos.sensor3.nivel);
+
+        atualizarTextosBotoes();
+      })
+      .catch(erro => {
+        console.log(`Erro na API de sensores: ${erro}`);
+
+        // Dados de fallback para todos os sensores
+        const niveisStaticos = [2.1, 5.2, 14.8];
+
+        for (let i = 0; i < 3; i++) {
+          const sensorNum = i + 1;
+          document.getElementById(`span_medicao${sensorNum}`).innerText = `${niveisStaticos[i]} %`;
+          document.getElementById(`btn_sensor${sensorNum}`).style.backgroundColor = obterCorPorNivel(niveisStaticos[i]);
+          document.getElementById(`span_local_sensor${sensorNum}`).innerText = nomesSensores[i];
+        }
+
         document.getElementById("span_local_medicaoMaior").innerText = nomesSensores[0];
         document.getElementById("span_dataHora").innerText = formatarDataHora(new Date().toISOString());
+
+        atualizarTextosBotoes();
+      });
+  }
+
+
+  function atualizarTextosBotoes() {
+    for (let j = 1; j <= 3; j++) {
+      const btn = document.getElementById(`btn_sensor${j}`);
+      if (j === sensorGraficoAtual) {
+        btn.innerText = "Gráfico Atual";
+        btn.style.opacity = "0.8";
+        btn.style.fontWeight = "bold";
+      } else {
+        btn.innerText = "Ver Gráfico";
+        btn.style.opacity = "1";
+        btn.style.fontWeight = "normal";
       }
-
-      // Atualiza sensores estáticos
-      atualizarSensoresEstaticos();
-      
-      // Sensor 2 - Cozinha
-      document.getElementById("span_local_sensor2").innerText = sensores_estaticos.sensor2.local;
-      document.getElementById("span_medicao2").innerText = `${sensores_estaticos.sensor2.nivel} %`;
-      document.getElementById("btn_sensor2").style.backgroundColor = obterCorPorNivel(sensores_estaticos.sensor2.nivel);
-
-      // Sensor 3 - Quarto
-      document.getElementById("span_local_sensor3").innerText = sensores_estaticos.sensor3.local;
-      document.getElementById("span_medicao3").innerText = `${sensores_estaticos.sensor3.nivel} %`;
-      document.getElementById("btn_sensor3").style.backgroundColor = obterCorPorNivel(sensores_estaticos.sensor3.nivel);
-
-      atualizarTextosBotoes();
-    })
-    .catch(erro => {
-      console.log(`Erro na API de sensores: ${erro}`);
-      
-      // Dados de fallback para todos os sensores
-      const niveisStaticos = [2.1, 5.2, 14.8];
-      
-      for (let i = 0; i < 3; i++) {
-        const sensorNum = i + 1;
-        document.getElementById(`span_medicao${sensorNum}`).innerText = `${niveisStaticos[i]} %`;
-        document.getElementById(`btn_sensor${sensorNum}`).style.backgroundColor = obterCorPorNivel(niveisStaticos[i]);
-        document.getElementById(`span_local_sensor${sensorNum}`).innerText = nomesSensores[i];
-      }
-      
-      document.getElementById("span_local_medicaoMaior").innerText = nomesSensores[0];
-      document.getElementById("span_dataHora").innerText = formatarDataHora(new Date().toISOString());
-      
-      atualizarTextosBotoes();
-    });
-}
-
-
-function atualizarTextosBotoes() {
-  for (let j = 1; j <= 3; j++) {
-    const btn = document.getElementById(`btn_sensor${j}`);
-    if (j === sensorGraficoAtual) {
-      btn.innerText = "Gráfico Atual";
-      btn.style.opacity = "0.8";
-      btn.style.fontWeight = "bold";
-    } else {
-      btn.innerText = "Ver Gráfico";
-      btn.style.opacity = "1";
-      btn.style.fontWeight = "normal";
     }
   }
-}
 
-// Função para gerar dados aleatórios para sensores estáticos
-function gerarDadosAleatorios(sensorNum, horasAtras = 2) {
-  const dados = [];
-  const agora = new Date();
-  const nivelBase = sensorNum === 2 ? sensores_estaticos.sensor2.nivel : sensores_estaticos.sensor3.nivel;
+  // Função para gerar dados aleatórios para sensores estáticos
+  function gerarDadosAleatorios(sensorNum, horasAtras = 2) {
+    const dados = [];
+    const agora = new Date();
+    const nivelBase = sensorNum === 2 ? sensores_estaticos.sensor2.nivel : sensores_estaticos.sensor3.nivel;
 
-  for (let i = horasAtras * 12; i >= 0; i--) {
-    const tempo = new Date(agora.getTime() - (i * 5 * 60000));
-    const hora = tempo.getHours().toString().padStart(2, "0");
-    const minuto = tempo.getMinutes().toString().padStart(2, "0");
+    for (let i = horasAtras * 12; i >= 0; i--) {
+      const tempo = new Date(agora.getTime() - (i * 5 * 60000));
+      const hora = tempo.getHours().toString().padStart(2, "0");
+      const minuto = tempo.getMinutes().toString().padStart(2, "0");
 
-    const variacao = (Math.random() - 0.5) * (nivelBase * 0.3);
-    let nivel = Math.max(0, nivelBase + variacao);
-    nivel = Math.round(nivel * 10) / 10;
+      const variacao = (Math.random() - 0.5) * (nivelBase * 0.3);
+      let nivel = Math.max(0, nivelBase + variacao);
+      nivel = Math.round(nivel * 10) / 10;
 
-    dados.push({
-      data_hora: `${hora}:${minuto}`,
-      nivel_de_gas: nivel
-    });
+      dados.push({
+        data_hora: `${hora}:${minuto}`,
+        nivel_de_gas: nivel
+      });
+    }
+
+    return dados;
   }
 
-  return dados;
-}
+  // Função para criar gráfico
+  function criarGrafico(labels, valores) {
+    const ctx = document.getElementById('canvas_grafico').getContext('2d');
 
-// Função para criar gráfico
-function criarGrafico(labels, valores) {
-  const ctx = document.getElementById('canvas_grafico').getContext('2d');
-  
-  // Destruir gráfico existente se houver
-  if (canvas_grafico) {
-    canvas_grafico.destroy();
-  }
+    // Destruir gráfico existente se houver
+    if (canvas_grafico) {
+      canvas_grafico.destroy();
+    }
 
-  const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-  gradient.addColorStop(0, 'rgba(37, 99, 235, 0.5)');
-  gradient.addColorStop(0.5, 'rgba(37, 99, 235, 0.1)');
-  gradient.addColorStop(1, 'rgba(37, 99, 235, 0.01)');
+    const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.5)');
+    gradient.addColorStop(0.5, 'rgba(37, 99, 235, 0.1)');
+    gradient.addColorStop(1, 'rgba(37, 99, 235, 0.01)');
 
-  // Registra o plugin de anotação se disponível
-  if (window.Chart && window.Chart.register && window['ChartAnnotation']) {
-    Chart.register(window['ChartAnnotation']);
-  }
+    // Registra o plugin de anotação se disponível
+    if (window.Chart && window.Chart.register && window['ChartAnnotation']) {
+      Chart.register(window['ChartAnnotation']);
+    }
 
-  canvas_grafico = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Nível de Gás (%)',
-        data: valores,
-        fill: true,
-        backgroundColor: gradient,
-        borderColor: '#2563eb',
-        tension: 0.3,
-        pointRadius: 4,
-        pointBackgroundColor: '#2563eb',
-        pointBorderColor: '#ffffff',
-        pointBorderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: Math.max(Math.max(...valores.filter(v => v !== null && v !== undefined)), 15) + 2,
-          grid: {
-            color: 'rgba(0, 0, 0, 0.1)'
-          }
-        },
-        x: {
-          grid: {
-            color: 'rgba(0, 0, 0, 0.1)'
-          }
-        }
+    canvas_grafico = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Nível de Gás (%)',
+          data: valores,
+          fill: true,
+          backgroundColor: gradient,
+          borderColor: '#2563eb',
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#2563eb',
+          pointBorderColor: '#ffffff',
+          pointBorderWidth: 2
+        }]
       },
-      plugins: {
-        legend: {
-          display: false
-        },
-        annotation: window['ChartAnnotation'] ? {
-          annotations: {
-            LIE: {
-              type: 'line',
-              yMin: 5,
-              yMax: 5,
-              borderColor: '#ef4444',
-              borderWidth: 2,
-              borderDash: [5, 5],
-              label: {
-                enabled: true,
-                content: 'LIE (5%)',
-                position: 'end',
-                color: '#ef4444',
-                font: { weight: 'bold', size: 12 }
-              }
-            },
-            LSE: {
-              type: 'line',
-              yMin: 15,
-              yMax: 15,
-              borderColor: '#000000',
-              borderWidth: 2,
-              borderDash: [5, 5],
-              label: {
-                enabled: true,
-                content: 'LSE (15%)',
-                position: 'end',
-                color: '#000000',
-                font: { weight: 'bold', size: 12 }
-              }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: Math.max(Math.max(...valores.filter(v => v !== null && v !== undefined)), 15) + 2,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)'
+            }
+          },
+          x: {
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)'
             }
           }
-        } : {}
-      }
-    }
-  });
-}
-
-
-function atualizarGrafico(labels, valores) {
-  if (!canvas_grafico) {
-    criarGrafico(labels, valores);
-    return;
-  }
-  
-  try {
-    canvas_grafico.data.labels = labels;
-    canvas_grafico.data.datasets[0].data = valores;
-    canvas_grafico.options.scales.y.max = Math.max(Math.max(...valores.filter(v => v !== null)), 15) + 2;
-    canvas_grafico.update();
-  } catch (e) {
-    console.error("Erro ao atualizar gráfico:", e);
-
-    criarGrafico(labels, valores);
-  }
-}
-
-
-function grafico_de_linha() {
-  console.log("Atualizando gráfico de linha para sensor 1...");
-  
-  fetch(`/grafico/medicoes-gas/${numero_apartamento}`)
-    .then(resposta => {
-      if (!resposta.ok) throw new Error("Erro na resposta da API");
-      return resposta.json();
-    })
-    .then(data => {
-      const agora = new Date();
-      const duasHorasAtras = new Date(agora.getTime() - 2 * 60 * 60 * 1000);
-
-      const labels = [];
-      let timeCursor = new Date(duasHorasAtras);
-      while (timeCursor <= agora) {
-        labels.push(
-          timeCursor.getHours().toString().padStart(2, "0") + ":" +
-          timeCursor.getMinutes().toString().padStart(2, "0")
-        );
-        timeCursor = new Date(timeCursor.getTime() + 5 * 60000);
-      }
-
-    
-      const ordenados = data
-        .map(item => ({
-          ...item,
-          dataObj: new Date(item.data_hora.includes("T") ? item.data_hora : item.data_hora.replace(" ", "T"))
-        }))
-        .filter(item => item.dataObj >= duasHorasAtras && item.dataObj <= agora)
-        .sort((a, b) => a.dataObj - b.dataObj);
-
-      
-      const valores = labels.map(label => {
-        const [h, m] = label.split(":");
-        const labelDate = new Date(agora);
-        labelDate.setHours(h, m, 0, 0);
-
-        let closest = null;
-        let minDiff = 4 * 60 * 1000;
-        for (const item of ordenados) {
-          const diff = Math.abs(item.dataObj - labelDate);
-          if (diff < minDiff) {
-            minDiff = diff;
-            closest = item;
-          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          annotation: window['ChartAnnotation'] ? {
+            annotations: {
+              LIE: {
+                type: 'line',
+                yMin: 5,
+                yMax: 5,
+                borderColor: '#ef4444',
+                borderWidth: 2,
+                borderDash: [5, 5],
+                label: {
+                  enabled: true,
+                  content: 'LIE (5%)',
+                  position: 'end',
+                  color: '#ef4444',
+                  font: { weight: 'bold', size: 12 }
+                }
+              },
+              LSE: {
+                type: 'line',
+                yMin: 15,
+                yMax: 15,
+                borderColor: '#000000',
+                borderWidth: 2,
+                borderDash: [5, 5],
+                label: {
+                  enabled: true,
+                  content: 'LSE (15%)',
+                  position: 'end',
+                  color: '#000000',
+                  font: { weight: 'bold', size: 12 }
+                }
+              }
+            }
+          } : {}
         }
-        return closest ? parseFloat(closest.nivel_de_gas) : null;
-      });
-
-     
-      atualizarGrafico(labels, valores);
-      
-      
-      document.getElementById("span_sensor_local_selecionado").innerText = nomesSensores[0];
-    })
-    .catch(erro => {
-      console.error("Erro ao buscar dados do gráfico:", erro);
-      
-      document.querySelector('.span_alerta_status').innerText = "Erro de conexão";
-      
-      
-      const agora = new Date();
-      const labels = [];
-      const valores = [];
-      
-     
-      for (let i = 24; i >= 0; i--) {
-        const tempo = new Date(agora.getTime() - (i * 5 * 60000));
-        const hora = tempo.getHours().toString().padStart(2, "0");
-        const minuto = tempo.getMinutes().toString().padStart(2, "0");
-        labels.push(`${hora}:${minuto}`);
-        
-        
-        const valor = 2.1 + (Math.random() - 0.5) * 1.0;
-        valores.push(Math.max(0, Math.round(valor * 10) / 10));
       }
-      
+    });
+  }
+
+
+  function atualizarGrafico(labels, valores) {
+    if (!canvas_grafico) {
+      criarGrafico(labels, valores);
+      return;
+    }
+
+    try {
+      canvas_grafico.data.labels = labels;
+      canvas_grafico.data.datasets[0].data = valores;
+      canvas_grafico.options.scales.y.max = Math.max(Math.max(...valores.filter(v => v !== null)), 15) + 2;
+      canvas_grafico.update();
+    } catch (e) {
+      console.error("Erro ao atualizar gráfico:", e);
+
+      criarGrafico(labels, valores);
+    }
+  }
+
+
+  function grafico_de_linha() {
+    console.log("Atualizando gráfico de linha para sensor 1...");
+
+    fetch(`/grafico/medicoes-gas/${numero_apartamento}`)
+      .then(resposta => {
+        if (!resposta.ok) throw new Error("Erro na resposta da API");
+        return resposta.json();
+      })
+      .then(data => {
+        const agora = new Date();
+        const duasHorasAtras = new Date(agora.getTime() - 2 * 60 * 60 * 1000);
+
+        const labels = [];
+        let timeCursor = new Date(duasHorasAtras);
+        while (timeCursor <= agora) {
+          labels.push(
+            timeCursor.getHours().toString().padStart(2, "0") + ":" +
+            timeCursor.getMinutes().toString().padStart(2, "0")
+          );
+          timeCursor = new Date(timeCursor.getTime() + 5 * 60000);
+        }
+
+
+        const ordenados = data
+          .map(item => ({
+            ...item,
+            dataObj: new Date(item.data_hora.includes("T") ? item.data_hora : item.data_hora.replace(" ", "T"))
+          }))
+          .filter(item => item.dataObj >= duasHorasAtras && item.dataObj <= agora)
+          .sort((a, b) => a.dataObj - b.dataObj);
+
+
+        const valores = labels.map(label => {
+          const [h, m] = label.split(":");
+          const labelDate = new Date(agora);
+          labelDate.setHours(h, m, 0, 0);
+
+          let closest = null;
+          let minDiff = 4 * 60 * 1000;
+          for (const item of ordenados) {
+            const diff = Math.abs(item.dataObj - labelDate);
+            if (diff < minDiff) {
+              minDiff = diff;
+              closest = item;
+            }
+          }
+          return closest ? parseFloat(closest.nivel_de_gas) : null;
+        });
+
+
+        atualizarGrafico(labels, valores);
+
+
+        document.getElementById("span_sensor_local_selecionado").innerText = nomesSensores[0];
+      })
+      .catch(erro => {
+        console.error("Erro ao buscar dados do gráfico:", erro);
+
+        document.querySelector('.span_alerta_status').innerText = "Erro de conexão";
+
+
+        const agora = new Date();
+        const labels = [];
+        const valores = [];
+
+
+        for (let i = 24; i >= 0; i--) {
+          const tempo = new Date(agora.getTime() - (i * 5 * 60000));
+          const hora = tempo.getHours().toString().padStart(2, "0");
+          const minuto = tempo.getMinutes().toString().padStart(2, "0");
+          labels.push(`${hora}:${minuto}`);
+
+
+          const valor = 2.1 + (Math.random() - 0.5) * 1.0;
+          valores.push(Math.max(0, Math.round(valor * 10) / 10));
+        }
+
+        atualizarGrafico(labels, valores);
+      });
+  }
+
+
+  function atualizarGraficoParaSensor(sensorNum) {
+    console.log(`Atualizando gráfico para sensor ${sensorNum}...`);
+
+    if (sensorNum === 1) {
+      grafico_de_linha();
+    } else {
+
+      const dadosAleatorios = gerarDadosAleatorios(sensorNum);
+
+      const labels = dadosAleatorios.map(item => item.data_hora);
+      const valores = dadosAleatorios.map(item => item.nivel_de_gas);
+
       atualizarGrafico(labels, valores);
-    });
-}
 
-
-function atualizarGraficoParaSensor(sensorNum) {
-  console.log(`Atualizando gráfico para sensor ${sensorNum}...`);
-  
-  if (sensorNum === 1) {
-    grafico_de_linha();
-  } else {
-    
-    const dadosAleatorios = gerarDadosAleatorios(sensorNum);
-    
-    const labels = dadosAleatorios.map(item => item.data_hora);
-    const valores = dadosAleatorios.map(item => item.nivel_de_gas);
-
-    atualizarGrafico(labels, valores);
-    
-    // Atualiza o local do sensor no título
-    const local = sensorNum === 2 ? sensores_estaticos.sensor2.local : sensores_estaticos.sensor3.local;
-    document.getElementById("span_sensor_local_selecionado").innerText = local;
+      // Atualiza o local do sensor no título
+      const local = sensorNum === 2 ? sensores_estaticos.sensor2.local : sensores_estaticos.sensor3.local;
+      document.getElementById("span_sensor_local_selecionado").innerText = local;
+    }
   }
-}
 
 
-function configurarBotoesSensores() {
-  for (let i = 1; i <= 3; i++) {
-    const btn = document.getElementById(`btn_sensor${i}`);
-    btn.addEventListener("click", function() {
-      sensorGraficoAtual = i;
-      
-   
-      atualizarGraficoParaSensor(i);
-      
-      atualizarTextosBotoes();
-    });
+  function configurarBotoesSensores() {
+    for (let i = 1; i <= 3; i++) {
+      const btn = document.getElementById(`btn_sensor${i}`);
+      btn.addEventListener("click", function () {
+        sensorGraficoAtual = i;
+
+
+        atualizarGraficoParaSensor(i);
+
+        atualizarTextosBotoes();
+      });
+    }
   }
-}
 
-function atualizarTudo() {
-  console.log("Atualizando todos os componentes...");
-  retornar_dados_kpi_alerta();
-  retornar_dados_tituloGrafico();
-  retornar_dados_niveisEmLocais();
-  
-  if (sensorGraficoAtual === 1) {
-    grafico_de_linha();
+  function atualizarTudo() {
+    console.log("Atualizando todos os componentes...");
+    retornar_dados_kpi_alerta();
+    retornar_dados_tituloGrafico();
+    retornar_dados_niveisEmLocais();
+
+    if (sensorGraficoAtual === 1) {
+      grafico_de_linha();
+    }
   }
-}
 
 
-document.addEventListener("DOMContentLoaded", function() {
-  console.log("Dashboard carregada - Inicializando...");
-  
-
-  configurarBotoesSensores();
-  
-  atualizarTudo();
-  
-
-  intervaloAtualizacao = setInterval(atualizarTudo, 5000);
-  
-  primeiraExecucao = false;
-});
+  document.addEventListener("DOMContentLoaded", function () {
+    console.log("Dashboard carregada - Inicializando...");
 
 
-document.getElementById("logout").addEventListener("click", function() {
- 
-  if (intervaloAtualizacao) {
-    clearInterval(intervaloAtualizacao);
-  }
-  
+    configurarBotoesSensores();
 
-  console.log("Logout clicado");
-  // window.location.href = "/login.html";
-});
+    atualizarTudo();
 
-  </script>
+
+    intervaloAtualizacao = setInterval(atualizarTudo, 5000);
+
+    primeiraExecucao = false;
+  });
+
+
+  document.getElementById("logout").addEventListener("click", function () {
+
+    if (intervaloAtualizacao) {
+      clearInterval(intervaloAtualizacao);
+    }
+
+
+    console.log("Logout clicado");
+    // window.location.href = "/login.html";
+  });
+
+</script>

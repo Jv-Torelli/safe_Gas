@@ -2,11 +2,12 @@
     height: 100vh;
     width: 100vw;
 }
+
 .painel {
     background-size: 95%;
     background-color: #F6F9FC;
     height: 100%;
-    width: 100%;
+    width: 82%;
     padding: 24px;
     flex-direction: column;
     display: flex;
@@ -215,9 +216,11 @@
     height: 27%;
     display: flex;
     flex-direction: row;
-    align-items: center;      /* Alinha verticalmente ao centro */
-    justify-content: space-between; /* Espaço entre os itens */
-    gap: 16px; 
+    align-items: center;
+    /* Alinha verticalmente ao centro */
+    justify-content: space-between;
+    /* Espaço entre os itens */
+    gap: 16px;
     font-size: 15px;
     color: #000000;
 }
@@ -235,17 +238,18 @@
     font-size: 15px;
     color: #ffffff;
 }
+
 .btn_sensor:hover {
     background: #214291;
 }
 
-  .btn_sensor.selecionado {
-      font-weight: bold;
-      border: 2px solid #2563eb;
-      box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
-    }
-    
-    .span_medicao {
-      font-weight: bold;
-      color: #333;
-    }
+.btn_sensor.selecionado {
+    font-weight: bold;
+    border: 2px solid #2563eb;
+    box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+}
+
+.span_medicao {
+    font-weight: bold;
+    color: #333;
+}

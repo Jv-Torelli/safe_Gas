@@ -13,58 +13,8 @@
     flex-direction: row;
 }
 
-/* nav containers */
-.navbar {
-    height: 100vh;
-    width: 299px;
-    background: #7bb062;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 1px 1px 10px 1px #0000007d;
-}
-
-.container_btn {
-    height: 350px;
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-/* buttons */
-
-.btnNavbar {
-    width: 80%;
-    height: 80px;
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    border: 1px solid black;
-    border-radius: 25px;
-}
-
-/* welcome */
-
-.welcome_navbar {
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-size: 30px;
-    width: 80%;
-}
-
-.navbar span {
-    color: white;
-}
-
-.container{
-    width: 80%;
+.container {
+    width: 85%;
     justify-content: center;
     display: flex;
     flex-direction: column;
@@ -72,7 +22,7 @@
     box-shadow: 1px 1px 10px 1px #0000007d;
 }
 
-.sindico-criar{
+.sindico-criar {
     width: 84%;
     display: flex;
     flex-direction: row;
@@ -86,7 +36,7 @@
     font-weight: 900;
 }
 
-.sindico-criar img{
+.sindico-criar img {
     width: 39px;
     color: white;
 }
@@ -95,7 +45,7 @@
     font-size: 23px;
 }
 
-#button-criar{
+#button-criar {
     width: 130px;
     height: 58px;
     color: white;
@@ -107,49 +57,56 @@
     border-radius: 30px;
 }
 
- .fundo-modal {
+.fundo-modal {
     display: none;
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
     z-index: 1000;
-  }
+}
 
-  .fundo-modal.ativo {
+.fundo-modal.ativo {
     display: flex;
-  }
+}
 
-  #fundoModalExcluir {
+#fundoModalExcluir {
     display: none;
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
     z-index: 1000;
-  }
+}
 
-  #fundoModalExcluir.ativo {
+#fundoModalExcluir.ativo {
     display: flex;
-  }
+}
 
-  .modal, .modal-conteudo {
+.modal,
+.modal-conteudo {
     background: white;
     padding: 20px;
     border-radius: 8px;
     min-width: 300px;
-  }
+}
 
-  .botao-fechar {
+.botao-fechar {
     background: transparent;
     border: none;
     font-size: 24px;
     cursor: pointer;
-  }
-  
-  .botaoExcluir{
+}
+
+.botaoExcluir {
     background-color: #7bb062;
     color: white;
     border: none;
@@ -158,11 +115,11 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
+}
 
-  .botaoExcluir:hover{
+.botaoExcluir:hover {
     background-color: #10b981;
-  }
+}
 
 .cabecalho-modal {
     display: flex;
@@ -290,7 +247,7 @@ input:focus {
 }
 
 
-.tabela{
+.tabela {
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -305,7 +262,7 @@ input:focus {
     width: 50px;
 }
 
-th{
+th {
     align-items: center;
     justify-content: center;
     font-size: larger;
@@ -315,10 +272,8 @@ th{
     padding-bottom: 22px;
 }
 
-td{
+td {
     border-top: 2px solid rgba(0, 0, 0, 0.473);
     font-size: 19px;
     text-align: center;
 }
-
-
