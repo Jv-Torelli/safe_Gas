@@ -3,15 +3,17 @@ var database = require("../database/config")
 function buscarDados() {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ")
     var instrucaoSql = `
-     SELECT 
+
+    SELECT 
     ap.idApartamento AS ID_Apartamento,
     ap.numero_apartamento AS Numero_Apartamento,
     ap.andar_apartamento AS Andar,
     p.bloco_predio AS Bloco_Predio,
     s.idSensor AS ID_Sensor,
     s.local_instalado AS Local_do_Sensor,
+    s.status_sensor AS Status_Sensor,  
     MAX(m.nivel_de_gas) AS Maior_Nivel_de_Gas,
-    a.statusAlerta AS tatus_Alerta,
+    a.statusAlerta AS tatus_Alerta,  
     a.risco AS Descricao_Risco,
     a.acao AS Acao_Recomendada,
     MAX(m.data_hora) AS Hora_da_ultima_Medicao
@@ -26,16 +28,18 @@ JOIN
 JOIN 
     alerta a ON m.fkAlertaMedicao = a.idAlerta
 WHERE 
-   
-     a.statusAlerta IN ('seguro', 'Perigo', 'Atenção', 'Emergência')
+    a.statusAlerta IN ('Seguro', 'Perigo', 'Atenção', 'Emergência')
 GROUP BY 
     ap.idApartamento, ap.numero_apartamento, ap.andar_apartamento, 
-    p.bloco_predio, s.idSensor, s.local_instalado, 
+    p.bloco_predio, s.idSensor, s.local_instalado, s.status_sensor,  -- Adicionado status_sensor no GROUP BY
     a.statusAlerta, a.risco, a.acao
 ORDER BY 
-    p.bloco_predio, ap.andar_apartamento, ap.numero_apartamento, 
+    p.bloco_predio, 
+    ap.andar_apartamento, 
+    ap.numero_apartamento, 
     MAX(m.nivel_de_gas) DESC;
-    `;
+    
+        `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
@@ -121,7 +125,43 @@ LIMIT 10;
 }
 
 
+function planta(idAptoModal) {
+    var instrucaoSql = `
+        SELECT 
+    ap.numero_apartamento AS 'Número Apartamento',
+    p.bloco_predio AS 'Bloco/Prédio',
+    s.idSensor AS 'ID Sensor',
+    s.local_instalado AS 'Localização',
+    s.status_sensor AS 'Status',
+    MAX(m.nivel_de_gas) AS 'medicao',
+    MAX(m.data_hora) AS 'Data/Hora Última Medição',
+    a.statusAlerta AS 'Status Alerta',
+    a.risco AS 'Risco Detectado',
+    a.acao AS 'Ação Recomendada'
+FROM 
+    apartamento ap
+JOIN 
+    predio p ON ap.fkPredioApto = p.idPredio
+JOIN 
+    sensor s ON s.fkApartamento = ap.idApartamento
+LEFT JOIN 
+    medicao m ON m.fkSensorMedicao = s.idSensor
+LEFT JOIN 
+    alerta a ON m.fkAlertaMedicao = a.idAlerta
+WHERE 
+     m.fkApartamentoMedicao = ${idAptoModal} 
+GROUP BY 
+    ap.numero_apartamento, p.bloco_predio, s.idSensor, s.local_instalado, 
+    s.status_sensor, a.statusAlerta, a.risco, a.acao
+ORDER BY 
+    s.local_instalado;
+    `
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
-    buscarDados, buscarKpi, buscarTorre, buscarApto, buscarAndares, graficoModal, graficoMedicao, apartamentoStatus
+    buscarDados, buscarKpi, buscarTorre, buscarApto, buscarAndares, graficoModal, graficoMedicao, apartamentoStatus, planta
 };
 

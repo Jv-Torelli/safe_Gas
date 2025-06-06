@@ -78,7 +78,7 @@
     }
 
     .emergencia {
-        background-color: #f8c53a;
+        background-color: black;
     }
 
     .manutencao {
@@ -380,7 +380,8 @@
 
             <div class="modal">
                 <div class="cabecalho-modal">
-                    <h2 class="titulo-modal">Apartamento <span id="numeroApto"> </span>-A</h2>
+                    <h2 class="titulo-modal">Apartamento <span id="numeroApto"> </span>-A <span id="inatividade"></span>
+                    </h2>
                     <button class="botao-fechar" id="botaoFechar">&times;</button>
                 </div>
 
@@ -426,7 +427,7 @@
                     </div>
 
                     <div class="botoes-acoes">
-                        <a class="botao-azul" href="./dash_especifica.html">Verificar Sensor</a>
+                        <a class="botao-azul" href="./dash_especifica.html">Verificar Apartamento</a>
                         <button class="botao-amarelo">Agendar Manutenção</button>
                     </div>
                 </div>
@@ -443,6 +444,7 @@
             setTimeout(atualizarGeral, 1000);
         }
     }
+    var plantaModal = []
     var numeroAtual = 0;
     var corApto = [];
     let modalAberto = false;
@@ -618,33 +620,47 @@
                 for (let contApto = 0; contApto < dadosApto.length; contApto++) {
                     numeroAtual = dadosApto[contApto].numero_apartamento;
                     let corSelecionada = '';
+                    let temSensorInativo = false;
+                    let maiorNivel = 0;
 
+                    // Primeiro verifica se há algum sensor inativo nesse apartamento
                     for (let contStatus = 0; contStatus < statusPredio.length; contStatus++) {
-                        if (statusPredio[contStatus].Numero_Apartamento == numeroAtual) {
-                            let nivel = statusPredio[contStatus].Nivel_Mais_Alto;
-                            let verificacao = statusPredio[contStatus].Status_Sensor;
-
-                            if (verificacao == "Inativo") {
-                                corSelecionada = '#d1d5db'; // cinza claro
-                            }
-                            else if (nivel <= 2.5) {
-                                corSelecionada = '#00800038'; // verde claro
-                            } else if (nivel <= 5) {
-                                corSelecionada = '#FFEB3B'; // amarelo
-                            } else if (nivel <= 15) {
-                                corSelecionada = '#F44336'; // vermelho
-                            } else {
-                                corSelecionada = '#FF9800'; // laranja
-                            }
-
+                        if (statusPredio[contStatus].Numero_Apartamento == numeroAtual &&
+                            statusPredio[contStatus].Status_Sensor == "Inativo") {
+                            temSensorInativo = true;
                             break;
                         }
                     }
 
+                    // Se tiver sensor inativo, define como cinza
+                    if (temSensorInativo) {
+                        corSelecionada = '#d1d5db'; // cinza claro
+                    }
+                    // Caso contrário, verifica os níveis dos sensores ativos
+                    else {
+                        // Encontra o maior nível entre os sensores ativos
+                        for (let contStatus = 0; contStatus < statusPredio.length; contStatus++) {
+                            if (statusPredio[contStatus].Numero_Apartamento == numeroAtual &&
+                                statusPredio[contStatus].Status_Sensor == "Ativo") {
+                                if (statusPredio[contStatus].Nivel_Mais_Alto > maiorNivel) {
+                                    maiorNivel = statusPredio[contStatus].Nivel_Mais_Alto;
+                                }
+                            }
+                        }
+
+                        if (maiorNivel <= 2.5) {
+                            corSelecionada = '#00800038'; // verde claro
+                        } else if (maiorNivel <= 5) {
+                            corSelecionada = '#FFEB3B'; // amarelo
+                        } else if (maiorNivel <= 15) {
+                            corSelecionada = '#F44336'; // vermelho
+                        } else {
+                            corSelecionada = 'black'; // preto
+                        }
+                    }
+
                     corApto.push(corSelecionada);
-
-                    aptoLista.innerHTML += `<div class="andar-p" style="background: ${corSelecionada}" onclick="abrirModal(); obterNumero(this)">${numeroAtual}</div>`
-
+                    aptoLista.innerHTML += `<div class="andar-p" style="background: ${corSelecionada}" onclick="abrirModal(); obterNumero(this)">${numeroAtual}</div>`;
                 }
 
 
@@ -707,7 +723,7 @@
                         totalNotificacoes++;
 
                     } else if (dados[i].Descricao_Risco == "Possibilidade de asfixia") {
-                        coresBackGround = "#FF9800";
+                        coresBackGround = "black";
                         alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};">
                     <div class="informacao_notificacao">
                         <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
@@ -730,7 +746,7 @@
                     } else {
                         totalNotificacoes++;
 
-                        coresBackGround = "#    ";
+                        coresBackGround = "#f83a3a";
                         alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};">
                     <div class="informacao_notificacao">
                         <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
@@ -860,6 +876,7 @@
         document.getElementById('fundoModal').classList.add('ativo');
         inicializarGrafico()
         buscarGraficoModalComIntervalo();
+
     }
 
     function buscarGraficoModalComIntervalo() {
@@ -897,27 +914,39 @@
                     timeStyle: 'short'
                 })}`;
 
+                plantaReq();
 
-                if (dadosModal.Maior_Nivel_de_Gas < 2.5) {
+                if (dadosModal.Status_Sensor == "Inativo") {
+                    inatividade.innerHTML = " Sensor Inativo";
+                    indicadorStatusModal.style.backgroundColor = 'gray';
+                    sensor1.style.backgroundColor = 'gray';
+                    statusModal.style.color = 'gray';
+                    barraprogresso.style.background = 'gray';
+                    localModal.style.background = 'gray';
+                } else if (dadosModal.Maior_Nivel_de_Gas < 2.5) {
                     indicadorStatusModal.style.backgroundColor = 'green';
+                    sensor1.style.backgroundColor = 'green';
                     statusModal.style.color = 'green';
                     barraprogresso.style.background = 'green';
                     localModal.style.background = 'green';
-                } else if (dadosModal.Maior_Nivel_de_Gas < 5) {
+                } else if (dadosModal.Maior_Nivel_de_Gas > 5 && dadosModal.Maior_Nivel_de_Gas < 10) {
                     barraprogresso.style.background = '#FFEB3B';
                     indicadorStatusModal.style.backgroundColor = '#FFEB3B';
+                    sensor1.style.backgroundColor = '#FFEB3B';
                     statusModal.style.color = '#FFEB3B';
                     localModal.style.background = '#FFEB3B';
                 } else if (dadosModal.Maior_Nivel_de_Gas < 15) {
                     barraprogresso.style.background = '#d50000';
                     indicadorStatusModal.style.backgroundColor = '#d50000';
+                    sensor1.style.backgroundColor = '#d50000';
                     statusModal.style.color = '#d50000';
                     localModal.style.background = '#d50000';
                 } else {
-                    barraprogresso.style.background = '#FF9800 ';
-                    indicadorStatusModal.style.backgroundColor = '#FF9800';
-                    statusModal.style.color = '#FF9800';
-                    localModal.style.background = '#FF9800';
+                    barraprogresso.style.background = 'black ';
+                    indicadorStatusModal.style.backgroundColor = 'black';
+                    sensor1.style.backgroundColor = 'black';
+                    statusModal.style.color = 'black';
+                    localModal.style.background = 'black';
                 }
 
             })
@@ -926,6 +955,62 @@
                 alert("Não foi possível carregar os dados do gráfico. Tente novamente mais tarde.");
             });
 
+    }
+
+
+
+
+    function plantaReq() {
+
+        fetch(`/dashboard/plantaController/${idModalGrafico}`)
+            .then(function (retornoApto) {
+                if (retornoApto.ok) {
+                    if (retornoApto.status === 204) {
+                        throw "Nenhum resultado encontrado!";
+                    }
+                    return retornoApto.json();
+                } else {
+                    throw "Houve um erro na API!";
+                }
+            })
+            .then(function (retornoJson) {
+                plantaModal = retornoJson;
+                console.log("Dados recebidos planta: ", JSON.stringify(plantaModal));
+                var corPlanta = ""
+                for (let i = 0; i < plantaModal.length; i++) {
+                    if (plantaModal[i].Status == "Inativo") {
+                        corPlanta = 'gray';
+                    } else if (plantaModal[i].medicao < 2.5) {
+                        corPlanta = "green";
+                    } else if (plantaModal[i].medicao > 2.5 && plantaModal[i].medicao < 5) {
+                        corPlanta = '#FFEB3B';
+
+                    } else if (plantaModal[i].medicao < 15) {
+                        corPlanta = '#F44336';
+
+                    } else {
+                        corPlanta = 'black';
+
+                    }
+                    if (plantaModal[i].Localização == "Banheiro") {
+                        sensor3.style.backgroundColor = corPlanta;
+
+
+                    } else if (plantaModal[i].Localização == "Quarto") {
+
+                        sensor2.style.backgroundColor = corPlanta;
+
+                    }
+
+
+
+                }
+
+            })
+            .catch(function (erro) {
+                console.error("Erro ao carregar gráfico:", erro);
+                alert("Não foi possível carregar os dados do gráfico. Tente novamente mais tarde.");
+            });
     }
 
 

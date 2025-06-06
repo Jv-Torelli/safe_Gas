@@ -156,7 +156,27 @@ function buscarGraficoMedicao(req, res) {
 }
 
 
+function plantaController(req, res) {
+    var idAptoModal = req.params.idModalGrafico;
 
+    dashboardModel.planta(idAptoModal)
+        .then(
+            function (retornoApto) {
+                res.json(retornoApto);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar o cadastro! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+
+
+}
 module.exports = {
-    buscarGeral, buscarKpi, buscarTorre, buscarApto, buscarAndares, buscarMedicaoModal, buscarGraficoMedicao, apartamentoStatus
+    buscarGeral, buscarKpi, buscarTorre, buscarApto, buscarAndares, buscarMedicaoModal, buscarGraficoMedicao, apartamentoStatus, plantaController
 }
