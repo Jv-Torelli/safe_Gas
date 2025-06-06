@@ -32,6 +32,10 @@ router.get("/graficoModal/:idModalGrafico", function (req, res) {
     dashboardController.buscarGraficoMedicao(req, res);
 });
 
+router.get("/apartamentoStatus", function (req, res) {
+    dashboardController.apartamentoStatus(req, res);
+});
+
 
 
 module.exports = router;

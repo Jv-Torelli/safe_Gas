@@ -204,7 +204,9 @@
    display: flex;
    gap: 8px;
    margin-top: 16px;
+   color: white;
  }
+
 
  .botao-azul {
    flex: 1;
@@ -223,13 +225,12 @@
 
  .botao-azul:hover {
    transform: scale(1.05);
-   color: white;
  }
 
  .botao-amarelo {
    flex: 1;
    background-color: #ffc107;
-   color: #333;
+   color: white;
    border: none;
    padding: 12px 16px;
    border-radius: 4px;
@@ -246,7 +247,6 @@
 
  .botao-amarelo:hover {
    transform: scale(1.05);
-   color: white;
  }
 
  /* planta */
@@ -261,10 +261,12 @@
    border: 1px solid black;
    border-radius: 10px;
    max-height: 850px;
+   display: flex;
+  justify-content: center;
  }
 
  #sensor1 {
-   bottom: 62%;
+   bottom: 58%;
    position: absolute;
    left: 70px;
  }
@@ -285,10 +287,17 @@
    border-radius: 50%;
    background: green;
    border: none;
+   height: 40px;
+   width: 40px;
  }
 
  .plantaDiv h2 {
    top: 19px;
    position: absolute;
    left: 24px;
+ }
+
+ #planta_metricas {
+   position: absolute;
+   bottom: 50px;
  }

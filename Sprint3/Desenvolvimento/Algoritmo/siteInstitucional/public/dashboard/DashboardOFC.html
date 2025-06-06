@@ -94,6 +94,8 @@
         grid-template-columns: repeat(2, 50%);
         justify-items: start;
         height: 70px;
+        bottom: 5%;
+        position: absolute;
     }
 
 
@@ -162,7 +164,8 @@
     }
 </style>
 
-<body onload="buscarDados(), buscarKpis(), buscarTorre(), buscarApto(), buscarAndares(), atualizarGeral()">
+<body
+    onload="buscarDados(), buscarKpis(), buscarTorre(), buscarApto(), buscarAndares(), atualizarGeral(), apartamentoStatus()">
     <div class="main">
         <div class="navbar">
             <div class="welcome_navbar">
@@ -339,8 +342,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="container_notificacoes" id="alertasDash">
-
+                <div class="container_notificacoes">
+                    <div id='alertas_recentes'>Alertas Recentes <span id="qtd_totalNotificacoes"> </span> </div>
+                    <div id="alertasDash"></div>
                 </div>
 
             </div>
@@ -358,6 +362,20 @@
                     3
                 </button>
                 <h2 class="titulo-modal">Planta </h2>
+                <div class="legend-p" id="planta_metricas">
+                    <div class="legend-item">
+                        <div class="legend-color atencao"></div> Atenção - 2.5% a 4.9%
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color perigo"></div> Perigo - 5% a 15 %
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color emergencia"></div> Emergência - acima de 15%
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color manutencao"></div> Manutenção
+                    </div>
+                </div>
             </div>
 
             <div class="modal">
@@ -425,10 +443,10 @@
             setTimeout(atualizarGeral, 1000);
         }
     }
-
-
+    var numeroAtual = 0;
+    var corApto = [];
     let modalAberto = false;
-
+    var statusPredio = '';
     var qtd_total_apto_andar = 3;
     var dadosApartamentoGeral = [];
     var dadosGrafico = [];
@@ -479,12 +497,9 @@
                 qtd_sensores.innerHTML = dadosKpi[0].Total_Sensores;
                 qtd_alerta.innerHTML = dadosKpi[0].Sensores_Alarmantes;
                 qtd_manutencao.innerHTML = dadosKpi[0].Sensores_Inativos;
-                ultimaAtualizacao_div.innerHTML = `${new Date(dadosKpi[0].Ultima_Verificacao).toLocaleString('pt-BR', {
-                    dateStyle: 'short',
-                    timeStyle: 'short'
-                })
-                    }`
+                var dataDia = new Date();
 
+                ultimaAtualizacao_div.innerHTML = `${dataDia.getDate()}/${(dataDia.getMonth() + 1).toString().padStart(2, '0')}/${dataDia.getFullYear()}, ${dataDia.getHours()}:${dataDia.getMinutes().toString().padStart(2, '0')}`;
 
 
             })
@@ -546,14 +561,6 @@
                     indiceApto.innerHTML += `<div class="header-p">Apto 0${contador + 1}</div>`
                 }
 
-                for (cont2 = 0; cont2 < dadosApto.length; cont2++) {
-                    aptoLista.innerHTML += `<div class="andar-p normal" onclick="abrirModal(),obterNumero(this)">${dadosApto[cont2].numero_apartamento}</div>`
-                }
-
-
-
-
-
             })
             .catch(function (retornoApto) {
                 console.error(retornoApto);
@@ -590,9 +597,66 @@
     }
 
 
+    function apartamentoStatus() {
+
+        fetch("/dashboard/apartamentoStatus/").then(function (retorno) {
+            if (retorno.ok) {
+                if (retorno.status == 204) {
+                    throw "Nenhum resultado encontrado!!";
+                }
+                return retorno.json();
+            } else {
+                throw ('Houve um erro na API!');
+            }
+        })
+            .then(function (respostaPredio) {
+                statusPredio = respostaPredio;
+                console.log("Dados recebidos Predios: ", JSON.stringify(statusPredio));
+
+                corApto = [];
+
+                for (let contApto = 0; contApto < dadosApto.length; contApto++) {
+                    numeroAtual = dadosApto[contApto].numero_apartamento;
+                    let corSelecionada = '';
+
+                    for (let contStatus = 0; contStatus < statusPredio.length; contStatus++) {
+                        if (statusPredio[contStatus].Numero_Apartamento == numeroAtual) {
+                            let nivel = statusPredio[contStatus].Nivel_Mais_Alto;
+                            let verificacao = statusPredio[contStatus].Status_Sensor;
+
+                            if (verificacao == "Inativo") {
+                                corSelecionada = '#d1d5db'; // cinza claro
+                            }
+                            else if (nivel <= 2.5) {
+                                corSelecionada = '#00800038'; // verde claro
+                            } else if (nivel <= 5) {
+                                corSelecionada = '#FFEB3B'; // amarelo
+                            } else if (nivel <= 15) {
+                                corSelecionada = '#F44336'; // vermelho
+                            } else {
+                                corSelecionada = '#FF9800'; // laranja
+                            }
+
+                            break;
+                        }
+                    }
+
+                    corApto.push(corSelecionada);
+
+                    aptoLista.innerHTML += `<div class="andar-p" style="background: ${corSelecionada}" onclick="abrirModal(); obterNumero(this)">${numeroAtual}</div>`
+
+                }
+
+
+            })
+            .catch(function (retorno) {
+                console.error(retorno);
+
+            });
+    }
+
 
     function buscarDados() {
-        alertasDash.innerHTML = `<div id='alertas_recentes'>Alertas Recentes <span id="qtd_totalNotificacoes"> </span> </div> `;
         fetch("/dashboard/buscar/").then(function (resposta) {
 
             if (resposta.ok) {
@@ -666,7 +730,7 @@
                     } else {
                         totalNotificacoes++;
 
-                        coresBackGround = "#F44336";
+                        coresBackGround = "#    ";
                         alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};">
                     <div class="informacao_notificacao">
                         <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>

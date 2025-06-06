@@ -19,6 +19,24 @@ function buscarGeral(req, res) {
         );
 }
 
+function apartamentoStatus(req, res) {
+    // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
+    dashboardModel.apartamentoStatus()
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar o cadastro! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
 
 
 function buscarKpi(req, res) {
@@ -140,5 +158,5 @@ function buscarGraficoMedicao(req, res) {
 
 
 module.exports = {
-    buscarGeral, buscarKpi, buscarTorre, buscarApto, buscarAndares, buscarMedicaoModal, buscarGraficoMedicao
+    buscarGeral, buscarKpi, buscarTorre, buscarApto, buscarAndares, buscarMedicaoModal, buscarGraficoMedicao, apartamentoStatus
 }
