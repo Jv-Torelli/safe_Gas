@@ -23,6 +23,7 @@ var alertaRouter = require("./src/routes/alerta");
 var predioRouter = require("./src/routes/predio");
 var sensorRouter = require("./src/routes/sensor");
 var graficoRouter = require("./src/routes/grafico");
+var especificaRouter = require("./src/routes/especifica")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -38,6 +39,7 @@ app.use("/alerta", alertaRouter);
 app.use("/predio", predioRouter);
 app.use("/sensor", sensorRouter);
 app.use("/grafico", graficoRouter);
+app.use("/especifica", especificaRouter)
 
 
 app.listen(PORTA_APP, function () {

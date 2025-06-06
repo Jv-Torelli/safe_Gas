@@ -29,7 +29,7 @@ function buscarUltimasMedicoesPorSensor(numero_apartamento) {
                 FROM medicao m 
                 JOIN apartamento a ON m.fkApartamentoMedicao = a.idApartamento 
                 JOIN predio p ON a.fkPredioApto = p.idPredio 
-                WHERE a.numero_apartamento = ${numero_apartamento};
+                WHERE a.numero_apartamento = ${numero_apartamento}; 
     `;
     
     return database.executar(instrucaoSql, [numero_apartamento]);
