@@ -253,3 +253,37 @@
     font-weight: bold;
     color: #333;
 }
+
+.btn_sensor {
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn_sensor:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+}
+
+.btn-verde {
+    background-color: #28a745 !important;
+    color: white !important;
+}
+
+.btn-amarelo {
+    background-color: #ffc107 !important;
+    color: black !important;
+}
+
+.btn-vermelho {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.btn-preto {
+    background-color: #000000 !important;
+    color: white !important;
+}

@@ -18,7 +18,24 @@ function obterDadosKpi(idSensor) {
         
         return database.executar(instrucaoSql);
     }
+    
+    function obterDadosGrafico(idSensor){
+        var instrucaoSql = `
+            SELECT 
+                m.data_hora AS "Data e hora",
+                m.nivel_de_gas AS "Nível de Gás"
+            FROM 
+                medicao m
+            WHERE 
+                m.fkSensorMedicao = ${idSensor}
+            ORDER BY 
+                m.data_hora ASC
+        `;
+        
+        return database.executar(instrucaoSql);
+    }
 
 module.exports = {
-    obterDadosKpi
+    obterDadosKpi,
+    obterDadosGrafico
 };
