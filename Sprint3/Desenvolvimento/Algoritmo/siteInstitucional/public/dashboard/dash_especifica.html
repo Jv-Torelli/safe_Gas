@@ -156,510 +156,126 @@
 
 </html>
 <script>
+  let chart; 
+  const idSensor = 1;
 
-  const nomesSensores = ["Sala", "Cozinha", "Quarto"];
-  let sensorGraficoAtual = 1;
-  let canvas_grafico = null;
-  let primeiraExecucao = true;
-  let intervaloAtualizacao = null;
-
-
-  const numero_apartamento = "101";
-  document.getElementById("span_numero_apartamento").innerText = numero_apartamento;
-
-  const sensores_estaticos = {
-    sensor2: {
-      local: "Cozinha",
-      nivel: 5.2
-    },
-    sensor3: {
-      local: "Quarto",
-      nivel: 14.8
-    }
-  };
-
-
-  function obterCorPorNivel(nivel) {
-    if (nivel <= 2.4) {
-      return "#22c55e";
-    } else if (nivel <= 4.9) {
-      return "#eab308";
-    } else if (nivel <= 14.9) {
-      return "#ef4444";
-    } else {
-      return "#000000";
-    }
-  }
-
-
-  function obterStatusPorNivel(nivel) {
-    if (nivel <= 2.4) {
-      return "Seguro";
-    } else if (nivel <= 4.9) {
-      return "Atenção";
-    } else if (nivel <= 14.9) {
-      return "Perigo";
-    } else {
-      return "Emergência";
-    }
-  }
-
-  function atualizarSensoresEstaticos() {
-    // Sensor 2 - Cozinha
-    const variacao2 = (Math.random() - 0.5) * 0.6;
-    sensores_estaticos.sensor2.nivel = Math.max(0, sensores_estaticos.sensor2.nivel + variacao2);
-    sensores_estaticos.sensor2.nivel = Math.round(sensores_estaticos.sensor2.nivel * 10) / 10;
-
-    // Sensor 3 - Quarto
-    const variacao3 = (Math.random() - 0.5) * 0.4;
-    sensores_estaticos.sensor3.nivel = Math.max(0, sensores_estaticos.sensor3.nivel + variacao3);
-    sensores_estaticos.sensor3.nivel = Math.round(sensores_estaticos.sensor3.nivel * 10) / 10;
-  }
-
-  // Função para formatar data e hora
-  function formatarDataHora(dataHoraStr) {
-    if (!dataHoraStr) return "Agora";
-
-    const meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-    const dataHora = new Date(dataHoraStr.includes("T") ? dataHoraStr : dataHoraStr.replace(" ", "T"));
-
-    const agora = new Date();
-    const hoje = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
-    const data = new Date(dataHora.getFullYear(), dataHora.getMonth(), dataHora.getDate());
-
-    const diffDias = Math.floor((hoje - data) / (1000 * 60 * 60 * 24));
-    const hora = dataHora.getHours().toString().padStart(2, "0");
-    const min = dataHora.getMinutes().toString().padStart(2, "0");
-
-    if (diffDias === 0) {
-      return `Hoje, ${hora}:${min}`;
-    } else if (diffDias === 1) {
-      return `Ontem, ${hora}:${min}`;
-    } else {
-      return `${data.getDate()} ${meses[data.getMonth()]}, ${hora}:${min}`;
-    }
-  }
-
-
-  function retornar_dados_kpi_alerta() {
-    console.log("Atualizando dados de alerta...");
-
-
-    fetch(`/alerta/retornar/${numero_apartamento}`)
-      .then(resposta => {
-        if (!resposta.ok) throw new Error("Erro na resposta da API");
-        return resposta.json();
-      })
-      .then(data => {
-        document.getElementById("span_alerta_acao").innerText = data.acao || "Monitorar";
-        document.querySelectorAll('.span_alerta_status').forEach(span => {
-          span.innerText = data.statusAlerta || "Normal";
+  async function obterDadosKpi(idSensor) {
+    fetch(`/especifica/kpi/${idSensor}`)
+        .then(response => response.json())
+        .then(resultado => {
+            if (resultado.sucesso) {
+                const dados = resultado.dados;
+                
+                if (dados && dados.length > 0) {
+                    const ultimoDado = dados[0]; 
+                    
+                
+                    const spanAcao = document.getElementById('span_alerta_acao');
+                    if (spanAcao) {
+                        spanAcao.textContent = ultimoDado['Acao do usuario'] || 'Nenhuma ação';
+                    }
+                    
+                  
+                    const spansStatus = document.querySelectorAll('.span_alerta_status');
+                    spansStatus.forEach(span => {
+                        span.textContent = ultimoDado['Status do Alerta'] || 'Normal';
+                    });
+                    
+                    
+                    const spanLocal = document.getElementById('span_local_medicaoMaior');
+                    if (spanLocal) {
+                        spanLocal.textContent = ultimoDado['Local de instalação'] || 'N/A';
+                    }
+                    
+                   
+                    const spanDataHora = document.getElementById('span_dataHora');
+                    if (spanDataHora) {
+                        const dataHora = ultimoDado['Data e hora da medição'];
+                        spanDataHora.textContent = formatarDataHora(dataHora);
+                    }
+                    
+                  
+                    const spanAlertaRisco = document.getElementById('span_alerta_risco');
+                    if (spanAlertaRisco) {
+                        spanAlertaRisco.textContent = `${ultimoDado['Status do Alerta']} - ${ultimoDado['Local de instalação']}`;
+                    }
+                }
+            } else {
+                console.error('Erro ao carregar dados:', resultado.mensagem);
+            }
+        })
+        .catch(erro => {
+            console.error('Erro na requisição:', erro);
         });
-        document.getElementById("span_alerta_risco").innerText = data.risco || "Baixo";
-      })
-      .catch(erro => {
-        console.log(`Erro na API de alerta: ${erro}`);
-        // Dados de fallback
-        document.getElementById("span_alerta_acao").innerText = "Monitorar";
-        document.querySelectorAll('.span_alerta_status').forEach(span => {
-          span.innerText = "Normal";
-        });
-        document.getElementById("span_alerta_risco").innerText = "Baixo";
-      });
-  }
+}
 
-  // Função para retornar dados do título do gráfico
-  function retornar_dados_tituloGrafico() {
-    console.log("Atualizando título do gráfico...");
+function formatarDataHora(dataHora) {
+    if (!dataHora) return 'N/A';
+    
+    const data = new Date(dataHora);
+    return data.toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
 
-    fetch(`/predio/retornar/${numero_apartamento}`)
-      .then(resposta => {
-        if (!resposta.ok) throw new Error("Erro na resposta da API");
-        return resposta.json();
-      })
-      .then(data => {
-        document.getElementById("span_bloco_predio").innerText = data.bloco_predio || "A";
-      })
-      .catch(erro => {
-        console.log(`Erro na API do prédio: ${erro}`);
-        document.getElementById("span_bloco_predio").innerText = "A";
-      });
-  }
+function iniciarAtualizacaoAutomatica(idSensor = 1, intervalo = 30000) {
 
-  // Função para retornar dados dos níveis em locais
-  function retornar_dados_niveisEmLocais() {
-    console.log("Atualizando níveis em locais...");
-
-    // Sensor 1 (Sala) - busca do banco
-    fetch(`/sensor/por-apartamento/${numero_apartamento}`)
-      .then(resposta => {
-        if (!resposta.ok) throw new Error("Erro na resposta da API");
-        return resposta.json();
-      })
-      .then(data => {
-        const sensorSala = data.find(item => item.idSensor == 1);
-
-        if (sensorSala) {
-          const nivel = parseFloat(sensorSala.nivel_de_gas);
-          document.getElementById("span_medicao1").innerText = `${nivel} %`;
-          document.getElementById("btn_sensor1").style.backgroundColor = obterCorPorNivel(nivel);
-          document.getElementById("span_local_sensor1").innerText = nomesSensores[0];
-          document.getElementById("span_local_medicaoMaior").innerText = nomesSensores[0];
-          document.getElementById("span_dataHora").innerText = formatarDataHora(sensorSala.data_hora);
-        } else {
-          // Dados de fallback para o sensor 1
-          const nivelFallback = 2.1;
-          document.getElementById("span_medicao1").innerText = `${nivelFallback} %`;
-          document.getElementById("btn_sensor1").style.backgroundColor = obterCorPorNivel(nivelFallback);
-          document.getElementById("span_local_sensor1").innerText = nomesSensores[0];
-          document.getElementById("span_local_medicaoMaior").innerText = nomesSensores[0];
-          document.getElementById("span_dataHora").innerText = formatarDataHora(new Date().toISOString());
-        }
-
-        // Atualiza sensores estáticos
-        atualizarSensoresEstaticos();
-
-        // Sensor 2 - Cozinha
-        document.getElementById("span_local_sensor2").innerText = sensores_estaticos.sensor2.local;
-        document.getElementById("span_medicao2").innerText = `${sensores_estaticos.sensor2.nivel} %`;
-        document.getElementById("btn_sensor2").style.backgroundColor = obterCorPorNivel(sensores_estaticos.sensor2.nivel);
-
-        // Sensor 3 - Quarto
-        document.getElementById("span_local_sensor3").innerText = sensores_estaticos.sensor3.local;
-        document.getElementById("span_medicao3").innerText = `${sensores_estaticos.sensor3.nivel} %`;
-        document.getElementById("btn_sensor3").style.backgroundColor = obterCorPorNivel(sensores_estaticos.sensor3.nivel);
-
-        atualizarTextosBotoes();
-      })
-      .catch(erro => {
-        console.log(`Erro na API de sensores: ${erro}`);
-
-        // Dados de fallback para todos os sensores
-        const niveisStaticos = [2.1, 5.2, 14.8];
-
-        for (let i = 0; i < 3; i++) {
-          const sensorNum = i + 1;
-          document.getElementById(`span_medicao${sensorNum}`).innerText = `${niveisStaticos[i]} %`;
-          document.getElementById(`btn_sensor${sensorNum}`).style.backgroundColor = obterCorPorNivel(niveisStaticos[i]);
-          document.getElementById(`span_local_sensor${sensorNum}`).innerText = nomesSensores[i];
-        }
-
-        document.getElementById("span_local_medicaoMaior").innerText = nomesSensores[0];
-        document.getElementById("span_dataHora").innerText = formatarDataHora(new Date().toISOString());
-
-        atualizarTextosBotoes();
-      });
-  }
+    obterDadosKpi(idSensor);
+    
+    setInterval(() => {
+        obterDadosKpi(idSensor);
+    }, intervalo);
+}
 
 
-  function atualizarTextosBotoes() {
-    for (let j = 1; j <= 3; j++) {
-      const btn = document.getElementById(`btn_sensor${j}`);
-      if (j === sensorGraficoAtual) {
-        btn.innerText = "Gráfico Atual";
-        btn.style.opacity = "0.8";
-        btn.style.fontWeight = "bold";
-      } else {
-        btn.innerText = "Ver Gráfico";
-        btn.style.opacity = "1";
-        btn.style.fontWeight = "normal";
-      }
-    }
-  }
+document.addEventListener('DOMContentLoaded', function() {
+    iniciarAtualizacaoAutomatica(1);
+});
 
-  // Função para gerar dados aleatórios para sensores estáticos
-  function gerarDadosAleatorios(sensorNum, horasAtras = 2) {
-    const dados = [];
-    const agora = new Date();
-    const nivelBase = sensorNum === 2 ? sensores_estaticos.sensor2.nivel : sensores_estaticos.sensor3.nivel;
-
-    for (let i = horasAtras * 12; i >= 0; i--) {
-      const tempo = new Date(agora.getTime() - (i * 5 * 60000));
-      const hora = tempo.getHours().toString().padStart(2, "0");
-      const minuto = tempo.getMinutes().toString().padStart(2, "0");
-
-      const variacao = (Math.random() - 0.5) * (nivelBase * 0.3);
-      let nivel = Math.max(0, nivelBase + variacao);
-      nivel = Math.round(nivel * 10) / 10;
-
-      dados.push({
-        data_hora: `${hora}:${minuto}`,
-        nivel_de_gas: nivel
-      });
-    }
-
-    return dados;
-  }
-
-  // Função para criar gráfico
-  function criarGrafico(labels, valores) {
+  function grafico_de_linha() {
     const ctx = document.getElementById('canvas_grafico').getContext('2d');
 
-    // Destruir gráfico existente se houver
-    if (canvas_grafico) {
-      canvas_grafico.destroy();
-    }
+    const labels = [
+      '10:00', '10:10', '10:20', '10:30', '10:40', '10:50',
+      '11:00', '11:10', '11:20', '11:30', '11:40'
+    ];
 
-    const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.5)');
-    gradient.addColorStop(0.5, 'rgba(37, 99, 235, 0.1)');
-    gradient.addColorStop(1, 'rgba(37, 99, 235, 0.01)');
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'Nível de Gás (%)',
+        data: [5, 10, 12, 15, 10, 14, 20, 18, 21, 23, 25],
+        borderColor: 'rgba(54, 162, 235, 1)',        
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3
+      }]
+    };
 
-    // Registra o plugin de anotação se disponível
-    if (window.Chart && window.Chart.register && window['ChartAnnotation']) {
-      Chart.register(window['ChartAnnotation']);
-    }
-
-    canvas_grafico = new Chart(ctx, {
+    const config = {
       type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Nível de Gás (%)',
-          data: valores,
-          fill: true,
-          backgroundColor: gradient,
-          borderColor: '#2563eb',
-          tension: 0.3,
-          pointRadius: 4,
-          pointBackgroundColor: '#2563eb',
-          pointBorderColor: '#ffffff',
-          pointBorderWidth: 2
-        }]
-      },
+      data: data,
       options: {
         responsive: true,
-        maintainAspectRatio: false,
         scales: {
           y: {
             beginAtZero: true,
-            max: Math.max(Math.max(...valores.filter(v => v !== null && v !== undefined)), 15) + 2,
-            grid: {
-              color: 'rgba(0, 0, 0, 0.1)'
-            }
-          },
-          x: {
-            grid: {
-              color: 'rgba(0, 0, 0, 0.1)'
-            }
+            max: 25 
           }
         },
         plugins: {
           legend: {
-            display: false
-          },
-          annotation: window['ChartAnnotation'] ? {
-            annotations: {
-              LIE: {
-                type: 'line',
-                yMin: 5,
-                yMax: 5,
-                borderColor: '#ef4444',
-                borderWidth: 2,
-                borderDash: [5, 5],
-                label: {
-                  enabled: true,
-                  content: 'LIE (5%)',
-                  position: 'end',
-                  color: '#ef4444',
-                  font: { weight: 'bold', size: 12 }
-                }
-              },
-              LSE: {
-                type: 'line',
-                yMin: 15,
-                yMax: 15,
-                borderColor: '#000000',
-                borderWidth: 2,
-                borderDash: [5, 5],
-                label: {
-                  enabled: true,
-                  content: 'LSE (15%)',
-                  position: 'end',
-                  color: '#000000',
-                  font: { weight: 'bold', size: 12 }
-                }
-              }
-            }
-          } : {}
+            display: true
+          }
         }
       }
-    });
+    };
+
+    chart = new Chart(ctx, config);
   }
-
-
-  function atualizarGrafico(labels, valores) {
-    if (!canvas_grafico) {
-      criarGrafico(labels, valores);
-      return;
-    }
-
-    try {
-      canvas_grafico.data.labels = labels;
-      canvas_grafico.data.datasets[0].data = valores;
-      canvas_grafico.options.scales.y.max = Math.max(Math.max(...valores.filter(v => v !== null)), 15) + 2;
-      canvas_grafico.update();
-    } catch (e) {
-      console.error("Erro ao atualizar gráfico:", e);
-
-      criarGrafico(labels, valores);
-    }
-  }
-
-
-  function grafico_de_linha() {
-    console.log("Atualizando gráfico de linha para sensor 1...");
-
-    fetch(`/grafico/medicoes-gas/${numero_apartamento}`)
-      .then(resposta => {
-        if (!resposta.ok) throw new Error("Erro na resposta da API");
-        return resposta.json();
-      })
-      .then(data => {
-        const agora = new Date();
-        const duasHorasAtras = new Date(agora.getTime() - 2 * 60 * 60 * 1000);
-
-        const labels = [];
-        let timeCursor = new Date(duasHorasAtras);
-        while (timeCursor <= agora) {
-          labels.push(
-            timeCursor.getHours().toString().padStart(2, "0") + ":" +
-            timeCursor.getMinutes().toString().padStart(2, "0")
-          );
-          timeCursor = new Date(timeCursor.getTime() + 5 * 60000);
-        }
-
-
-        const ordenados = data
-          .map(item => ({
-            ...item,
-            dataObj: new Date(item.data_hora.includes("T") ? item.data_hora : item.data_hora.replace(" ", "T"))
-          }))
-          .filter(item => item.dataObj >= duasHorasAtras && item.dataObj <= agora)
-          .sort((a, b) => a.dataObj - b.dataObj);
-
-
-        const valores = labels.map(label => {
-          const [h, m] = label.split(":");
-          const labelDate = new Date(agora);
-          labelDate.setHours(h, m, 0, 0);
-
-          let closest = null;
-          let minDiff = 4 * 60 * 1000;
-          for (const item of ordenados) {
-            const diff = Math.abs(item.dataObj - labelDate);
-            if (diff < minDiff) {
-              minDiff = diff;
-              closest = item;
-            }
-          }
-          return closest ? parseFloat(closest.nivel_de_gas) : null;
-        });
-
-
-        atualizarGrafico(labels, valores);
-
-
-        document.getElementById("span_sensor_local_selecionado").innerText = nomesSensores[0];
-      })
-      .catch(erro => {
-        console.error("Erro ao buscar dados do gráfico:", erro);
-
-        document.querySelector('.span_alerta_status').innerText = "Erro de conexão";
-
-
-        const agora = new Date();
-        const labels = [];
-        const valores = [];
-
-
-        for (let i = 24; i >= 0; i--) {
-          const tempo = new Date(agora.getTime() - (i * 5 * 60000));
-          const hora = tempo.getHours().toString().padStart(2, "0");
-          const minuto = tempo.getMinutes().toString().padStart(2, "0");
-          labels.push(`${hora}:${minuto}`);
-
-
-          const valor = 2.1 + (Math.random() - 0.5) * 1.0;
-          valores.push(Math.max(0, Math.round(valor * 10) / 10));
-        }
-
-        atualizarGrafico(labels, valores);
-      });
-  }
-
-
-  function atualizarGraficoParaSensor(sensorNum) {
-    console.log(`Atualizando gráfico para sensor ${sensorNum}...`);
-
-    if (sensorNum === 1) {
-      grafico_de_linha();
-    } else {
-
-      const dadosAleatorios = gerarDadosAleatorios(sensorNum);
-
-      const labels = dadosAleatorios.map(item => item.data_hora);
-      const valores = dadosAleatorios.map(item => item.nivel_de_gas);
-
-      atualizarGrafico(labels, valores);
-
-      // Atualiza o local do sensor no título
-      const local = sensorNum === 2 ? sensores_estaticos.sensor2.local : sensores_estaticos.sensor3.local;
-      document.getElementById("span_sensor_local_selecionado").innerText = local;
-    }
-  }
-
-
-  function configurarBotoesSensores() {
-    for (let i = 1; i <= 3; i++) {
-      const btn = document.getElementById(`btn_sensor${i}`);
-      btn.addEventListener("click", function () {
-        sensorGraficoAtual = i;
-
-
-        atualizarGraficoParaSensor(i);
-
-        atualizarTextosBotoes();
-      });
-    }
-  }
-
-  function atualizarTudo() {
-    console.log("Atualizando todos os componentes...");
-    retornar_dados_kpi_alerta();
-    retornar_dados_tituloGrafico();
-    retornar_dados_niveisEmLocais();
-
-    if (sensorGraficoAtual === 1) {
-      grafico_de_linha();
-    }
-  }
-
-
-  document.addEventListener("DOMContentLoaded", function () {
-    console.log("Dashboard carregada - Inicializando...");
-
-
-    configurarBotoesSensores();
-
-    atualizarTudo();
-
-
-    intervaloAtualizacao = setInterval(atualizarTudo, 5000);
-
-    primeiraExecucao = false;
-  });
-
-
-  document.getElementById("logout").addEventListener("click", function () {
-
-    if (intervaloAtualizacao) {
-      clearInterval(intervaloAtualizacao);
-    }
-
-
-    console.log("Logout clicado");
-    // window.location.href = "/login.html";
-  });
-
 </script>
