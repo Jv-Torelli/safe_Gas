@@ -157,13 +157,13 @@
 </html>
 <script>
 
-  let chart;
+   let chart;
   const idSensor = 1;
 
   const dadosSensores = {
-    1: { nome: 'Sala', medicao: 0, local: 'Torre A, Apto 101' },
-    2: { nome: 'Cozinha', medicao: 0, local: 'Torre A, Apto 101' },
-    3: { nome: 'Quarto', medicao: 0, local: 'Torre A, Apto 101' }
+    1: { nome: 'Cozinha', medicao: 0, local: 'Torre A, Apto 101' },
+    2: { nome: 'Sala', medicao: 0, local: 'Torre A, Apto 101' },
+    3: { nome: 'Banheiro', medicao: 0, local: 'Torre A, Apto 101' }
   };
 
   
@@ -173,6 +173,30 @@
   };
 
   let sensorAtualGrafico = 1;
+
+
+  const niveisAlerta = {
+    'Seguro': {
+      status: 'Seguro',
+      risco: 'Nenhum risco',
+      acao: 'Nenhuma ação necessária'
+    },
+    'Atenção': {
+      status: 'Atenção',
+      risco: 'Possível vazamento',
+      acao: 'Ventilar o apartamento'
+    },
+    'Perigo': {
+      status: 'Perigo',
+      risco: 'Possibilidade de explosão',
+      acao: 'Evacuar o local imediatamente'
+    },
+    'Emergência': {
+      status: 'Emergência',
+      risco: 'Possibilidade de asfixia',
+      acao: 'Ligar para os bombeiros'
+    }
+  };
 
   
   async function obterDadosKpi(idSensor) {
@@ -186,13 +210,7 @@
             const ultimoDado = dados[0];
 
             
-            const spanAcao = document.getElementById('span_alerta_acao');
-            if (spanAcao) {
-              spanAcao.textContent = ultimoDado['Acao do usuario'] || 'Nenhuma ação';
-            }
-
-           
-            atualizarKpiPorSensor(sensorAtualGrafico);
+            atualizarKpisPorMaiorMedicao();
 
             
             const spanDataHora = document.getElementById('span_dataHora');
@@ -201,7 +219,7 @@
               spanDataHora.textContent = formatarDataHora(dataHora);
             }
 
-            
+           
             const spanBloco = document.getElementById('span_bloco_predio');
             const spanApto = document.getElementById('span_numero_apartamento');
             if (spanBloco) spanBloco.textContent = 'A';
@@ -213,14 +231,11 @@
       })
       .catch(erro => {
         console.error('Erro na requisição:', erro);
-        
         usarDadosSimulados();
       });
   }
 
   function usarDadosSimulados() {
-    
-    document.getElementById('span_alerta_acao').textContent = 'Monitoramento';
     document.getElementById('span_dataHora').textContent = formatarDataHora(new Date());
 
     const spanBloco = document.getElementById('span_bloco_predio');
@@ -229,30 +244,61 @@
     if (spanApto) spanApto.textContent = '101';
 
     
-    atualizarKpiPorSensor(sensorAtualGrafico);
+    atualizarKpisPorMaiorMedicao();
   }
 
-  function atualizarKpiPorSensor(idSensor) {
-    const sensor = dadosSensores[idSensor];
-    const medicao = sensor.medicao;
-    const status = obterStatusPorMedicao(medicao);
-
+  function obterSensorComMaiorMedicao() {
+    let maiorMedicao = -1;
+    let sensorComMaiorMedicao = 1;
     
+    for (let i = 1; i <= 3; i++) {
+      if (dadosSensores[i].medicao > maiorMedicao) {
+        maiorMedicao = dadosSensores[i].medicao;
+        sensorComMaiorMedicao = i;
+      }
+    }
+    
+    return {
+      id: sensorComMaiorMedicao,
+      medicao: maiorMedicao,
+      sensor: dadosSensores[sensorComMaiorMedicao]
+    };
+  }
+
+  function atualizarKpisPorMaiorMedicao() {
+    const sensorMaior = obterSensorComMaiorMedicao();
+    const nivelStatus = obterStatusPorMedicao(sensorMaior.medicao);
+    const alertaInfo = niveisAlerta[nivelStatus];
+
     const spansStatus = document.querySelectorAll('.span_alerta_status');
     spansStatus.forEach(span => {
-      span.textContent = ` ${status}`;
+      span.textContent = ` ${alertaInfo.status}`;
     });
+
+    
+    const spanAcao = document.getElementById('span_alerta_acao');
+    if (spanAcao) {
+      spanAcao.textContent = alertaInfo.acao;
+    }
 
     
     const spanLocal = document.getElementById('span_local_medicaoMaior');
     if (spanLocal) {
-      spanLocal.textContent = sensor.nome;
+      spanLocal.textContent = sensorMaior.sensor.nome;
     }
 
     
+    atualizarAlertaRiscoPorSensorSelecionado();
+  }
+
+  function atualizarAlertaRiscoPorSensorSelecionado() {
+    const sensorSelecionado = dadosSensores[sensorAtualGrafico];
+    const nivelStatus = obterStatusPorMedicao(sensorSelecionado.medicao);
+    const alertaInfo = niveisAlerta[nivelStatus];
+
     const spanAlertaRisco = document.getElementById('span_alerta_risco');
     if (spanAlertaRisco) {
-      spanAlertaRisco.textContent = `${status} - ${sensor.nome} (${medicao.toFixed(2)}%)`;
+      spanAlertaRisco.textContent = `${alertaInfo.risco} - ${sensorSelecionado.nome} (${sensorSelecionado.medicao.toFixed(2)}%)`;
     }
   }
 
@@ -264,7 +310,7 @@
     } else if (medicao <= 14.9) {
       return 'Perigo';
     } else {
-      return 'Crítico';
+      return 'Emergência';
     }
   }
 
@@ -300,7 +346,7 @@
             if (valores.length > 0) {
               dadosSensores[idSensor].medicao = valores[valores.length - 1];
               atualizarDisplaySensores();
-              atualizarKpiPorSensor(idSensor);
+              atualizarKpisPorMaiorMedicao();
             }
           }
         } else {
@@ -331,25 +377,17 @@
       const tempo = new Date(agora.getTime() - (i * 6 * 60000));
       labels.push(formatarHora(tempo));
 
-      let valorBase;
-      let variacao;
+      let valor;
 
-      switch (nomeSensor) {
-        case 'Cozinha':
-          valorBase = 3; 
-          variacao = 5;  
-          break;
-        case 'Quarto':
-          valorBase = 0.5;
-          variacao = 2.5;
-          break;
-        default: 
-          valorBase = 1;
-          variacao = 3; 
-          break;
+      
+      if (nomeSensor === 'Sala' || nomeSensor === 'Banheiro') {
+        valor = Math.random() * 2.3 + 0.1;
+      } else {
+        let valorBase = 3;
+        let variacao = 5;
+        valor = Math.random() * variacao + valorBase;
       }
 
-      let valor = Math.random() * variacao + valorBase;
       valores.push(parseFloat(valor.toFixed(2)));
     }
 
@@ -361,25 +399,19 @@
     const agora = new Date();
     const novoLabel = formatarHora(agora);
     
-    let valorBase, variacao;
+    let novoValor;
     const nomeSensor = dadosSensores[idSensor].nome;
 
-    switch (nomeSensor) {
-      case 'Cozinha':
-        valorBase = 14;
-        variacao = 5;
-        break;
-      case 'Quarto':
-        valorBase = 2.5;
-        variacao = 7.9;
-        break;
-      default:
-        valorBase = 1;
-        variacao = 3;
-        break;
-    }
 
-    const novoValor = parseFloat((Math.random() * variacao + valorBase).toFixed(2));
+    if (nomeSensor === 'Sala' || nomeSensor === 'Banheiro') {
+      
+      novoValor = parseFloat((Math.random() * 2.3 + 0.1).toFixed(2));
+    } else {
+      
+      let valorBase = 14;
+      let variacao = 5;
+      novoValor = parseFloat((Math.random() * variacao + valorBase).toFixed(2));
+    }
     
     
     const dadosHistoricos = dadosHistoricosSensores[idSensor];
@@ -449,7 +481,8 @@
       spanSensorLocal.textContent = dadosSensores[idSensor].nome;
     }
     sensorAtualGrafico = idSensor;
-    atualizarKpiPorSensor(idSensor);
+    atualizarKpisPorMaiorMedicao();
+    atualizarAlertaRiscoPorSensorSelecionado();
   }
 
   function definirCorBotao(medicao) {
@@ -522,7 +555,8 @@
       sensorAtualGrafico = 1;
       obterDadosGrafico(1); 
       atualizarDisplaySensores();
-      atualizarKpiPorSensor(1);
+      atualizarKpisPorMaiorMedicao();
+      atualizarAlertaRiscoPorSensorSelecionado();
     });
 
     
@@ -531,7 +565,7 @@
       
       
       if (dadosHistoricosSensores[2].labels.length === 0) {
-        const dados = gerarDadosAleatorios('Cozinha');
+        const dados = gerarDadosAleatorios('Sala');
         dadosHistoricosSensores[2].labels = dados.labels;
         dadosHistoricosSensores[2].valores = dados.valores;
         dadosSensores[2].medicao = dados.valores[dados.valores.length - 1];
@@ -540,7 +574,8 @@
       atualizarGraficoLinha(dadosHistoricosSensores[2].labels, dadosHistoricosSensores[2].valores);
       atualizarInfoSensorGrafico(2);
       atualizarDisplaySensores();
-      atualizarKpiPorSensor(2);
+      atualizarKpisPorMaiorMedicao();
+      atualizarAlertaRiscoPorSensorSelecionado();
     });
 
     
@@ -549,7 +584,7 @@
       
       
       if (dadosHistoricosSensores[3].labels.length === 0) {
-        const dados = gerarDadosAleatorios('Quarto');
+        const dados = gerarDadosAleatorios('Banheiro');
         dadosHistoricosSensores[3].labels = dados.labels;
         dadosHistoricosSensores[3].valores = dados.valores;
         dadosSensores[3].medicao = dados.valores[dados.valores.length - 1];
@@ -558,23 +593,24 @@
       atualizarGraficoLinha(dadosHistoricosSensores[3].labels, dadosHistoricosSensores[3].valores);
       atualizarInfoSensorGrafico(3);
       atualizarDisplaySensores();
-      atualizarKpiPorSensor(3);
+      atualizarKpisPorMaiorMedicao();
+      atualizarAlertaRiscoPorSensorSelecionado();
     });
   }
 
   
   function inicializarSensoresAutomaticos() {
     
-    const dadosCozinha = gerarDadosAleatorios('Cozinha');
-    dadosHistoricosSensores[2].labels = dadosCozinha.labels;
-    dadosHistoricosSensores[2].valores = dadosCozinha.valores;
-    dadosSensores[2].medicao = dadosCozinha.valores[dadosCozinha.valores.length - 1];
+    const dadosSala = gerarDadosAleatorios('Sala');
+    dadosHistoricosSensores[2].labels = dadosSala.labels;
+    dadosHistoricosSensores[2].valores = dadosSala.valores;
+    dadosSensores[2].medicao = dadosSala.valores[dadosSala.valores.length - 1];
 
     
-    const dadosQuarto = gerarDadosAleatorios('Quarto');
-    dadosHistoricosSensores[3].labels = dadosQuarto.labels;
-    dadosHistoricosSensores[3].valores = dadosQuarto.valores;
-    dadosSensores[3].medicao = dadosQuarto.valores[dadosQuarto.valores.length - 1];
+    const dadosBanheiro = gerarDadosAleatorios('Banheiro');
+    dadosHistoricosSensores[3].labels = dadosBanheiro.labels;
+    dadosHistoricosSensores[3].valores = dadosBanheiro.valores;
+    dadosSensores[3].medicao = dadosBanheiro.valores[dadosBanheiro.valores.length - 1];
   }
 
   function iniciarAtualizacaoCompleta() {
@@ -591,7 +627,7 @@
     
     setTimeout(() => {
       atualizarDisplaySensores();
-      atualizarKpiPorSensor(1);
+      atualizarKpisPorMaiorMedicao();
     }, 1000);
 
     
@@ -623,7 +659,8 @@
       
     
       atualizarDisplaySensores();
-      atualizarKpiPorSensor(sensorAtualGrafico);
+      atualizarKpisPorMaiorMedicao();
+      atualizarAlertaRiscoPorSensorSelecionado();
     }, 5000); 
   }
 
