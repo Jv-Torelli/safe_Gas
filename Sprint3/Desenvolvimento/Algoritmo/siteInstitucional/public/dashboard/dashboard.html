@@ -169,7 +169,7 @@
     }
 </style>
 
-<body onload="buscarKpis(), buscarDados(), buscarAndares(), buscarTorre(), buscarApto(), apartamentoStatus()">
+<body onload="buscarKpis(), buscarDados(), buscarAndares(), buscarTorre(), buscarApto(), apartamentoStatus(), configurarNavbarPorTipoUsuario()">
     <div class="main">
         <div class="navbar">
             <div class="welcome_navbar">
@@ -186,7 +186,7 @@
 
                     Dashboard geral
                 </a>
-                <a href="./dash_portarias.html" class="btnNavbar">
+                <a href="./dash_portarias.html" class="btnNavbar" id="portaria">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                         fill="currentcolor">
                         <path
@@ -457,6 +457,32 @@
 
     const nivelEl = document.getElementById("nivelModal");
     const barraEl = document.getElementById("barraprogresso");
+
+      function configurarNavbarPorTipoUsuario() {
+    const tipoUsuario = sessionStorage.getItem('TIPO_USUARIO');
+
+    if (!tipoUsuario) {
+      console.warn('Tipo de usuário não encontrado na sessão');
+      setTimeout(() => {
+        window.location.href = '../login.html';
+      }, 2000);
+      return;
+    }
+
+    console.log('Tipo de usuário logado:', tipoUsuario);
+
+    const btnPortaria = document.getElementById('portaria');
+    if (!btnPortaria) {
+      console.warn('Elemento portaria não encontrado');
+      return;
+    }
+
+    if (tipoUsuario === 'porteiro') {
+      btnPortaria.style.setProperty('display', 'none', 'important');
+    } else if (tipoUsuario === 'sindico') {
+      btnPortaria.style.setProperty('display', 'flex', 'important');
+    }
+  }
 
     function atualizarNivelGas() {
         const nivel = (Math.random() * (2.4 - 0.5) + 0.5).toFixed(1);
