@@ -41,8 +41,7 @@
         </a>
       </div>
 
-      <a href="../index.html" class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png">
-        Logout</a>
+      <div class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png"> Logout</div>
 
     </div>
 
@@ -94,7 +93,7 @@
       <div class="container_inferior">
         <div class="div_grafico">
           <div class="div_nivel">
-            <span class="span_titulo">Nivel de Gás</span>
+            <span class="span_titulo">Nivel de Gás (Últimas 2h)</span>
             <span class="span_identificacao">Torre <span id="span_bloco_predio"></span>, Apto <span
                 id="span_numero_apartamento"></span>, <span id="span_sensor_local_selecionado"></span></span>
             <hr>
@@ -160,6 +159,7 @@
 
   let chart;
   const idSensor = 1;
+  let ultimaAtualizacao = new Date(); // Variável para armazenar a última atualização
 
   const dadosSensores = {
     1: { nome: 'Cozinha', medicao: 0, local: 'Torre A, Apto 101' },
@@ -226,6 +226,14 @@
   }
 
 
+  function atualizarUltimaAtualizacao() {
+    ultimaAtualizacao = new Date();
+    const spanDataHora = document.getElementById('span_dataHora');
+    if (spanDataHora) {
+      spanDataHora.textContent = formatarDataHora(ultimaAtualizacao);
+    }
+  }
+
   async function obterDadosKpi(idSensor) {
     fetch(`/especifica/kpi/${idSensor}`)
       .then(response => response.json())
@@ -236,16 +244,15 @@
           if (dados && dados.length > 0) {
             const ultimoDado = dados[0];
 
-
             atualizarKpisPorMaiorMedicao();
 
-
-            const spanDataHora = document.getElementById('span_dataHora');
-            if (spanDataHora) {
-              const dataHora = ultimoDado['Data e hora da medição'];
-              span_dataHora.innerHTML = formatarDataHora(dataHora);
+            
+            if (ultimoDado['Data e hora da medição']) {
+              ultimaAtualizacao = new Date(ultimoDado['Data e hora da medição']);
+            } else {
+              ultimaAtualizacao = new Date();
             }
-
+            atualizarUltimaAtualizacao();
 
             const spanBloco = document.getElementById('span_bloco_predio');
             const spanApto = document.getElementById('span_numero_apartamento');
@@ -254,6 +261,7 @@
           }
         } else {
           console.error('Erro ao carregar dados:', resultado.mensagem);
+          usarDadosSimulados();
         }
       })
       .catch(erro => {
@@ -263,13 +271,13 @@
   }
 
   function usarDadosSimulados() {
-    document.getElementById('span_dataHora').textContent = formatarDataHora(new Date());
+
+    atualizarUltimaAtualizacao();
 
     const spanBloco = document.getElementById('span_bloco_predio');
     const spanApto = document.getElementById('span_numero_apartamento');
     if (spanBloco) spanBloco.textContent = 'A';
     if (spanApto) spanApto.textContent = '101';
-
 
     atualizarKpisPorMaiorMedicao();
   }
@@ -345,6 +353,12 @@
     if (!dataHora) return 'N/A';
 
     const data = new Date(dataHora);
+    
+    // Verificar se a data é válida
+    if (isNaN(data.getTime())) {
+      return 'N/A';
+    }
+    
     return data.toLocaleString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
@@ -369,12 +383,14 @@
             atualizarGraficoLinha(labels, valores);
             atualizarInfoSensorGrafico(idSensor);
 
-
             if (valores.length > 0) {
               dadosSensores[idSensor].medicao = valores[valores.length - 1];
               atualizarDisplaySensores();
               atualizarKpisPorMaiorMedicao();
             }
+            
+            // Atualizar horário da última atualização quando dados são recebidos
+            atualizarUltimaAtualizacao();
           }
         } else {
           console.error('Erro ao carregar gráfico:', resultado.mensagem);
@@ -390,6 +406,9 @@
         if (dados.valores.length > 0) {
           dadosSensores[idSensor].medicao = dados.valores[dados.valores.length - 1];
         }
+        
+        // Atualizar horário da última atualização mesmo com dados simulados
+        atualizarUltimaAtualizacao();
       });
   }
 
@@ -603,6 +622,9 @@
       atualizarDisplaySensores();
       atualizarKpisPorMaiorMedicao();
       atualizarAlertaRiscoPorSensorSelecionado();
+      
+      // Atualizar horário da última atualização
+      atualizarUltimaAtualizacao();
     });
 
 
@@ -622,6 +644,9 @@
       atualizarDisplaySensores();
       atualizarKpisPorMaiorMedicao();
       atualizarAlertaRiscoPorSensorSelecionado();
+      
+      // Atualizar horário da última atualização
+      atualizarUltimaAtualizacao();
     });
   }
 
@@ -644,6 +669,8 @@
 
     inicializarSensoresAutomaticos();
 
+    // Inicializar o horário da última atualização
+    atualizarUltimaAtualizacao();
 
     obterDadosKpi(1);
     obterDadosGrafico(1);
@@ -670,10 +697,12 @@
 
         const novosData = atualizarDadosSensoresAutomaticos(2);
         atualizarGraficoLinha(novosData.labels, novosData.valores);
+        atualizarUltimaAtualizacao(); // Atualizar horário
       } else if (sensorAtualGrafico === 3) {
 
         const novosData = atualizarDadosSensoresAutomaticos(3);
         atualizarGraficoLinha(novosData.labels, novosData.valores);
+        atualizarUltimaAtualizacao(); // Atualizar horário
       }
 
 
