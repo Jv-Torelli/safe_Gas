@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="../css/navbar.css">
 </head>
 
-<body onload="exibir()">
+<body onload="exibir(); configurarNavbarPorTipoUsuario();">
 
   <div class="main">
     <div class="navbar">
@@ -192,7 +192,6 @@
 
     if (!tipoUsuario) {
       console.warn('Tipo de usuário não encontrado na sessão');
-
       setTimeout(() => {
         window.location.href = '../login.html';
       }, 2000);
@@ -201,11 +200,16 @@
 
     console.log('Tipo de usuário logado:', tipoUsuario);
 
+    const btnPortaria = document.getElementById('portaria');
+    if (!btnPortaria) {
+      console.warn('Elemento portaria não encontrado');
+      return;
+    }
 
     if (tipoUsuario === 'porteiro') {
-      document.getElementById('portaria').style.display = "none";
+      btnPortaria.style.setProperty('display', 'none', 'important');
     } else if (tipoUsuario === 'sindico') {
-      document.getElementById('portaria').style.display = "flex";
+      btnPortaria.style.setProperty('display', 'flex', 'important');
     }
   }
 
