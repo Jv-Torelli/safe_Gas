@@ -41,7 +41,8 @@
         </a>
       </div>
 
-      <div class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png"> Logout</div>
+      <a href="../index.html" class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png">
+        Logout</a>
 
     </div>
 
@@ -242,7 +243,7 @@
             const spanDataHora = document.getElementById('span_dataHora');
             if (spanDataHora) {
               const dataHora = ultimoDado['Data e hora da medição'];
-              spanDataHora.textContent = formatarDataHora(dataHora);
+              span_dataHora.innerHTML = formatarDataHora(dataHora);
             }
 
 
