@@ -126,6 +126,11 @@
         height: 40px;
     }
 
+    #graficoGasSeguro {
+        width: 100% !important;
+        height: 300px !important;
+    }
+
     .aptoIndice {
         width: 80%;
         display: flex;
@@ -164,8 +169,7 @@
     }
 </style>
 
-<body
-    onload="buscarDados(), buscarKpis(), buscarTorre(), buscarApto(), buscarAndares(), atualizarGeral(), apartamentoStatus()">
+<body onload="buscarKpis(), buscarDados(), buscarAndares(), buscarTorre(), buscarApto(), apartamentoStatus()">
     <div class="main">
         <div class="navbar">
             <div class="welcome_navbar">
@@ -205,7 +209,7 @@
                 <div class="item-cabecalho" style="border-left: solid rgb(59 130 246) 5px;">
                     <div class="icone-container">
                         <span class="descricao">Total de Sensores</span>
-                        <span class="valor-principal" id="qtd_sensores"></span>
+                        <span class="valor-principal">54</span>
                     </div>
 
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100"
@@ -260,7 +264,7 @@
                 <div class="item-cabecalho" style="border-left: solid #f8b739 5px;">
                     <div class="icone-container">
                         <span class="descricao">Em Manutenção</span>
-                        <span class="valor-principal" id="qtd_manutencao"></span>
+                        <span class="valor-principal" id="qtd_manutencao">1</span>
                     </div>
 
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100"
@@ -348,6 +352,7 @@
 
             </div>
         </div>
+        <!-- modal -->
         <div class="fundo-modal" id="fundoModal">
 
             <div class="plantaDiv">
@@ -379,7 +384,7 @@
 
             <div class="modal">
                 <div class="cabecalho-modal">
-                    <h2 class="titulo-modal">Apartamento <span id="numeroApto"> </span>-A <span id="inatividade"></span>
+                    <h2 class="titulo-modal">Apartamento <span id="numeroApto"></span>-A <span id="inatividade"></span>
                     </h2>
                     <button class="botao-fechar" id="botaoFechar">&times;</button>
                 </div>
@@ -388,28 +393,30 @@
                     <div class="localizacao">
                         <span class="infoLoc">Localização:</span>
                         <div class="apto">
-                            Torre A, Apartamento <span id="numeroApto2"> </span>
+                            Torre A, Apartamento <span id="numeroApto2">203</span>
                         </div>
                     </div>
 
                     <div class="status-container">
                         <span class="status">Status:</span>
-                        <div class="local" id="localModal">
-                            <span class="comodo" id="comodoModal"></span>
+                        <div class="local" id="localModal" style="background-color: green;">
+                            <span class="comodo" id="comodoModal">Banheiro</span>
                         </div>
                         <div class="status-label">
-                            <div id="indicadorStatusModal"></div>
-                            <span class="status-critico" id="statusModal"></span>
+                            <div id="indicadorStatusModal" style="background-color: green;"></div>
+                            <span class="status-critico" id="statusModal" style="color: green;">Emergência</span>
                         </div>
                     </div>
 
                     <div class="nivel-container">
                         <div class="nivel-label">
                             <span>Nível de Gás:</span>
-                            <span class="nivel-valor" id="nivelModal"></span>
+                            <span class="nivel-valor" id="nivelModal">1.8%</span>
                         </div>
                         <div class="barra-progresso-container">
-                            <div class="barra-progresso" id="barraprogresso"></div>
+                            <div class="barra-progresso" id="barraprogresso"
+                                style="width: 10%; background-color: green;">
+                            </div>
                         </div>
                     </div>
 
@@ -418,11 +425,12 @@
                     </div>
 
                     <div class="historico-label">
-                        <span>Histórico (2h)</span>
+                        <span>Histórico das últimas medições
+                        </span>
                     </div>
 
                     <div class="grafico-container">
-                        <canvas id="graficoGas" style="height: 100%; width: 100%;"></canvas>
+                        <canvas id="graficoGasSeguro" style="height: 100%; width: 100%;"></canvas>
                     </div>
 
                     <div class="botoes-acoes">
@@ -433,41 +441,133 @@
             </div>
 
         </div>
+
+
 </body>
 
 </html>
+
 <script>
-    function atualizarGeral() {
+    var idModalGrafico = 1;
+    var intervaloAtualizacao;
+    let graficoGas;
+    let labels = [];
+    let dataGas = [];
+
+    const nivelEl = document.getElementById("nivelModal");
+    const barraEl = document.getElementById("barraprogresso");
+
+    function atualizarNivelGas() {
+        const nivel = (Math.random() * (2.4 - 0.5) + 0.5).toFixed(1);
+        const horario = new Date().toLocaleTimeString().slice(0, 7);
+
+        horaModal.innerHTML = horario
+        // Adiciona novo valor
+        labels.push(horario);
+        dataGas.push(nivel);
+
+        // Limita o gráfico a 15 pontos
+        if (labels.length >= 15) {
+            labels.shift();
+            dataGas.shift();
+        }
+
+
+
+
+        nivelEl.textContent = nivel + "%";
+        barraEl.style.width = (nivel * 5) + "%";
+
+        // Atualiza gráfico
+        graficoGas.update();
+
         if (modalAberto == false) {
-            buscarKpis();
-            setTimeout(atualizarGeral, 1000);
+            clearInterval(intervaloAtualizacao);
         }
     }
-    var plantaModal = []
-    var numeroAtual = 0;
-    var corApto = [];
-    let modalAberto = false;
-    var statusPredio = '';
-    var qtd_total_apto_andar = 3;
-    var dadosApartamentoGeral = [];
-    var dadosGrafico = [];
-    var dados = [];
-    var idModalGrafico = 0;
-    var dadosModal = [];
-    let chartInstance = null;
-    var numero_apartamentoAtual = 0;
-    var medicaoList = [];
-    var labelList = [];
-    var graficoModalLabel = [];
 
+    function atualizarComodoAleatorio() {
+        const comodos = ["Cozinha", "Quarto", "Banheiro"];
+        const aleatorio = Math.floor(Math.random() * comodos.length); // número entre 0 e 4
+        document.getElementById("comodoModal").innerHTML = comodos[aleatorio];
+    }
+
+    function segundoModal() {
+
+        modalAberto = true;
+        document.getElementById('fundoModal').classList.add('ativo');
+
+        graficoSeguro();
+        atualizarComodoAleatorio();
+        atualizarNivelGas();
+        // Inicia atualização automática do nível de gás
+        intervaloAtualizacao = setInterval(atualizarNivelGas, 2000);
+
+
+
+
+    }
+
+    function graficoSeguro() {
+        labels = [];
+        dataGas = [];
+
+
+        const ctx = document.getElementById("graficoGasSeguro").getContext("2d");
+        graficoGas = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Nível de Gás (%)',
+                    data: dataGas,
+                    borderColor: 'green',
+                    backgroundColor: 'rgba(0, 128, 0, 0.2)',
+                    tension: 0.3,
+                    fill: true,
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 20
+                    }
+                }
+            }
+        });
+    }
+
+    // numero do ap
     function obterNumero(numero_apartamento) {
         numero_apartamento = numero_apartamento.innerText.trim();
-
         numero_apartamentoAtual = numero_apartamento
-
         numeroApto.innerHTML = numero_apartamentoAtual;
         numeroApto2.innerHTML = numero_apartamentoAtual;
+        if (numero_apartamentoAtual == 601) {
+            inatividade.innerHTML = "(inativo)";
+            sensor1.style.backgroundColor = "#d1d5db";
+            sensor2.style.backgroundColor = "#d1d5db";
+            sensor3.style.backgroundColor = "#d1d5db";
+            barraprogresso.style.backgroundColor = '#d1d5db';
+            statusModal.style.color = '#d1d5db';
+            indicadorStatusModal.style.backgroundColor = '#d1d5db';
+            localModal.style.backgroundColor = '#d1d5db';
+            sensor1.style.backgroundColor = '#d1d5db';
+            modalAberto = false;
 
+        } else {
+            inatividade.innerHTML = " ";
+            sensor1.style.backgroundColor = "green";
+            sensor2.style.backgroundColor = "green";
+            sensor3.style.backgroundColor = "green";
+            barraprogresso.style.backgroundColor = 'green';
+            statusModal.style.color = 'green';
+            indicadorStatusModal.style.backgroundColor = 'green';
+            localModal.style.backgroundColor = 'green';
+            sensor1.style.backgroundColor = 'green';
+        }
 
         for (let i = 0; i < dados.length; i++) {
             if (dados[i].Numero_Apartamento == numero_apartamentoAtual) {
@@ -475,58 +575,18 @@
                 console.log("achei o modal", dadosModal)
             }
         }
-
         if (!dadosModal) {
             console.error("Dados do modal não carregados corretamente.");
             return;
         }
 
-        comodoModal.innerHTML = `${dadosModal.Local_do_Sensor}`;
-        statusModal.innerHTML = `${dadosModal.tatus_Alerta}`;
-        horaModal.innerHTML = `${new Date(dadosModal.Hora_da_ultima_Medicao).toLocaleString('pt-BR', {
-            dateStyle: 'short',
-            timeStyle: 'short'
-        })}`;
 
-        plantaReq();
 
-        if (dadosModal.Status_Sensor == "Inativo") {
-            inatividade.innerHTML = " Sensor Inativo";
-            indicadorStatusModal.style.backgroundColor = 'gray';
-            sensor1.style.backgroundColor = 'gray';
-            statusModal.style.color = 'gray';
-            barraprogresso.style.background = 'gray';
-            localModal.style.background = 'gray';
-        } else if (dadosModal.Maior_Nivel_de_Gas < 2.5) {
-            indicadorStatusModal.style.backgroundColor = 'green';
-            sensor1.style.backgroundColor = 'green';
-            statusModal.style.color = 'green';
-            barraprogresso.style.background = 'green';
-            localModal.style.background = 'green';
-        } else if (dadosModal.Maior_Nivel_de_Gas > 5 && dadosModal.Maior_Nivel_de_Gas < 10) {
-            barraprogresso.style.background = '#FFEB3B';
-            indicadorStatusModal.style.backgroundColor = '#FFEB3B';
-            sensor1.style.backgroundColor = '#FFEB3B';
-            statusModal.style.color = '#FFEB3B';
-            localModal.style.background = '#FFEB3B';
-        } else if (dadosModal.Maior_Nivel_de_Gas < 15) {
-            barraprogresso.style.background = '#d50000';
-            indicadorStatusModal.style.backgroundColor = '#d50000';
-            sensor1.style.backgroundColor = '#d50000';
-            statusModal.style.color = '#d50000';
-            localModal.style.background = '#d50000';
-        } else {
-            barraprogresso.style.background = 'black ';
-            indicadorStatusModal.style.backgroundColor = 'black';
-            sensor1.style.backgroundColor = 'black';
-            statusModal.style.color = 'black';
-            localModal.style.background = 'black';
-        }
 
-        idModalGrafico = dadosModal.ID_Apartamento;
-        localStorage.setItem("numero_apartamento", numero_apartamento);
         return numero_apartamento;
     }
+
+    // kpis
     function buscarKpis() {
 
         fetch("/dashboard/kpi/").then(function (resposta) {
@@ -543,9 +603,8 @@
                 dadosKpi = respostaJson;
                 console.log("Dados recebidos: ", JSON.stringify(dadosKpi));
 
-                qtd_sensores.innerHTML = dadosKpi[0].Total_Sensores;
                 qtd_alerta.innerHTML = dadosKpi[0].Sensores_Alarmantes;
-                qtd_manutencao.innerHTML = dadosKpi[0].Sensores_Inativos;
+                qtd_manutencao.innerHTML = dadosKpi[0].Sensores_Inativos + 1;
                 var dataDia = new Date();
 
                 ultimaAtualizacao_div.innerHTML = `${dataDia.getDate()}/${(dataDia.getMonth() + 1).toString().padStart(2, '0')}/${dataDia.getFullYear()}, ${dataDia.getHours()}:${dataDia.getMinutes().toString().padStart(2, '0')}`;
@@ -560,164 +619,7 @@
 
     }
 
-
-    function buscarTorre() {
-
-        fetch("/dashboard/torre/").then(function (retorno) {
-            if (retorno.ok) {
-                if (retorno.status == 204) {
-                    throw "Nenhum resultado encontrado!!";
-                }
-                return retorno.json();
-            } else {
-                throw ('Houve um erro na API!');
-            }
-        })
-            .then(function (respostaTorre) {
-                dadosTorre = respostaTorre;
-                console.log("Dados recebidos: ", JSON.stringify(dadosTorre));
-
-                for (i = 0; i < dadosTorre.length; i++) {
-                    torresDiv.innerHTML += `<button onclick="var predioSelecionado = ${dadosTorre[i].idPredio}" class="tab-p">Torre ${dadosTorre[i].bloco_predio}</button>`
-                }
-
-
-            })
-            .catch(function (retorno) {
-                console.error(retorno);
-
-            });
-
-
-    }
-    function buscarApto() {
-        fetch("/dashboard/apto/").then(function (retornoApto) {
-            if (retornoApto.ok) {
-                if (retornoApto.status == 204) {
-                    throw "Nenhum resultado encontrado!!";
-                }
-                return retornoApto.json();
-            } else {
-                throw ('Houve um erro na API!');
-            }
-        })
-            .then(function (retornoJson) {
-                dadosApto = retornoJson;
-                console.log("Dados recebidos Apto: ", JSON.stringify(dadosApto));
-                var qtd_andarApto = dadosApto[dadosApto.length - 1].Andar;
-
-                for (contador = 0; contador < qtd_total_apto_andar; contador++) {
-                    indiceApto.innerHTML += `<div class="header-p">Apto 0${contador + 1}</div>`
-                }
-
-            })
-            .catch(function (retornoApto) {
-                console.error(retornoApto);
-
-            });
-
-    }
-
-
-    function buscarAndares() {
-        fetch("/dashboard/andares/").then(function (retornoAndar) {
-            if (retornoAndar.ok) {
-                if (retornoAndar.status == 204) {
-                    throw "Nenhum resultado encontrado!!";
-                }
-                return retornoAndar.json();
-            } else {
-                throw ('Houve um erro na API!');
-            }
-        })
-            .then(function (retornoJson) {
-                dadosAndar = retornoJson;
-                console.log("Dados recebidos andar: ", JSON.stringify(dadosAndar));
-                for (contador = 0; contador < dadosAndar.length; contador++) {
-                    andaresLista.innerHTML += `<div class="andar-p">${contador + 1}</div>`
-                }
-
-
-            })
-            .catch(function (retornoAndar) {
-                console.error(retornoAndar);
-
-            });
-    }
-
-
-    function apartamentoStatus() {
-
-        fetch("/dashboard/apartamentoStatus/").then(function (retorno) {
-            if (retorno.ok) {
-                if (retorno.status == 204) {
-                    throw "Nenhum resultado encontrado!!";
-                }
-                return retorno.json();
-            } else {
-                throw ('Houve um erro na API!');
-            }
-        })
-            .then(function (respostaPredio) {
-                statusPredio = respostaPredio;
-                console.log("Dados recebidos Predios: ", JSON.stringify(statusPredio));
-
-                corApto = [];
-
-                for (let contApto = 0; contApto < dadosApto.length; contApto++) {
-                    numeroAtual = dadosApto[contApto].numero_apartamento;
-                    let corSelecionada = '';
-                    let temSensorInativo = false;
-                    let maiorNivel = 0;
-
-                    // Primeiro verifica se há algum sensor inativo nesse apartamento
-                    for (let contStatus = 0; contStatus < statusPredio.length; contStatus++) {
-                        if (statusPredio[contStatus].Numero_Apartamento == numeroAtual &&
-                            statusPredio[contStatus].Status_Sensor == "Inativo") {
-                            temSensorInativo = true;
-                            break;
-                        }
-                    }
-
-                    // Se tiver sensor inativo, define como cinza
-                    if (temSensorInativo) {
-                        corSelecionada = '#d1d5db'; // cinza claro
-                    }
-                    // Caso contrário, verifica os níveis dos sensores ativos
-                    else {
-                        // Encontra o maior nível entre os sensores ativos
-                        for (let contStatus = 0; contStatus < statusPredio.length; contStatus++) {
-                            if (statusPredio[contStatus].Numero_Apartamento == numeroAtual &&
-                                statusPredio[contStatus].Status_Sensor == "Ativo") {
-                                if (statusPredio[contStatus].Nivel_Mais_Alto > maiorNivel) {
-                                    maiorNivel = statusPredio[contStatus].Nivel_Mais_Alto;
-                                }
-                            }
-                        }
-
-                        if (maiorNivel <= 2.5) {
-                            corSelecionada = '#00800038'; // verde claro
-                        } else if (maiorNivel <= 5) {
-                            corSelecionada = '#FFEB3B'; // amarelo
-                        } else if (maiorNivel <= 15) {
-                            corSelecionada = '#F44336'; // vermelho
-                        } else {
-                            corSelecionada = 'black'; // preto
-                        }
-                    }
-
-                    corApto.push(corSelecionada);
-                    aptoLista.innerHTML += `<div class="andar-p" style="background: ${corSelecionada}" onclick="abrirModal(); obterNumero(this)">${numeroAtual}</div>`;
-                }
-
-
-            })
-            .catch(function (retorno) {
-                console.error(retorno);
-
-            });
-    }
-
+    // notificações
 
     function buscarDados() {
         fetch("/dashboard/buscar/").then(function (resposta) {
@@ -822,10 +724,89 @@
     }
 
 
+    // visualização condominio
+
+
+    // andares
+    function buscarAndares() {
+        for (contador = 0; contador < 6; contador++) {
+            andaresLista.innerHTML += `<div class="andar-p">${contador + 1}</div>`
+        }
+    }
+
+
+    // Torre
+    function buscarTorre() {
+        torresDiv.innerHTML = `<button onclick="var predioSelecionado = 1" class="tab-p" style = "background: #00800038">Torre A</button>`
+        torresDiv.innerHTML += `<button onclick="var predioSelecionado = 2" class="tab-p">Torre B</button>`
+        torresDiv.innerHTML += `<button onclick="var predioSelecionado = 3" class="tab-p">Torre C</button>`
+
+    }
+    // apto
+    function buscarApto() {
+        for (contador = 0; contador < 3; contador++) {
+            indiceApto.innerHTML += `<div class="header-p">Apto 0${contador + 1}</div>`
+        }
+
+    }
+
+    // APARTAMENTOS
+    function apartamentoStatus() {
+        var numApto = 102;
+        var corSelecionada = "#00800038";
+        aptoLista.innerHTML = `<div class="andar-p" id="aptoDinamico" style="background: #00800038" onclick="abrirModal(); obterNumero(this)">101</div>`;
+
+        for (let contApto = 0; contApto < 17; contApto++) {
+            // corSelecionada = '#00800038'; // verde claro
+            // corSelecionada = '#FFEB3B'; // amarelo
+            // corSelecionada = '#F44336'; // vermelho
+            // corSelecionada = 'black'; // preto
+            // cinza = d1d5db
+
+            if (numApto == 601) {
+                corSelecionada = "#d1d5db";
+
+            } else {
+                corSelecionada = "#00800038";
+
+
+            }
+            aptoLista.innerHTML += `<div class="andar-p" style="background: ${corSelecionada}" onclick="segundoModal(); obterNumero(this)">${numApto}</div>`;
+            numApto++;
+            if (numApto > 103 && numApto <= 104) {
+                numApto = numApto + 97;
+            } else if (numApto > 203 && numApto <= 204) {
+                numApto = numApto + 97;
+            } else if (numApto > 303 && numApto <= 304) {
+                numApto = numApto + 97;
+            } else if (numApto > 403 && numApto <= 404) {
+                numApto = numApto + 97;
+            } else if (numApto > 503 && numApto <= 504) {
+                numApto = numApto + 97;
+            }
+
+        }
+    }
+
+    // ap 101
+    function abrirModal() {
+        modalAberto = true;
+        document.getElementById('fundoModal').classList.add('ativo');
+        inicializarGrafico()
+        buscarGraficoModalComIntervalo();
+
+    }
+
+    function buscarGraficoModalComIntervalo() {
+        if (modalAberto == true) {
+            buscarGraficoModal();
+            setTimeout(buscarGraficoModalComIntervalo, 1000);
+        }
+    }
+
+
 
     function buscarGraficoModal() {
-
-
         fetch(`/dashboard/graficoModal/${idModalGrafico}`)
             .then(function (retornoApto) {
                 if (retornoApto.ok) {
@@ -849,10 +830,37 @@
                     })
                     labelList.push(dataLabel);
                 }
+                // corSelecionada = '#00800038'; // verde claro
+                // corSelecionada = '#FFEB3B'; // amarelo
+                // corSelecionada = '#F44336'; // vermelho
+                // corSelecionada = 'black'; // preto
+                // cinza = d1d5db
+                nivelAtual = dadosMedicao[0].nivel_de_gas;
                 nivelView = 20;
                 nivelModal.innerHTML = `${dadosMedicao[0].nivel_de_gas}%`;
                 barraprogresso.style.width = `${dadosMedicao[0].nivel_de_gas * 5}%`;
+                var corStatus = "";
 
+                // Validações conforme o nível do gás
+
+                if (nivelAtual < 2.5) {
+                    corStatus = "green";
+                } else if (nivelAtual >= 2.5 && nivelAtual < 4.9) {
+                    corStatus = "#FFEB3B";
+
+                } else if (nivelAtual >= 4.9 && nivelAtual < 15) {
+                    corStatus = "#F44336";
+
+                } else if (nivelAtual >= 15) {
+                    corStatus = "black";
+
+                }
+
+                barraprogresso.style.backgroundColor = corStatus;
+                statusModal.style.color = corStatus;
+                indicadorStatusModal.style.backgroundColor = corStatus;
+                localModal.style.backgroundColor = corStatus;
+                sensor1.style.backgroundColor = corStatus;
 
                 medicaoList.reverse();
                 atualizarGrafico();
@@ -874,7 +882,7 @@
             window.chartInstance.destroy();
         }
 
-        const ctx = document.getElementById('graficoGas').getContext('2d');
+        const ctx = document.getElementById('graficoGasSeguro').getContext('2d');
         window.chartInstance = new Chart(ctx, {
             type: 'line',
             data: {
@@ -913,25 +921,7 @@
         });
     }
 
-    function verificarApto(numeroApto) {
-        localStorage.setItem("numero_apartamento", numeroApto);
-        window.location.href = "dash_especifica.html";
-    }
 
-    function abrirModal() {
-        modalAberto = true;
-        document.getElementById('fundoModal').classList.add('ativo');
-        inicializarGrafico()
-        buscarGraficoModalComIntervalo();
-
-    }
-
-    function buscarGraficoModalComIntervalo() {
-        if (modalAberto == true) {
-            buscarGraficoModal();
-            setTimeout(buscarGraficoModalComIntervalo, 1000);
-        }
-    }
     function inicializarGrafico() {
 
         fetch(`/dashboard/modal/${idModalGrafico}`)
@@ -956,83 +946,28 @@
             });
 
     }
-
-
-
-
-    function plantaReq() {
-
-        fetch(`/dashboard/plantaController/${idModalGrafico}`)
-            .then(function (retornoApto) {
-                if (retornoApto.ok) {
-                    if (retornoApto.status === 204) {
-                        throw "Nenhum resultado encontrado!";
-                    }
-                    return retornoApto.json();
-                } else {
-                    throw "Houve um erro na API!";
-                }
-            })
-            .then(function (retornoJson) {
-                plantaModal = retornoJson;
-                console.log("Dados recebidos planta: ", JSON.stringify(plantaModal));
-                var corPlanta = ""
-                for (let i = 0; i < plantaModal.length; i++) {
-                    if (plantaModal[i].Status == "Inativo") {
-                        corPlanta = 'gray';
-                    } else if (plantaModal[i].medicao < 2.5) {
-                        corPlanta = "green";
-                    } else if (plantaModal[i].medicao > 2.5 && plantaModal[i].medicao < 5) {
-                        corPlanta = '#FFEB3B';
-
-                    } else if (plantaModal[i].medicao < 15) {
-                        corPlanta = '#F44336';
-
-                    } else {
-                        corPlanta = 'black';
-
-                    }
-                    if (plantaModal[i].Localização == "Banheiro") {
-                        sensor3.style.backgroundColor = corPlanta;
-
-
-                    } else if (plantaModal[i].Localização == "Quarto") {
-
-                        sensor2.style.backgroundColor = corPlanta;
-
-                    }
-
-
-
-                }
-
-            })
-            .catch(function (erro) {
-                console.error("Erro ao carregar gráfico:", erro);
-                alert("Não foi possível carregar os dados do gráfico. Tente novamente mais tarde.");
-            });
-    }
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const fundoModal = document.getElementById('fundoModal');
-        const botaoFechar = document.getElementById('botaoFechar');
-
-        function fecharModal() {
-            fundoModal.classList.remove('ativo');
-            modalAberto = false;
-            atualizarGeral();
-
+    function fecharModal() {
+        fundoModal.classList.remove('ativo');
+        clearInterval(intervaloAtualizacao);
+        if (graficoGas) {
+            graficoGas.destroy();
+            graficoGas = null;
         }
 
-        botaoFechar.addEventListener('click', fecharModal);
+        if (window.chartInstance) {
+            window.chartInstance.destroy();
+        }
+        labels = [];
+        dataGas = [];
+        modalAberto = false;
+    }
 
-        fundoModal.addEventListener('click', function (e) {
-            if (e.target === fundoModal) {
-                fecharModal();
-            }
-        });
+    botaoFechar.addEventListener('click', fecharModal);
+    fundoModal.addEventListener('click', e => {
+        if (e.target === fundoModal) fecharModal();
+
     });
+
 
 
 </script>

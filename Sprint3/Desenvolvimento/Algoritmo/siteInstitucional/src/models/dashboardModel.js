@@ -4,7 +4,7 @@ function buscarDados() {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ")
     var instrucaoSql = `
 
-    SELECT 
+      SELECT 
     ap.idApartamento AS ID_Apartamento,
     ap.numero_apartamento AS Numero_Apartamento,
     ap.andar_apartamento AS Andar,
@@ -13,7 +13,7 @@ function buscarDados() {
     s.local_instalado AS Local_do_Sensor,
     s.status_sensor AS Status_Sensor,  
     MAX(m.nivel_de_gas) AS Maior_Nivel_de_Gas,
-    a.statusAlerta AS tatus_Alerta,  
+    a.statusAlerta AS Status_Alerta,  
     a.risco AS Descricao_Risco,
     a.acao AS Acao_Recomendada,
     MAX(m.data_hora) AS Hora_da_ultima_Medicao
@@ -29,15 +29,13 @@ JOIN
     alerta a ON m.fkAlertaMedicao = a.idAlerta
 WHERE 
     a.statusAlerta IN ('Seguro', 'Perigo', 'Atenção', 'Emergência')
+    AND m.data_hora >= NOW() - INTERVAL 24 HOUR
 GROUP BY 
     ap.idApartamento, ap.numero_apartamento, ap.andar_apartamento, 
-    p.bloco_predio, s.idSensor, s.local_instalado, s.status_sensor,  -- Adicionado status_sensor no GROUP BY
+    p.bloco_predio, s.idSensor, s.local_instalado, s.status_sensor,
     a.statusAlerta, a.risco, a.acao
 ORDER BY 
-    p.bloco_predio, 
-    ap.andar_apartamento, 
-    ap.numero_apartamento, 
-    MAX(m.nivel_de_gas) DESC;
+    Hora_da_ultima_Medicao DESC;
     
         `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
