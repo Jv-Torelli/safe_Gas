@@ -95,13 +95,6 @@ data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
 nivel_de_gas FLOAT NOT NULL
 );
 
-
-
-
-
-
-
-
 -- kpis dash geral
 create view kpi as
 
@@ -116,7 +109,6 @@ LEFT JOIN alerta a ON m.fkAlertaMedicao = a.idAlerta;
 select * from kpi;
 
 -- notificações
-
 CREATE VIEW dados AS
 SELECT 
     p.bloco_predio AS Torre, -- Torre (bloco) a que o apartamento pertence
@@ -145,6 +137,8 @@ JOIN alerta a ON m.fkAlertaMedicao = a.idAlerta
 WHERE a.statusAlerta IN ('Seguro','Atenção', 'Perigo', 'Emergência') -- Apenas sensores em estado alarmante
 ORDER BY p.bloco_predio, ap.numero_apartamento, m.data_hora DESC; -- Ordenação por torre, apartamento e data de consulta
 
+select * from dados;
+
 INSERT INTO condominio (nome_condominio, cep, logradouro, numero_logradouro, cnpj, senha) 
 VALUES ('Residencial Seguro', '01234-567', 'Rua das Flores', '100', '12345678000190', 'seguranca123');
 
@@ -156,33 +150,6 @@ VALUES ('A', 1);
 
 -- Andar 1
 INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('101', 1, 1);
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('102', 1, 1);
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('103', 1, 1);
-
--- Andar 2
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('201', 2, 1);
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('202', 2, 1);
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('203', 2, 1);
-
--- Andar 3
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('301', 3, 1);
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('302', 3, 1);
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('303', 3, 1);
-
--- Andar 4
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('401', 4, 1);
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('402', 4, 1);
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('403', 4, 1);
-
--- Andar 5
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('501', 5, 1);
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('502', 5, 1);
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('503', 5, 1);
-
--- Andar 6
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('601', 6, 1);
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('602', 6, 1);
-INSERT INTO apartamento (numero_apartamento, andar_apartamento, fkPredioApto) VALUES ('603', 6, 1);
 
 INSERT INTO alerta (statusAlerta, risco, acao) VALUES 
 ('Seguro', 'Nenhum risco', 'Nenhuma ação necessária'),
@@ -190,205 +157,22 @@ INSERT INTO alerta (statusAlerta, risco, acao) VALUES
 ('Perigo', 'Possibilidade de explosão', 'Evacuar o local imediatamente'),
 ('Emergência', 'Possibilidade de asfixia', 'Ligar para os bombeiros');
 
--- Sensores Ativos (49 sensores)
+-- Sensores Ativos (1 sensores)
 -- Apartamento 101
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 1, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 1, 1);
 INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 1, 1);
-
--- Apartamento 102
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 2, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 2, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 2, 1);
-
--- Apartamento 103
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 3, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 3, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 3, 1);
-
--- Apartamento 201
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 4, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 4, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 4, 1);
-
--- Apartamento 202
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 5, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 5, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 5, 1);
-
--- Apartamento 203
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 6, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 6, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 6, 1);
-
--- Apartamento 301
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 7, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 7, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 7, 1);
-
--- Apartamento 302
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 8, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 8, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 8, 1);
-
--- Apartamento 303
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 9, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 9, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 9, 1);
-
--- Apartamento 401
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 10, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 10, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 10, 1);
-
--- Apartamento 402
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 11, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 11, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 11, 1);
-
--- Apartamento 403
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 12, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 12, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 12, 1);
-
--- Apartamento 501
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 13, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 13, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 13, 1);
-
--- Apartamento 502
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 14, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 14, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 14, 1);
-
--- Apartamento 503
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 15, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 15, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 15, 1);
-
--- Apartamento 601 (5 sensores inativos aqui)
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Inativo', 'Banheiro', 16, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Inativo', 'Quarto', 16, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Inativo', 'Cozinha', 16, 1);
-
--- Apartamento 602 (2 sensores inativos aqui)
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Inativo', 'Banheiro', 17, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 17, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 17, 1);
-
--- Apartamento 603 (todos ativos)
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Banheiro', 18, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Quarto', 18, 1);
-INSERT INTO sensor (status_sensor, local_instalado, fkApartamento, fkPredio) VALUES ('Ativo', 'Cozinha', 18, 1);
 
 -- Caso 1: Sensor Seguro (nível de gás 1.5%)
 INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlertaMedicao, nivel_de_gas) 
-VALUES (1, 1, 1, 1, 13.5);
+VALUES (1, 1, 1, 1, 1.3);
 
--- Caso 2: Sensor em Atenção (nível de gás 3.0%)
-INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlertaMedicao, nivel_de_gas) 
-VALUES (2, 1, 1, 2, 3.0);
-
--- Caso 3: Sensor em Perigo (nível de gás 8.0%)
-INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlertaMedicao, nivel_de_gas) 
-VALUES (3, 1, 1, 3, 8.0);
-
+select * from medicao;
 -- Medições adicionais para outros sensores (todos seguros)
 INSERT INTO medicao (fkSensorMedicao, fkApartamentoMedicao, fkPredioMedicao, fkAlertaMedicao, nivel_de_gas) 
 VALUES 
-(4, 2, 1, 1, 0.8),
-(5, 2, 1, 1, 1.2),
-(6, 2, 1, 1, 1.0),
-(7, 3, 1, 1, 1.8),
-(8, 3, 1, 1, 2.0),
-(9, 3, 1, 1, 1.5),
-(10, 4, 1, 1, 0.5),
-(11, 4, 1, 1, 1.0),
-(12, 4, 1, 1, 0.7),
-(13, 5, 1, 1, 1.2),
-(14, 5, 1, 1, 1.3),
-(15, 5, 1, 1, 1.1),
-(16, 6, 1, 1, 0.9),
-(17, 6, 1, 1, 1.0),
-(18, 6, 1, 1, 1.2),
-(19, 7, 1, 1, 1.5),
-(20, 7, 1, 1, 1.6),
-(21, 7, 1, 1, 1.4),
-(22, 8, 1, 1, 1.7),
-(23, 8, 1, 1, 1.8),
-(24, 8, 1, 1, 1.9),
-(25, 9, 1, 1, 2.0),
-(26, 9, 1, 1, 2.1),
-(27, 9, 1, 1, 2.0),
-(28, 10, 1, 1, 1.5),
-(29, 10, 1, 1, 1.6),
-(30, 10, 1, 1, 1.4),
-(31, 11, 1, 1, 1.2),
-(32, 11, 1, 1, 1.3),
-(33, 11, 1, 1, 1.1),
-(34, 12, 1, 1, 0.8),
-(35, 12, 1, 1, 0.9),
-(36, 12, 1, 1, 0.7),
-(37, 13, 1, 1, 1.0),
-(38, 13, 1, 1, 1.1),
-(39, 13, 1, 1, 0.9),
-(40, 14, 1, 1, 1.2),
-(41, 14, 1, 1, 1.3),
-(42, 14, 1, 1, 1.1),
-(43, 15, 1, 1, 1.4),
-(44, 15, 1, 1, 1.5),
-(45, 15, 1, 1, 1.3),
-(46, 16, 1, 1, 0.0),  -- Sensor inativo
-(47, 16, 1, 1, 0.0),  -- Sensor inativo
-(48, 16, 1, 1, 0.0),  -- Sensor inativo
-(49, 17, 1, 1, 0.0),  -- Sensor inativo
-(50, 17, 1, 1, 1.2),
-(51, 17, 1, 1, 1.1),
-(52, 18, 1, 1, 1.3),
-(53, 18, 1, 1, 1.4),
-(54, 18, 1, 1, 1.2);
-
+(1, 1, 1, 1, 0.8);
 
 -- predio
 SELECT * from predio;
-
--- total andares
-create view andares as
-SELECT 
-    FLOOR(ap.numero_apartamento / 100) AS Andar, -- Calcula o andar com base no número do apartamento
-    COUNT(ap.numero_apartamento) AS Quantidade_Apartamentos -- Conta o número de apartamentos por andar
-FROM apartamento ap
-GROUP BY Andar -- Agrupamento por andar
-ORDER BY Quantidade_Apartamentos DESC; -- Ordenação pelo maior número de apartamentos por andar
-
-
-select * from andares;
-
-
-
--- apartamentos
-create view apGeral as
-SELECT     
-FLOOR(ap.numero_apartamento / 100) AS Andar, -- Calcula o andar com base no número do apartamento
-    ap.numero_apartamento AS Numero_Apartamento, -- Número do apartamento
-    s.status_sensor AS Status_Sensor, -- Status do sensor
-    MAX(m.nivel_de_gas) AS Nivel_Mais_Alto -- Nível mais alto de gás no apartamento
-FROM apartamento ap
-JOIN sensor s ON s.fkApartamento = ap.idApartamento
-JOIN medicao m ON m.fkSensorMedicao = s.idSensor
-where m.data_hora >= DATE_SUB(NOW(), INTERVAL 24 HOUR) 
-GROUP BY Andar, ap.numero_apartamento, s.status_sensor -- Agrupamento por andar, apartamento e status do sensor
-ORDER BY Andar, MAX(m.nivel_de_gas) DESC; -- Ordenação por andar e maior nível de gás em ordem decrescente
-
-
-select * from apGeral;
-
-select * from apartamento as a join predio as p on a.fkPredioApto = p.idPredio;
-
-select * from kpi;
-
-select * from dados;
-
 SELECT 
     p.bloco_predio AS Torre, -- Torre (bloco) a que o apartamento pertence
     ap.numero_apartamento AS Numero_Apartamento, -- Número do apartamento
@@ -415,28 +199,6 @@ JOIN medicao m ON m.fkSensorMedicao = s.idSensor
 JOIN alerta a ON m.fkAlertaMedicao = a.idAlerta
 WHERE ap.idApartamento = 1 -- Apenas sensores em estado alarmante
 ORDER BY m.data_hora; -- Ordenação por torre, apartamento e data de consulta
-
--- sensores, medicoes e status
-SELECT 
-    m.idMedicao AS 'ID Medição',
-    s.idSensor AS 'ID Sensor',
-    s.local_instalado AS 'Local do Sensor',
-    s.status_sensor AS 'Status do Sensor',
-    a.statusAlerta AS 'Status Alerta',
-    a.risco AS 'Descricao_Status',
-    a.acao AS 'Ação Recomendada',
-    m.nivel_de_gas AS 'Nível de Gás',
-    m.data_hora AS 'Data/Hora Medição'
-FROM 
-    medicao m
-JOIN 
-    sensor s ON m.fkSensorMedicao = s.idSensor
-JOIN 
-    alerta a ON m.fkAlertaMedicao = a.idAlerta
-WHERE 
-    a.statusAlerta IN ('Perigo', 'Atenção', 'Emergência')
-ORDER BY 
-    m.data_hora DESC;
 
 -- ap, sensor, medicao
 create view notificacoes as
@@ -478,9 +240,7 @@ ORDER BY
     
 select * from medicao where fkSensorMedicao = 1 order by data_hora desc;
 
-select * from apartamento as a join medicao as m on fkApartamentoMedicao = 1
-where m.fkApartamentoMedicao = 1  order by data_hora desc limit 10;
-
+-- 10 ultimas medicoes
 SELECT * 
 FROM apartamento AS a
 JOIN medicao AS m ON a.idApartamento = m.fkApartamentoMedicao
@@ -488,24 +248,13 @@ WHERE m.fkApartamentoMedicao = 1
 ORDER BY m.data_hora DESC
 LIMIT 10;
 
-select * from medicao where fkSensorMedicao = 1 order by data_hora desc;
-
-
-select * from alerta;	
-select * from apartamento;
-
-
-
-
 select * from sensor where status_sensor = 'Inativo';
 
 SELECT COUNT(*) AS total_sensores_inativos
 FROM sensor
 WHERE status_sensor = 'Inativo';
 
-	select * from notificacoes;
-
-
+-- buscar sensor inativo
 SELECT
     ap.numero_apartamento AS Numero_Apartamento,
     s.status_sensor AS Status_Sensor,
@@ -516,27 +265,6 @@ JOIN medicao m ON m.fkSensorMedicao = s.idSensor
 GROUP BY ap.numero_apartamento, s.status_sensor
 ORDER BY MAX(m.nivel_de_gas) DESC;
 
-
-	SELECT     
-    ap.numero_apartamento AS Numero_Apartamento, -- Número do apartamento
-    s.status_sensor AS Status_Sensor, -- Status do sensor
-    MAX(m.nivel_de_gas) AS Nivel_Mais_Alto -- Nível mais alto de gás no apartamento
-FROM apartamento ap
-JOIN sensor s ON s.fkApartamento = ap.idApartamento
-JOIN medicao m ON m.fkSensorMedicao = s.idSensor
-where m.data_hora >= DATE_SUB(NOW(), INTERVAL 24 HOUR) 
-GROUP BY ap.numero_apartamento, s.status_sensor -- Agrupamento por andar, apartamento e status do sensor
-ORDER BY MAX(m.nivel_de_gas) DESC; -- Ordenação por andar e maior nível de gás em ordem decrescente
-        ;
-        
-             	select * from notificacoes;
-                
-                
-                select * from sensor where status_sensor = "Inativo";
-                
-                   select * from kpi;
-                   
-
 SELECT 
     COUNT(DISTINCT s.idSensor) AS Total_Sensores,
     COUNT(DISTINCT CASE WHEN a.statusAlerta IN ('Atenção','Perigo', 'Emergência') THEN s.idSensor END) AS Sensores_Alarmantes,
@@ -545,7 +273,6 @@ SELECT
 FROM sensor s
 LEFT JOIN medicao m ON s.idSensor = m.fkSensorMedicao
 LEFT JOIN alerta a ON m.fkAlertaMedicao = a.idAlerta;
-
 
 
 SELECT 
@@ -591,25 +318,6 @@ GROUP BY
 ORDER BY 
     p.bloco_predio, ap.numero_apartamento, s.local_instalado;
     
-    
-    SELECT 
-    s.idSensor AS 'ID',
-    s.local_instalado AS 'Local',
-    ap.numero_apartamento AS 'Apto',
-    p.bloco_predio AS 'Torre'
-FROM 
-    sensor s
-JOIN 
-    apartamento ap ON s.fkApartamento = ap.idApartamento
-JOIN 
-    predio p ON ap.fkPredioApto = p.idPredio
-WHERE 
-    s.status_sensor = 'Inativo'
-ORDER BY 
-    p.bloco_predio, ap.numero_apartamento;	
-    
-    
-    
     SELECT 
     p.bloco_predio AS Torre,
     ap.numero_apartamento AS Numero_Apartamento,
@@ -642,19 +350,9 @@ ORDER BY
     END,
     m.data_hora DESC;
     
-      SELECT
-    ap.numero_apartamento AS Numero_Apartamento,
-    s.status_sensor AS Status_Sensor,
-    MAX(m.nivel_de_gas) AS Nivel_Mais_Alto
-FROM apartamento ap
-JOIN sensor s ON s.fkApartamento = ap.idApartamento
-JOIN medicao m ON m.fkSensorMedicao = s.idSensor
-GROUP BY ap.numero_apartamento, s.status_sensor
-ORDER BY MAX(m.nivel_de_gas) DESC;
-	
     
-
     
+    -- notificacoes
         SELECT 
     ap.idApartamento AS ID_Apartamento,
     ap.numero_apartamento AS Numero_Apartamento,
@@ -679,7 +377,7 @@ JOIN
     alerta a ON m.fkAlertaMedicao = a.idAlerta
 WHERE 
    
-     a.statusAlerta IN ('seguro', 'Perigo', 'Atenção', 'Emergência')
+     a.statusAlerta IN ('seguro', 'Perigo', 'Atenção', 'Emergência') and m.data_hora >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
 GROUP BY 
     ap.idApartamento, ap.numero_apartamento, ap.andar_apartamento, 
     p.bloco_predio, s.idSensor, s.local_instalado, 
@@ -690,39 +388,8 @@ ORDER BY
     
     
     
-    -- para o ap
-    SELECT 
-    ap.numero_apartamento AS 'Número Apartamento',
-    p.bloco_predio AS 'Bloco/Prédio',
-    s.idSensor AS 'ID Sensor',
-    s.local_instalado AS 'Localização',
-    s.status_sensor AS 'Status',
-    MAX(m.nivel_de_gas) AS 'Última Medição',
-    MAX(m.data_hora) AS 'Data/Hora Última Medição',
-    a.statusAlerta AS 'Status Alerta',
-    a.risco AS 'Risco Detectado',
-    a.acao AS 'Ação Recomendada'
-FROM 
-    apartamento ap
-JOIN 
-    predio p ON ap.fkPredioApto = p.idPredio
-JOIN 
-    sensor s ON s.fkApartamento = ap.idApartamento
-LEFT JOIN 
-    medicao m ON m.fkSensorMedicao = s.idSensor
-LEFT JOIN 
-    alerta a ON m.fkAlertaMedicao = a.idAlerta
-WHERE 
-    m.fkApartamentoMedicao = 1  
-GROUP BY 
-    ap.numero_apartamento, p.bloco_predio, s.idSensor, s.local_instalado, 
-    s.status_sensor, a.statusAlerta, a.risco, a.acao
-ORDER BY 
-    s.local_instalado;
-    
     
     -- planta
-    
         SELECT 
     ap.numero_apartamento AS 'Número Apartamento',
     p.bloco_predio AS 'Bloco/Prédio',
@@ -751,3 +418,51 @@ GROUP BY
     s.status_sensor, a.statusAlerta, a.risco, a.acao
 ORDER BY 
     s.local_instalado;
+    
+    
+    
+    SELECT 
+    ap.idApartamento AS ID_Apartamento,
+    ap.numero_apartamento AS Numero_Apartamento,
+    ap.andar_apartamento AS Andar,
+    p.bloco_predio AS Bloco_Predio,
+    s.idSensor AS ID_Sensor,
+    s.local_instalado AS Local_do_Sensor,
+    s.status_sensor AS Status_Sensor,  
+    MAX(m.nivel_de_gas) AS Maior_Nivel_de_Gas,
+    a.statusAlerta AS Status_Alerta,  
+    a.risco AS Descricao_Risco,
+    a.acao AS Acao_Recomendada,
+    MAX(m.data_hora) AS Hora_da_ultima_Medicao
+FROM 
+    apartamento ap
+JOIN 
+    predio p ON ap.fkPredioApto = p.idPredio
+JOIN 
+    sensor s ON s.fkApartamento = ap.idApartamento
+JOIN 
+    medicao m ON m.fkSensorMedicao = s.idSensor
+JOIN 
+    alerta a ON m.fkAlertaMedicao = a.idAlerta
+WHERE 
+    a.statusAlerta IN ('Seguro', 'Perigo', 'Atenção', 'Emergência')
+    AND m.data_hora >= NOW() - INTERVAL 24 HOUR
+GROUP BY 
+    ap.idApartamento, ap.numero_apartamento, ap.andar_apartamento, 
+    p.bloco_predio, s.idSensor, s.local_instalado, s.status_sensor,
+    a.statusAlerta, a.risco, a.acao
+ORDER BY 
+    Hora_da_ultima_Medicao DESC;
+    
+    
+    -- select modal
+    SELECT * 
+FROM apartamento AS a
+JOIN medicao AS m ON a.idApartamento = m.fkApartamentoMedicao
+JOIN alerta as s ON m.fkAlertaMedicao = s.idAlerta
+WHERE m.fkApartamentoMedicao = 1
+ORDER BY m.data_hora DESC
+LIMIT 10;
+
+show tables;
+select * from medicao;

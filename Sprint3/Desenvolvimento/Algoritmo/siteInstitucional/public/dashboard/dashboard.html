@@ -167,6 +167,14 @@
         justify-content: space-between;
         gap: 20px;
     }
+
+    .selecionado {
+        background: #00800038"
+    }
+
+    .selecionado {
+        background: #00800038"
+    }
 </style>
 
 <body onload="buscarKpis(), buscarDados(), buscarAndares(), buscarTorre(), buscarApto(), apartamentoStatus(), configurarNavbarPorTipoUsuario()">
@@ -347,7 +355,8 @@
                     </div>
                 </div>
                 <div class="container_notificacoes">
-                    <div id='alertas_recentes'>Alertas Recentes <span id="qtd_totalNotificacoes"> </span> </div>
+                    <div id='alertas_recentes'>Alertas Recentes (Últimas 24h) <span id="qtd_totalNotificacoes"> </span>
+                    </div>
                     <div id="alertasDash"></div>
                 </div>
 
@@ -458,31 +467,31 @@
     const nivelEl = document.getElementById("nivelModal");
     const barraEl = document.getElementById("barraprogresso");
 
-      function configurarNavbarPorTipoUsuario() {
-    const tipoUsuario = sessionStorage.getItem('TIPO_USUARIO');
+    function configurarNavbarPorTipoUsuario() {
+        const tipoUsuario = sessionStorage.getItem('TIPO_USUARIO');
 
-    if (!tipoUsuario) {
-      console.warn('Tipo de usuário não encontrado na sessão');
-      setTimeout(() => {
-        window.location.href = '../login.html';
-      }, 2000);
-      return;
+        if (!tipoUsuario) {
+            console.warn('Tipo de usuário não encontrado na sessão');
+            setTimeout(() => {
+                window.location.href = '../login.html';
+            }, 2000);
+            return;
+        }
+
+        console.log('Tipo de usuário logado:', tipoUsuario);
+
+        const btnPortaria = document.getElementById('portaria');
+        if (!btnPortaria) {
+            console.warn('Elemento portaria não encontrado');
+            return;
+        }
+
+        if (tipoUsuario === 'porteiro') {
+            btnPortaria.style.setProperty('display', 'none', 'important');
+        } else if (tipoUsuario === 'sindico') {
+            btnPortaria.style.setProperty('display', 'flex', 'important');
+        }
     }
-
-    console.log('Tipo de usuário logado:', tipoUsuario);
-
-    const btnPortaria = document.getElementById('portaria');
-    if (!btnPortaria) {
-      console.warn('Elemento portaria não encontrado');
-      return;
-    }
-
-    if (tipoUsuario === 'porteiro') {
-      btnPortaria.style.setProperty('display', 'none', 'important');
-    } else if (tipoUsuario === 'sindico') {
-      btnPortaria.style.setProperty('display', 'flex', 'important');
-    }
-  }
 
     function atualizarNivelGas() {
         const nivel = (Math.random() * (2.4 - 0.5) + 0.5).toFixed(1);
@@ -764,9 +773,9 @@
 
     // Torre
     function buscarTorre() {
-        torresDiv.innerHTML = `<button onclick="apartamentoSeguro();  predioSelecionado = 1" class="tab-p" style = "background: #00800038">Torre A</button>`
-        torresDiv.innerHTML += `<button onclick="apartamentoSeguro();  predioSelecionado = 2" class="tab-p">Torre B</button>`
-        torresDiv.innerHTML += `<button onclick="apartamentoSeguro();  predioSelecionado = 3" class="tab-p">Torre C</button>`
+        torresDiv.innerHTML = `<button onclick="apartamentoStatus();" class="tab-p">Torre A</button>`
+        torresDiv.innerHTML += `<button onclick="apartamentoSeguro();" class="tab-p">Torre B</button>`
+        torresDiv.innerHTML += `<button onclick="apartamentoSeguro();" class="tab-p">Torre C</button>`
 
     }
     // apto
