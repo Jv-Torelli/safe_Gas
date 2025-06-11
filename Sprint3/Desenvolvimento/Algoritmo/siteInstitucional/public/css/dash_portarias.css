@@ -273,16 +273,9 @@ input:focus {
     transition: background-color 0.3s ease;
 }
 
-.botao-cancelar {
-    background: #6c757d;
-    color: white;
-}
-
-.botao-cancelar:hover {
-    background: #5a6268;
-}
 
 .botao-salvar,
+.botao-cancelar,
 .botaoExcluir {
     background: #7bb062;
     color: white;
