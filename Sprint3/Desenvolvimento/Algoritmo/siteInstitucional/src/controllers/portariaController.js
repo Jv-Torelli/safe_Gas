@@ -3,13 +3,13 @@ var portariaModel = require("../models/portariaModel");
 
 
 function cadastrar(req, res) {
-    // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var numPortaria = req.body.numPortariaServer;
     var telefone = req.body.telefoneServer;
     var email = req.body.emailServer;
     var dtCadastro = req.body.dtCadastroServer;
+    var senha = req.body.senhaServer
 
-    // Faça as validações dos valores
+   
     if (numPortaria == undefined) {
         res.status(400).send("Seu número da portaria está undefined!");
     } else if (telefone == undefined) {
@@ -18,10 +18,12 @@ function cadastrar(req, res) {
         res.status(400).send("Seu email está undefined!");
     } else if (dtCadastro == undefined) {
         res.status(400).send("Sua data de cadastro está undefined!");
+    }else if (senha == undefined) {
+        res.status(400).send("Sua data de cadastro está undefined!");
     }else {
 
-        // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        portariaModel.cadastrar(numPortaria, telefone, email, dtCadastro)
+       
+        portariaModel.cadastrar(numPortaria, telefone, email, dtCadastro, senha)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -56,7 +58,7 @@ function exibir(req, res) {
 }
 
 function salvarEdicao(req, res) {
-    var numPortaria = req.params.numPortaria;  // ✅ Corrigido aqui!
+    var numPortaria = req.params.numPortaria;  
     var telefone = req.body.telefoneServer;
     var email = req.body.emailServer;
 

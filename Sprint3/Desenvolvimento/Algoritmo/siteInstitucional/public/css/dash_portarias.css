@@ -90,20 +90,22 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    text-align: center;
     align-items: center;
-    margin-bottom: 40px;
+    padding: 30px;
+    margin-bottom: 45px;
     padding-bottom: 20px;
     border-bottom: 1px solid #e9ecef;
 }
 
 #title-sindico {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 600;
-    color: #2c3e50;
+    color: black;
 }
 
 .sindico-criar img {
-    width: 20px;
+    width: 30px;
     filter: brightness(0) invert(1);
 }
 
@@ -118,7 +120,7 @@
     gap: 8px;
     border: none;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 20px;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -305,7 +307,7 @@ input:focus {
 .tabela-fisica th {
     background: #7bb062;
     color: white;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 600;
     padding: 20px 15px;
     text-align: center;
@@ -315,7 +317,8 @@ input:focus {
 .tabela-fisica td {
     padding: 15px;
     text-align: center;
-    font-size: 14px;
+    font-size: 18px;
+    font-weight: bold;
     border-top: 1px solid #f1f3f4;
     border-bottom: none;
     color: #495057;
@@ -338,7 +341,7 @@ input:focus {
 }
 
 .tabela img {
-    width: 18px;
+    width: 30px;
     opacity: 0.7;
     transition: opacity 0.3s ease;
 }
