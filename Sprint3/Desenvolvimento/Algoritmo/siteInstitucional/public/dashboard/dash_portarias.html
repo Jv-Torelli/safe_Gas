@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="../css/navbar.css">
 </head>
 
-<body onload="exibir()">
+<body onload="exibir(); configurarNavbarPorTipoUsuario();">
 
   <div class="main">
     <div class="navbar">
@@ -27,7 +27,7 @@
 
           Dashboard geral
         </a>
-        <a href="./dash_portarias.html" class="btnNavbar select">
+        <a href="./dash_portarias.html" class="btnNavbar select" id="portaria">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
             fill="currentcolor">
             <path
@@ -77,6 +77,11 @@
               <input type="date" id="dataCadastro" name="dataCadastro" required>
             </div>
 
+            <div class="grupo-form">
+              <label for="senha_port">Senha Portaria:</label>
+              <input type="text" id="senha_port" name="senha_port" required>
+            </div>
+
             <div class="botoes">
               <button type="button" class="botao-cancelar" id="botaoCancelar">Cancelar</button>
               <button type="button" class="botao-salvar" onclick="cadastrar()">Salvar</button>
@@ -85,7 +90,7 @@
         </div>
       </div>
 
-      <!-- Modal de Edição -->
+
       <div class="fundo-modal" id="fundoModalEditar">
         <div class="modal">
           <div class="cabecalho-modalEditar">
@@ -136,7 +141,7 @@
             </tr>
           </thead>
           <tbody id="tabela-portaria">
-            <!-- Dados serão inseridos aqui via JS -->
+
           </tbody>
         </table>
       </div>
@@ -181,6 +186,32 @@
       }
     });
   });
+
+  function configurarNavbarPorTipoUsuario() {
+    const tipoUsuario = sessionStorage.getItem('TIPO_USUARIO');
+
+    if (!tipoUsuario) {
+      console.warn('Tipo de usuário não encontrado na sessão');
+      setTimeout(() => {
+        window.location.href = '../login.html';
+      }, 2000);
+      return;
+    }
+
+    console.log('Tipo de usuário logado:', tipoUsuario);
+
+    const btnPortaria = document.getElementById('portaria');
+    if (!btnPortaria) {
+      console.warn('Elemento portaria não encontrado');
+      return;
+    }
+
+    if (tipoUsuario === 'porteiro') {
+      btnPortaria.style.setProperty('display', 'none', 'important');
+    } else if (tipoUsuario === 'sindico') {
+      btnPortaria.style.setProperty('display', 'flex', 'important');
+    }
+  }
 
   function abrirModalEditar(numero, telefone, email) {
     numeroPortariaEditando = numero;
@@ -330,6 +361,7 @@
     const telefone = document.getElementById('input_telefone').value;
     const email = document.getElementById('input_email').value;
     const dtCadastro = document.getElementById('dataCadastro').value;
+    const senha = document.getElementById('senha_port').value;
 
     if (!email.includes('@')) {
       alert('O email deve conter um @');
@@ -348,7 +380,8 @@
         numPortariaServer: numPortaria,
         telefoneServer: telefone,
         emailServer: email,
-        dtCadastroServer: dtCadastro
+        dtCadastroServer: dtCadastro,
+        senhaServer: senha
       })
     })
       .then(res => {

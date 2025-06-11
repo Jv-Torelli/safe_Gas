@@ -111,9 +111,10 @@ function graficoMedicao(idAptoModal) {
     console.log('grafico modal models', idAptoModal)
 
     var instrucaoSql = `
-SELECT * 
+    SELECT * 
 FROM apartamento AS a
 JOIN medicao AS m ON a.idApartamento = m.fkApartamentoMedicao
+JOIN alerta as s ON m.fkAlertaMedicao = s.idAlerta
 WHERE m.fkApartamentoMedicao = ${idAptoModal}
 ORDER BY m.data_hora DESC
 LIMIT 10;

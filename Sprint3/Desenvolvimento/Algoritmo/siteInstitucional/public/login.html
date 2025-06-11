@@ -19,34 +19,26 @@
             <div class="titleNav">
                 <img src="./assets/img_site_institucional/logoSafeGas.png" id="logo">
             </div>
-            <ul class="navLinks"> <!-- container da lista -->
-
-                <li class="navLink ativa"> <!-- lista se sessoes da pagina -->
+            <ul class="navLinks">
+                <li class="navLink ativa">
                     <a href="./index.html">Home</a>
                 </li>
-
                 <li class="navLink">
                     <a href="./index.html">Quem somos</a>
                 </li>
-
                 <li class="navLink">
                     <a href="./index.html">Serviços</a>
                 </li>
-
                 <li class="navLink">
                     <a href="./calc_Atualizada.html">Simulador</a>
                 </li>
-
                 <li class="navLink">
                     <a href="./index.html">Contato</a>
                 </li>
-
                 <li class="navLink">
                     <a href="./dashboard/Dash_Geral.html">Dashboard</a>
                 </li>
-
             </ul>
-
 
             <div class="btnsNav">
                 <a href="./cadastro.html">
@@ -56,13 +48,8 @@
                     <button class="btnLogin">Entrar</button>
                 </a>
             </div>
-        </nav> <!-- fim da Divisão da navbar Desktop -->
-
-
-
-
-
-    </header> <!-- fim do header  -->
+        </nav>
+    </header>
 
     <div class="containerLogin">
         <div class="containerInputs">
@@ -71,9 +58,19 @@
 
             <h2>BEM-VINDO DE VOLTA!</h2>
 
-            <input class="input-icon empresa" type="text" placeholder="cnpj" name="cnpj" id="input_cnpj" required>
-            <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" id="input_senha"
-                required>
+            <!-- Seletor de tipo de usuário -->
+            <div class="tipo-usuario" style="margin-bottom: 20px;">
+                <label style="margin-right: 20px;">
+                    <input type="radio" name="tipoUsuario" value="sindico" checked onchange="alterarTipoLogin()"> Síndico
+                </label>
+                <label>
+                    <input type="radio" name="tipoUsuario" value="porteiro" onchange="alterarTipoLogin()"> Porteiro
+                </label>
+            </div>
+
+            <!-- Campo dinâmico que muda entre CNPJ e Email -->
+            <input class="input-icon empresa" type="text" placeholder="CNPJ" name="identificador" id="input_identificador" required>
+            <input class="input-icon cadeado" type="password" placeholder="Senha" name="senha" id="input_senha" required>
 
             <button class="btnEntrar" id="btn_Login" onclick="entrar()">Entrar</button> <br>
 
@@ -82,74 +79,71 @@
         </div>
     </div>
 
-
     <footer class="text-center ">
-        <!-- Grid container -->
-
-        <!-- Grid container -->
-
-        <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
             © 2024 Copyright: SafeGas
         </div>
-        <!-- Copyright -->
     </footer>
-    <!-- Footer -->
 
 </body>
 
 </html>
 
-
 <script>
-
     var tentativas = 3;
 
-    function login() {
-        var mensagem = ``
-
-        var cnpj = input_cnpj.value.trim();
-        var senha = input_senha.value.trim();
-
-        if (cnpj.length !== 14 || isNaN(cnpj)) {
-            alert("O CNPJ deve conter exatamente 14 números.");
-            return;
+    function alterarTipoLogin() {
+        const tipoSelecionado = document.querySelector('input[name="tipoUsuario"]:checked').value;
+        const inputIdentificador = document.getElementById('input_identificador');
+        
+        if (tipoSelecionado === 'sindico') {
+            inputIdentificador.placeholder = 'CNPJ';
+            inputIdentificador.type = 'text';
+        } else {
+            inputIdentificador.placeholder = 'Email';
+            inputIdentificador.type = 'email';
         }
-
-        while (tentativas >= 0) {
-            if (cnpj === cnpjCorreto && senha === senhaCorreta) {
-                mensagem += "<span style= 'color: green;'>Login bem-sucedido!</span>";
-
-                setTimeout(function () {
-                    window.location.href = "dashboard1.html";
-                }, 1500);
-
-            } else if (tentativas > 0) {
-                tentativas--;
-                mensagem += `<span style= 'color: red;'>CNPJ ou senha incorretos. Você ainda tem ${tentativas} tentativa(s)</span>`;
-            } else {
-                mensagem = `<span style='color: red;'>Tentativas esgotadas. Por favor, modifique sua senha ou tente mais tarde.</span>`;
-                document.getElementById("btn_Login").disabled = true;
-            }
-            msg.innerHTML = `${mensagem}`
-            break;
-        }
+        
+        
+        inputIdentificador.value = '';
     }
 
-
+    function validarEntrada() {
+        const tipoSelecionado = document.querySelector('input[name="tipoUsuario"]:checked').value;
+        const identificador = document.getElementById('input_identificador').value.trim();
+        
+        if (tipoSelecionado === 'sindico') {
+            
+            if (identificador.length !== 14 || isNaN(identificador)) {
+                alert("O CNPJ deve conter exatamente 14 números.");
+                return false;
+            }
+        } else {
+            if (!identificador.includes('@') || !identificador.includes('.')) {
+                alert(" Deverá ser digitado um email válido e o email deverá conter @ e .");
+                return false;
+            }
+        }
+        return true;
+    }
 
     function entrar() {
+        const identificadorVar = document.getElementById('input_identificador').value.trim();
+        const senhaVar = document.getElementById('input_senha').value.trim();
+        const tipoUsuario = document.querySelector('input[name="tipoUsuario"]:checked').value;
 
-        var cnpjVar = input_cnpj.value;
-        var senhaVar = input_senha.value;
-
-        if (cnpjVar == "" || senhaVar == "") {
-            alert('Mensagem de erro para todos os campos em branco');
+        if (identificadorVar === "" || senhaVar === "") {
+            alert('Por favor, preencha todos os campos.');
             return false;
         }
 
-        console.log("FORM LOGIN: ", cnpjVar);
+        if (!validarEntrada()) {
+            return false;
+        }
+
+        console.log("FORM LOGIN: ", identificadorVar);
         console.log("FORM SENHA: ", senhaVar);
+        console.log("TIPO USUÁRIO: ", tipoUsuario);
 
         fetch("/usuarios/autenticar", {
             method: "POST",
@@ -157,8 +151,9 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                cnpjServer: cnpjVar,
-                senhaServer: senhaVar
+                identificadorServer: identificadorVar,
+                senhaServer: senhaVar,
+                tipoUsuarioServer: tipoUsuario
             })
         }).then(function (resposta) {
             console.log("ESTOU NO THEN DO entrar()!")
@@ -169,30 +164,47 @@
                 resposta.json().then(json => {
                     console.log(json);
                     console.log(JSON.stringify(json));
-                    sessionStorage.CNPJ_USUARIO = json.cnpj;
-                    sessionStorage.NOME_USUARIO = json.nome;
+                    
                     sessionStorage.ID_USUARIO = json.id;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.TIPO_USUARIO = json.tipo;
+                    
+                    if (json.tipo === 'sindico') {
+                        sessionStorage.CNPJ_USUARIO = json.cnpj;
+                        sessionStorage.ID_CONDOMINIO = json.id;
+                        sessionStorage.TIPO_USUARIO = json.tipo;
+                    } else {
+                        sessionStorage.EMAIL_USUARIO = json.email;
+                        sessionStorage.ID_PORTARIA = json.id;
+                        sessionStorage.ID_CONDOMINIO = json.fkCondominio;
+                        sessionStorage.TIPO_USUARIO = json.tipo;
+                    }
 
+            
                     setTimeout(function () {
-                        window.location = "./dashboard/DashboardOFC.html";
-                    }, 1000); // apenas para exibir o loading
+                        if (json.tipo === 'sindico') {
+                            window.location = "./dashboard/DashboardOFC.html";
+                        } else {
+                            window.location = "./dashboard/DashboardOFC.html";
+                        }
+                    }, 1000); 
 
                 });
 
             } else {
-
                 alert("Houve um erro ao tentar realizar o login!");
 
                 resposta.text().then(texto => {
                     console.error(texto);
+                    document.getElementById('msg').innerHTML = `<span style='color: red;'>${texto}</span>`;
                 });
             }
 
         }).catch(function (erro) {
             console.log(erro);
+            alert("Erro de conexão. Tente novamente.");
         })
 
         return false;
     }
-
 </script>

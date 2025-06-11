@@ -400,11 +400,11 @@
                     <div class="status-container">
                         <span class="status">Status:</span>
                         <div class="local" id="localModal" style="background-color: green;">
-                            <span class="comodo" id="comodoModal">Banheiro</span>
+                            <span class="comodo" id="comodoModal">Cozinha</span>
                         </div>
                         <div class="status-label">
                             <div id="indicadorStatusModal" style="background-color: green;"></div>
-                            <span class="status-critico" id="statusModal" style="color: green;">Emergência</span>
+                            <span class="status-critico" id="statusModal" style="color: green;">SEGURO</span>
                         </div>
                     </div>
 
@@ -733,13 +733,13 @@
             andaresLista.innerHTML += `<div class="andar-p">${contador + 1}</div>`
         }
     }
-
+    let predioSelecionado = 0;
 
     // Torre
     function buscarTorre() {
-        torresDiv.innerHTML = `<button onclick="var predioSelecionado = 1" class="tab-p" style = "background: #00800038">Torre A</button>`
-        torresDiv.innerHTML += `<button onclick="var predioSelecionado = 2" class="tab-p">Torre B</button>`
-        torresDiv.innerHTML += `<button onclick="var predioSelecionado = 3" class="tab-p">Torre C</button>`
+        torresDiv.innerHTML = `<button onclick="apartamentoSeguro();  predioSelecionado = 1" class="tab-p" style = "background: #00800038">Torre A</button>`
+        torresDiv.innerHTML += `<button onclick="apartamentoSeguro();  predioSelecionado = 2" class="tab-p">Torre B</button>`
+        torresDiv.innerHTML += `<button onclick="apartamentoSeguro();  predioSelecionado = 3" class="tab-p">Torre C</button>`
 
     }
     // apto
@@ -787,6 +787,37 @@
 
         }
     }
+
+
+    function apartamentoSeguro() {
+        alert(predioSelecionado)
+        var numApto = 101;
+        var corSelecionada = "#00800038";
+        aptoLista.innerHTML = ``;
+        for (let contApto = 0; contApto < 18; contApto++) {
+            // corSelecionada = '#00800038'; // verde claro
+            // corSelecionada = '#FFEB3B'; // amarelo
+            // corSelecionada = '#F44336'; // vermelho
+            // corSelecionada = 'black'; // preto
+            // cinza = d1d5db
+
+            aptoLista.innerHTML += `<div class="andar-p" style="background: ${corSelecionada}" onclick="segundoModal(); obterNumero(this)">${numApto}</div>`;
+            numApto++;
+            if (numApto > 103 && numApto <= 104) {
+                numApto = numApto + 97;
+            } else if (numApto > 203 && numApto <= 204) {
+                numApto = numApto + 97;
+            } else if (numApto > 303 && numApto <= 304) {
+                numApto = numApto + 97;
+            } else if (numApto > 403 && numApto <= 404) {
+                numApto = numApto + 97;
+            } else if (numApto > 503 && numApto <= 504) {
+                numApto = numApto + 97;
+            }
+
+        }
+    }
+
 
     // ap 101
     function abrirModal() {
@@ -839,6 +870,8 @@
                 nivelView = 20;
                 nivelModal.innerHTML = `${dadosMedicao[0].nivel_de_gas}%`;
                 barraprogresso.style.width = `${dadosMedicao[0].nivel_de_gas * 5}%`;
+                statusModal.innerHTML = `${dadosMedicao[0].statusAlerta}`
+
                 var corStatus = "";
 
                 // Validações conforme o nível do gás
@@ -855,7 +888,6 @@
                     corStatus = "black";
 
                 }
-
                 barraprogresso.style.backgroundColor = corStatus;
                 statusModal.style.color = corStatus;
                 indicadorStatusModal.style.backgroundColor = corStatus;
