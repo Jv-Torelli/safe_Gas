@@ -12,7 +12,7 @@
   <title>Dashboard Específica</title>
 </head>
 
-<body onload="grafico_de_linha()">
+<body onload="grafico_de_linha(); configurarNavbarPorTipoUsuario();">
 
   <div class="main">
     <div class="navbar">
@@ -30,7 +30,7 @@
 
           Dashboard geral
         </a>
-        <a href="./dash_portarias.html" class="btnNavbar">
+        <a href="./dash_portarias.html" class="btnNavbar" id="portaria">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
             fill="currentcolor">
             <path
@@ -45,14 +45,14 @@
 
     </div>
 
-    <main class="painel"> 
+    <main class="painel">
       <div class="container_superior">
         <div class="div_kpi indicador_acao">
           <div class="div_icon">
             <img src="../assets/dashEspecifica/icon_acao.png" alt="">
           </div>
           <div class="div_informacao">
-            <span class="span_titulo">Ação Rápida</span> 
+            <span class="span_titulo">Ação Rápida</span>
             <span class="span_resposta" id="span_alerta_acao"></span>
           </div>
         </div>
@@ -62,7 +62,7 @@
             <img src="../assets/dashEspecifica/icon_status.png" alt="">
           </div>
           <div class="div_informacao">
-            <span class="span_titulo">Status de Alerta</span> 
+            <span class="span_titulo">Status de Alerta</span>
             <span class="span_resposta span_alerta_status"></span>
           </div>
         </div>
@@ -72,7 +72,7 @@
             <img src="../assets/dashEspecifica/icon_local.png" alt="">
           </div>
           <div class="div_informacao">
-            <span class="span_titulo">No Local</span> 
+            <span class="span_titulo">No Local</span>
             <span class="span_resposta" id="span_local_medicaoMaior"></span>
           </div>
         </div>
@@ -83,7 +83,7 @@
           </div>
           <div class="div_informacao">
             <span class="span_titulo">Última Atualização</span>
-            
+
             <span class="span_resposta" id="span_dataHora"></span>
           </div>
         </div>
@@ -157,7 +157,7 @@
 </html>
 <script>
 
-   let chart;
+  let chart;
   const idSensor = 1;
 
   const dadosSensores = {
@@ -166,7 +166,7 @@
     3: { nome: 'Banheiro', medicao: 0, local: 'Torre A, Apto 101' }
   };
 
-  
+
   const dadosHistoricosSensores = {
     2: { labels: [], valores: [] },
     3: { labels: [], valores: [] }
@@ -198,7 +198,29 @@
     }
   };
 
-  
+  function configurarNavbarPorTipoUsuario() {
+    const tipoUsuario = sessionStorage.getItem('TIPO_USUARIO');
+
+    if (!tipoUsuario) {
+      console.warn('Tipo de usuário não encontrado na sessão');
+
+      setTimeout(() => {
+        window.location.href = '../login.html';
+      }, 2000);
+      return;
+    }
+
+    console.log('Tipo de usuário logado:', tipoUsuario);
+
+
+    if (tipoUsuario === 'porteiro') {
+      document.getElementById('portaria').style.display = "none";
+    } else if (tipoUsuario === 'sindico') {
+      document.getElementById('portaria').style.display = "flex";
+    }
+  }
+
+
   async function obterDadosKpi(idSensor) {
     fetch(`/especifica/kpi/${idSensor}`)
       .then(response => response.json())
@@ -209,17 +231,17 @@
           if (dados && dados.length > 0) {
             const ultimoDado = dados[0];
 
-            
+
             atualizarKpisPorMaiorMedicao();
 
-            
+
             const spanDataHora = document.getElementById('span_dataHora');
             if (spanDataHora) {
               const dataHora = ultimoDado['Data e hora da medição'];
               spanDataHora.textContent = formatarDataHora(dataHora);
             }
 
-           
+
             const spanBloco = document.getElementById('span_bloco_predio');
             const spanApto = document.getElementById('span_numero_apartamento');
             if (spanBloco) spanBloco.textContent = 'A';
@@ -243,21 +265,21 @@
     if (spanBloco) spanBloco.textContent = 'A';
     if (spanApto) spanApto.textContent = '101';
 
-    
+
     atualizarKpisPorMaiorMedicao();
   }
 
   function obterSensorComMaiorMedicao() {
     let maiorMedicao = -1;
     let sensorComMaiorMedicao = 1;
-    
+
     for (let i = 1; i <= 3; i++) {
       if (dadosSensores[i].medicao > maiorMedicao) {
         maiorMedicao = dadosSensores[i].medicao;
         sensorComMaiorMedicao = i;
       }
     }
-    
+
     return {
       id: sensorComMaiorMedicao,
       medicao: maiorMedicao,
@@ -275,19 +297,19 @@
       span.textContent = ` ${alertaInfo.status}`;
     });
 
-    
+
     const spanAcao = document.getElementById('span_alerta_acao');
     if (spanAcao) {
       spanAcao.textContent = alertaInfo.acao;
     }
 
-    
+
     const spanLocal = document.getElementById('span_local_medicaoMaior');
     if (spanLocal) {
       spanLocal.textContent = sensorMaior.sensor.nome;
     }
 
-    
+
     atualizarAlertaRiscoPorSensorSelecionado();
   }
 
@@ -327,7 +349,7 @@
     });
   }
 
-  
+
   function obterDadosGrafico(idSensor) {
     fetch(`/especifica/grafico/${idSensor}`)
       .then(response => response.json())
@@ -342,7 +364,7 @@
             atualizarGraficoLinha(labels, valores);
             atualizarInfoSensorGrafico(idSensor);
 
-            
+
             if (valores.length > 0) {
               dadosSensores[idSensor].medicao = valores[valores.length - 1];
               atualizarDisplaySensores();
@@ -355,31 +377,31 @@
       })
       .catch(erro => {
         console.error('Erro ao carregar gráfico:', erro);
-        
+
         const dados = gerarDadosAleatorios(dadosSensores[idSensor].nome);
         atualizarGraficoLinha(dados.labels, dados.valores);
         atualizarInfoSensorGrafico(idSensor);
-        
+
         if (dados.valores.length > 0) {
           dadosSensores[idSensor].medicao = dados.valores[dados.valores.length - 1];
         }
       });
   }
 
-  
+
   function gerarDadosAleatorios(nomeSensor) {
     const agora = new Date();
     const labels = [];
     const valores = [];
 
-   
+
     for (let i = 19; i >= 0; i--) {
       const tempo = new Date(agora.getTime() - (i * 6 * 60000));
       labels.push(formatarHora(tempo));
 
       let valor;
 
-      
+
       if (nomeSensor === 'Sala' || nomeSensor === 'Banheiro') {
         valor = Math.random() * 2.3 + 0.1;
       } else {
@@ -394,37 +416,37 @@
     return { labels, valores };
   }
 
-  
+
   function atualizarDadosSensoresAutomaticos(idSensor) {
     const agora = new Date();
     const novoLabel = formatarHora(agora);
-    
+
     let novoValor;
     const nomeSensor = dadosSensores[idSensor].nome;
 
 
     if (nomeSensor === 'Sala' || nomeSensor === 'Banheiro') {
-      
+
       novoValor = parseFloat((Math.random() * 2.3 + 0.1).toFixed(2));
     } else {
-      
+
       let valorBase = 14;
       let variacao = 5;
       novoValor = parseFloat((Math.random() * variacao + valorBase).toFixed(2));
     }
-    
-    
+
+
     const dadosHistoricos = dadosHistoricosSensores[idSensor];
     dadosHistoricos.labels.push(novoLabel);
     dadosHistoricos.valores.push(novoValor);
 
-    
+
     if (dadosHistoricos.labels.length > 20) {
       dadosHistoricos.labels.shift();
       dadosHistoricos.valores.shift();
     }
 
-    
+
     dadosSensores[idSensor].medicao = novoValor;
 
     return {
@@ -550,27 +572,27 @@
   }
 
   function configurarBotoesSensores() {
-    
+
     document.getElementById('btn_sensor1').addEventListener('click', function () {
       sensorAtualGrafico = 1;
-      obterDadosGrafico(1); 
+      obterDadosGrafico(1);
       atualizarDisplaySensores();
       atualizarKpisPorMaiorMedicao();
       atualizarAlertaRiscoPorSensorSelecionado();
     });
 
-    
+
     document.getElementById('btn_sensor2').addEventListener('click', function () {
       sensorAtualGrafico = 2;
-      
-      
+
+
       if (dadosHistoricosSensores[2].labels.length === 0) {
         const dados = gerarDadosAleatorios('Sala');
         dadosHistoricosSensores[2].labels = dados.labels;
         dadosHistoricosSensores[2].valores = dados.valores;
         dadosSensores[2].medicao = dados.valores[dados.valores.length - 1];
       }
-      
+
       atualizarGraficoLinha(dadosHistoricosSensores[2].labels, dadosHistoricosSensores[2].valores);
       atualizarInfoSensorGrafico(2);
       atualizarDisplaySensores();
@@ -578,18 +600,18 @@
       atualizarAlertaRiscoPorSensorSelecionado();
     });
 
-    
+
     document.getElementById('btn_sensor3').addEventListener('click', function () {
       sensorAtualGrafico = 3;
-      
-      
+
+
       if (dadosHistoricosSensores[3].labels.length === 0) {
         const dados = gerarDadosAleatorios('Banheiro');
         dadosHistoricosSensores[3].labels = dados.labels;
         dadosHistoricosSensores[3].valores = dados.valores;
         dadosSensores[3].medicao = dados.valores[dados.valores.length - 1];
       }
-      
+
       atualizarGraficoLinha(dadosHistoricosSensores[3].labels, dadosHistoricosSensores[3].valores);
       atualizarInfoSensorGrafico(3);
       atualizarDisplaySensores();
@@ -598,15 +620,15 @@
     });
   }
 
-  
+
   function inicializarSensoresAutomaticos() {
-    
+
     const dadosSala = gerarDadosAleatorios('Sala');
     dadosHistoricosSensores[2].labels = dadosSala.labels;
     dadosHistoricosSensores[2].valores = dadosSala.valores;
     dadosSensores[2].medicao = dadosSala.valores[dadosSala.valores.length - 1];
 
-    
+
     const dadosBanheiro = gerarDadosAleatorios('Banheiro');
     dadosHistoricosSensores[3].labels = dadosBanheiro.labels;
     dadosHistoricosSensores[3].valores = dadosBanheiro.valores;
@@ -614,54 +636,54 @@
   }
 
   function iniciarAtualizacaoCompleta() {
-    
+
     inicializarSensoresAutomaticos();
-    
-    
+
+
     obterDadosKpi(1);
     obterDadosGrafico(1);
-    
-    
+
+
     configurarBotoesSensores();
 
-    
+
     setTimeout(() => {
       atualizarDisplaySensores();
       atualizarKpisPorMaiorMedicao();
     }, 1000);
 
-    
+
     setInterval(() => {
-      
+
       obterDadosKpi(1);
-      
-      
+
+
       if (sensorAtualGrafico === 1) {
-        
+
         obterDadosGrafico(1);
       } else if (sensorAtualGrafico === 2) {
-        
+
         const novosData = atualizarDadosSensoresAutomaticos(2);
         atualizarGraficoLinha(novosData.labels, novosData.valores);
       } else if (sensorAtualGrafico === 3) {
-        
+
         const novosData = atualizarDadosSensoresAutomaticos(3);
         atualizarGraficoLinha(novosData.labels, novosData.valores);
       }
-      
-      
+
+
       if (sensorAtualGrafico !== 2) {
         atualizarDadosSensoresAutomaticos(2);
       }
       if (sensorAtualGrafico !== 3) {
         atualizarDadosSensoresAutomaticos(3);
       }
-      
-    
+
+
       atualizarDisplaySensores();
       atualizarKpisPorMaiorMedicao();
       atualizarAlertaRiscoPorSensorSelecionado();
-    }, 5000); 
+    }, 5000);
   }
 
   function formatarHora(dataHora) {

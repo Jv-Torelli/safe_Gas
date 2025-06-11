@@ -27,7 +27,7 @@
 
           Dashboard geral
         </a>
-        <a href="./dash_portarias.html" class="btnNavbar select">
+        <a href="./dash_portarias.html" class="btnNavbar select" id="portaria">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
             fill="currentcolor">
             <path
@@ -90,7 +90,7 @@
         </div>
       </div>
 
-      
+
       <div class="fundo-modal" id="fundoModalEditar">
         <div class="modal">
           <div class="cabecalho-modalEditar">
@@ -186,6 +186,28 @@
       }
     });
   });
+
+  function configurarNavbarPorTipoUsuario() {
+    const tipoUsuario = sessionStorage.getItem('TIPO_USUARIO');
+
+    if (!tipoUsuario) {
+      console.warn('Tipo de usuário não encontrado na sessão');
+
+      setTimeout(() => {
+        window.location.href = '../login.html';
+      }, 2000);
+      return;
+    }
+
+    console.log('Tipo de usuário logado:', tipoUsuario);
+
+
+    if (tipoUsuario === 'porteiro') {
+      document.getElementById('portaria').style.display = "none";
+    } else if (tipoUsuario === 'sindico') {
+      document.getElementById('portaria').style.display = "flex";
+    }
+  }
 
   function abrirModalEditar(numero, telefone, email) {
     numeroPortariaEditando = numero;
