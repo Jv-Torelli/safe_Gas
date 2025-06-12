@@ -357,7 +357,7 @@
 
     const data = new Date(dataHora);
     
-    // Verificar se a data é válida
+    
     if (isNaN(data.getTime())) {
       return 'N/A';
     }
@@ -372,7 +372,7 @@
   }
 
   function limitarDados(labels, valores) {
-    // Garante que apenas os últimos LIMITE_PONTOS pontos sejam mantidos
+    
     if (labels.length > LIMITE_PONTOS) {
       return {
         labels: labels.slice(-LIMITE_PONTOS),
@@ -393,7 +393,7 @@
             let labels = dados.map(item => formatarHora(item['Data e hora']));
             let valores = dados.map(item => parseFloat(item['Nível de Gás']) || 0);
 
-            // Limitar dados a LIMITE_PONTOS pontos
+           
             const dadosLimitados = limitarDados(labels, valores);
             labels = dadosLimitados.labels;
             valores = dadosLimitados.valores;
@@ -407,7 +407,7 @@
               atualizarKpisPorMaiorMedicao();
             }
             
-            // Atualizar horário da última atualização quando dados são recebidos
+            
             atualizarUltimaAtualizacao();
           }
         } else {
@@ -425,7 +425,7 @@
           dadosSensores[idSensor].medicao = dados.valores[dados.valores.length - 1];
         }
         
-        // Atualizar horário da última atualização mesmo com dados simulados
+        
         atualizarUltimaAtualizacao();
       });
   }
@@ -436,7 +436,7 @@
     const labels = [];
     const valores = [];
 
-    // Gerar exatamente LIMITE_PONTOS pontos de dados
+    
     for (let i = LIMITE_PONTOS - 1; i >= 0; i--) {
       const tempo = new Date(agora.getTime() - (i * 6 * 60000));
       labels.push(formatarHora(tempo));
@@ -477,7 +477,7 @@
     dadosHistoricos.labels.push(novoLabel);
     dadosHistoricos.valores.push(novoValor);
 
-    // Manter apenas LIMITE_PONTOS pontos
+   
     if (dadosHistoricos.labels.length > LIMITE_PONTOS) {
       dadosHistoricos.labels.shift();
       dadosHistoricos.valores.shift();
@@ -660,13 +660,13 @@
 
 
   function inicializarSensoresAutomaticos() {
-    // Inicializar dados da Sala com LIMITE_PONTOS pontos
+    
     const dadosSala = gerarDadosAleatorios('Sala');
     dadosHistoricosSensores[2].labels = dadosSala.labels;
     dadosHistoricosSensores[2].valores = dadosSala.valores;
     dadosSensores[2].medicao = dadosSala.valores[dadosSala.valores.length - 1];
 
-    // Inicializar dados do Banheiro com LIMITE_PONTOS pontos
+
     const dadosBanheiro = gerarDadosAleatorios('Banheiro');
     dadosHistoricosSensores[3].labels = dadosBanheiro.labels;
     dadosHistoricosSensores[3].valores = dadosBanheiro.valores;
@@ -677,7 +677,7 @@
 
     inicializarSensoresAutomaticos();
 
-    // Inicializar o horário da última atualização
+    
     atualizarUltimaAtualizacao();
 
     obterDadosKpi(1);
@@ -717,7 +717,7 @@
       atualizarAlertaRiscoPorSensorSelecionado();
     }, 5000);
   }
-  
+
   function formatarHora(dataHora) {
     const data = new Date(dataHora);
     return data.toLocaleTimeString('pt-BR', {
