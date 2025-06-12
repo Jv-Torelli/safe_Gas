@@ -461,6 +461,8 @@
 </html>
 
 <script>
+    setInterval(buscarDados, 2000)
+    var torreSelecionada = 'A';
     var idModalGrafico = 1;
     var intervaloAtualizacao;
     let graficoGas;
@@ -675,7 +677,6 @@
         }
 
         aptoDinamico.style.backgroundColor = coresBackGround;
-
     }
 
 
@@ -705,7 +706,7 @@
                 dadosApartamentoGeral = dados;
                 var coresBackGround = "white";
                 var totalNotificacoes = 0;
-
+                alertasDash.innerHTML = ""
                 for (var i = 0; i < dados.length; i++) {
 
                     if (dados[i].Descricao_Risco == "Nenhum risco") {
@@ -779,7 +780,11 @@
                 `
                     }
                     qtd_totalNotificacoes.innerHTML = ` ${totalNotificacoes} alertas`;
-                    aptoDinamico2();
+                    if (torreSelecionada == 'A') {
+                        setInterval(aptoDinamico2, 2000);
+                    }
+
+
                 }
             })
             .catch(function (resposta) {
@@ -816,9 +821,7 @@
     function apartamentoStatus() {
 
         torreA.style.backgroundColor = 'green';
-
         torreB.style.backgroundColor = 'WHITE';
-
         torreC.style.backgroundColor = 'WHITE';
 
         torreA.style.color = 'white';
@@ -841,8 +844,6 @@
 
             } else {
                 corSelecionada = "#00800038";
-
-
             }
             aptoLista.innerHTML += `<div class="andar-p" style="background: ${corSelecionada}" onclick="segundoModal(); obterNumero(this)">${numApto}</div>`;
             numApto++;
@@ -863,6 +864,7 @@
 
 
     function apartamentoSeguro() {
+        torreSelecionada = 'B';
         torresModal.innerHTML = 'Torre B'
         blocosModal.innerHTML = '-B'
 
@@ -885,7 +887,6 @@
             // corSelecionada = '#F44336'; // vermelho
             // corSelecionada = 'black'; // preto
             // cinza = d1d5db
-
             aptoLista.innerHTML += `<div class="andar-p" style="background: ${corSelecionada}" onclick="segundoModal(); obterNumero(this)">${numApto}</div>`;
             numApto++;
             if (numApto > 103 && numApto <= 104) {
@@ -904,6 +905,8 @@
     }
 
     function apartamentoSeguroC() {
+        torreSelecionada = 'C';
+
         torresModal.innerHTML = 'Torre C'
         blocosModal.innerHTML = '-C'
         torreA.style.backgroundColor = 'WHITE';
