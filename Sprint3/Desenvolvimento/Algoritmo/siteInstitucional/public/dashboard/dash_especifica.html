@@ -72,7 +72,7 @@
             <img src="../assets/dashEspecifica/icon_local.png" alt="">
           </div>
           <div class="div_informacao">
-            <span class="span_titulo">No Local</span>
+            <span class="span_titulo">Local com maior risco</span>
             <span class="span_resposta" id="span_local_medicaoMaior"></span>
           </div>
         </div>
@@ -162,9 +162,9 @@
 
   let chart;
   const idSensor = 1;
-  let ultimaAtualizacao = new Date(); // Variável para armazenar a última atualização
+  let ultimaAtualizacao = new Date(); 
 
-  // Constante para definir o limite de pontos
+ 
   const LIMITE_PONTOS = 20;
 
   const dadosSensores = {

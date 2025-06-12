@@ -448,7 +448,7 @@
 
                     <div class="botoes-acoes">
                         <a class="botao-azul" href="./dash_especifica.html">Verificar Apartamento</a>
-                        <button class="botao-amarelo">Agendar Manutenção</button>
+                        <button class="botao-amarelo"><a href="https://safegasteam.atlassian.net/servicedesk/customer/portal/3">Agendar Manutenção</a></button>
                     </div>
                 </div>
             </div>
@@ -457,6 +457,9 @@
 
 
 </body>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0/dist/chartjs-plugin-annotation.min.js"></script>
 
 </html>
 
@@ -1043,48 +1046,93 @@
 
 
     function atualizarGrafico() {
-
-        if (window.chartInstance) {
-            window.chartInstance.destroy();
-        }
-
-        const ctx = document.getElementById('graficoGasSeguro').getContext('2d');
-        window.chartInstance = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labelList,
-                datasets: [{
-                    data: medicaoList,
-                    borderColor: '#e53935',
-                    backgroundColor: 'rgba(229, 57, 53, 0.1)',
-                    borderWidth: 2,
-                    pointRadius: 2,
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { enabled: true }
-                },
-                scales: {
-                    x: {
-                        grid: { display: false },
-                        ticks: { font: { size: 8 }, maxRotation: 0 }
-                    },
-                    y: {
-                        min: 0,
-                        max: nivelView,
-                        ticks: { stepSize: 5, font: { size: 8 } }
-                    }
-                },
-                elements: { point: { radius: 1 } }
-            }
-        });
+    if (window.chartInstance) {
+        window.chartInstance.destroy();
     }
+
+    const ctx = document.getElementById('graficoGasSeguro').getContext('2d');
+    window.chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labelList,
+            datasets: [{
+                data: medicaoList,
+                borderColor: '#e53935',
+                backgroundColor: 'rgba(229, 57, 53, 0.1)',
+                borderWidth: 2,
+                pointRadius: 2,
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: true },
+                annotation: {
+                    annotations: {
+                        linhaAmarela: {
+                            type: 'line',
+                            yMin: 2.5,
+                            yMax: 2.5,
+                            borderColor: 'yellow',
+                            borderWidth: 2,
+                            label: {
+                                content: 'Atenção (2.5%)',
+                                enabled: true,
+                                position: 'start',
+                                color: 'white'
+                            }
+                        },
+                        linhaVermelha: {
+                            type: 'line',
+                            yMin: 5,
+                            yMax: 5,
+                            borderColor: 'red',
+                            borderWidth: 2,
+                            label: {
+                                content: 'Perigo (5%)',
+                                enabled: true,
+                                position: 'start',
+                                color: 'white'
+                            }
+                        },
+                        linhaPreta: {
+                            type: 'line',
+                            yMin: 15,
+                            yMax: 15,
+                            borderColor: 'black',
+                            borderWidth: 2,
+                            label: {
+                                content: 'Emergência (15%)',
+                                enabled: true,
+                                position: 'start',
+                                color: 'white'
+                            }
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { size: 8 }, maxRotation: 0 }
+                },
+                y: {
+                    min: 0,
+                    max: nivelView,
+                    ticks: { stepSize: 5, font: { size: 8 } }
+                }
+            },
+            elements: {
+                point: { radius: 1 }
+            }
+        },
+        plugins: [Chart.registry.getPlugin('annotation')]
+    });
+}
 
 
     function inicializarGrafico() {
