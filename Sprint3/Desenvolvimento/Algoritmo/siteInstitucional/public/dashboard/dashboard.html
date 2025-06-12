@@ -170,14 +170,12 @@
 
     .selecionado {
         background: #00800038"
-    }
 
-    .selecionado {
-        background: #00800038"
     }
 </style>
 
-<body onload="buscarKpis(), buscarDados(), buscarAndares(), buscarTorre(), buscarApto(), apartamentoStatus(), configurarNavbarPorTipoUsuario()">
+<body
+    onload="buscarKpis(), buscarDados(), buscarAndares(), buscarTorre(), buscarApto(), apartamentoStatus(), configurarNavbarPorTipoUsuario()">
     <div class="main">
         <div class="navbar">
             <div class="welcome_navbar">
@@ -321,6 +319,9 @@
                         <h1>Visualização do Condomínio</h1>
                     </div>
                     <div class="navbar-p" id="torresDiv">
+                        <button onclick="apartamentoStatus();" id="torreA" class="tab-p">Torre A</button>
+                        <button onclick="apartamentoSeguro();" id="torreB" class="tab-p">Torre B</button>
+                        <button onclick="apartamentoSeguroC();" id="torreC" class="tab-p">Torre C</button>
 
                     </div>
 
@@ -355,7 +356,7 @@
                     </div>
                 </div>
                 <div class="container_notificacoes">
-                    <div id='alertas_recentes'>Alertas Recentes (Últimas 24h) <span id="qtd_totalNotificacoes"> </span>
+                    <div id='alertas_recentes'>Alertas Recentes <span id="qtd_totalNotificacoes"> </span>
                     </div>
                     <div id="alertasDash"></div>
                 </div>
@@ -769,13 +770,10 @@
             andaresLista.innerHTML += `<div class="andar-p">${contador + 1}</div>`
         }
     }
-    let predioSelecionado = 0;
 
     // Torre
     function buscarTorre() {
-        torresDiv.innerHTML = `<button onclick="apartamentoStatus();" class="tab-p">Torre A</button>`
-        torresDiv.innerHTML += `<button onclick="apartamentoSeguro();" class="tab-p">Torre B</button>`
-        torresDiv.innerHTML += `<button onclick="apartamentoSeguro();" class="tab-p">Torre C</button>`
+
 
     }
     // apto
@@ -826,7 +824,44 @@
 
 
     function apartamentoSeguro() {
-        alert(predioSelecionado)
+        torreA.style.backgroundColor = 'WHITE';
+
+        torreB.style.backgroundColor = 'green';
+
+        torreC.style.backgroundColor = 'WHITE';
+        var numApto = 101;
+        var corSelecionada = "#00800038";
+        aptoLista.innerHTML = ``;
+        for (let contApto = 0; contApto < 18; contApto++) {
+            // corSelecionada = '#00800038'; // verde claro
+            // corSelecionada = '#FFEB3B'; // amarelo
+            // corSelecionada = '#F44336'; // vermelho
+            // corSelecionada = 'black'; // preto
+            // cinza = d1d5db
+
+            aptoLista.innerHTML += `<div class="andar-p" style="background: ${corSelecionada}" onclick="segundoModal(); obterNumero(this)">${numApto}</div>`;
+            numApto++;
+            if (numApto > 103 && numApto <= 104) {
+                numApto = numApto + 97;
+            } else if (numApto > 203 && numApto <= 204) {
+                numApto = numApto + 97;
+            } else if (numApto > 303 && numApto <= 304) {
+                numApto = numApto + 97;
+            } else if (numApto > 403 && numApto <= 404) {
+                numApto = numApto + 97;
+            } else if (numApto > 503 && numApto <= 504) {
+                numApto = numApto + 97;
+            }
+
+        }
+    }
+
+    function apartamentoSeguroC() {
+        torreA.style.backgroundColor = 'WHITE';
+
+        torreB.style.backgroundColor = 'WHITE';
+
+        torreC.style.backgroundColor = 'green';
         var numApto = 101;
         var corSelecionada = "#00800038";
         aptoLista.innerHTML = ``;
@@ -895,6 +930,10 @@
                     dataLabel = new Date(dadosMedicao[i].data_hora).toLocaleString('pt-BR', {
                         timeStyle: 'short'
                     })
+                    horaModal.innerHTML = new Date(dadosMedicao[0].data_hora).toLocaleString('pt-BR', {
+                        dateStyle: 'short',
+                        timeStyle: 'medium'
+                    });
                     labelList.push(dataLabel);
                 }
                 // corSelecionada = '#00800038'; // verde claro
@@ -968,7 +1007,6 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: false,
                 plugins: {
                     legend: { display: false },
                     tooltip: { enabled: true }
