@@ -755,7 +755,7 @@
                 }
             })
             .catch(function (resposta) {
-                console.error(resposta); 9
+                console.error(resposta); 
 
             });
     }
@@ -977,14 +977,14 @@
             })
             .catch(function (erro) {
                 console.error("Erro ao carregar gráfico:", erro);
-                // alert("Não foi possível carregar os dados do gráfico. Tente novamente mais tarde. 1");
+
             });
     }
 
 
 
     function atualizarGrafico() {
-        // Destruir gráfico anterior se existir
+
         if (window.chartInstance) {
             window.chartInstance.destroy();
         }

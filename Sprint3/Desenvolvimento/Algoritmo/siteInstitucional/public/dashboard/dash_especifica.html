@@ -41,8 +41,7 @@
         </a>
       </div>
 
-      <a href="../index.html" class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png">
-        Logout</a>
+      <div class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png"> Logout</div>
 
     </div>
 
@@ -158,8 +157,12 @@
 </html>
 <script>
 
-  let chart;
+    let chart;
   const idSensor = 1;
+  let ultimaAtualizacao = new Date(); // Variável para armazenar a última atualização
+
+  // Constante para definir o limite de pontos
+  const LIMITE_PONTOS = 20;
 
   const dadosSensores = {
     1: { nome: 'Cozinha', medicao: 0, local: 'Torre A, Apto 101' },
@@ -226,6 +229,14 @@
   }
 
 
+  function atualizarUltimaAtualizacao() {
+    ultimaAtualizacao = new Date();
+    const spanDataHora = document.getElementById('span_dataHora');
+    if (spanDataHora) {
+      spanDataHora.textContent = formatarDataHora(ultimaAtualizacao);
+    }
+  }
+
   async function obterDadosKpi(idSensor) {
     fetch(`/especifica/kpi/${idSensor}`)
       .then(response => response.json())
@@ -236,16 +247,15 @@
           if (dados && dados.length > 0) {
             const ultimoDado = dados[0];
 
-
             atualizarKpisPorMaiorMedicao();
 
-
-            const spanDataHora = document.getElementById('span_dataHora');
-            if (spanDataHora) {
-              const dataHora = ultimoDado['Data e hora da medição'];
-              span_dataHora.innerHTML = formatarDataHora(dataHora);
+            
+            if (ultimoDado['Data e hora da medição']) {
+              ultimaAtualizacao = new Date(ultimoDado['Data e hora da medição']);
+            } else {
+              ultimaAtualizacao = new Date();
             }
-
+            atualizarUltimaAtualizacao();
 
             const spanBloco = document.getElementById('span_bloco_predio');
             const spanApto = document.getElementById('span_numero_apartamento');
@@ -254,6 +264,7 @@
           }
         } else {
           console.error('Erro ao carregar dados:', resultado.mensagem);
+          usarDadosSimulados();
         }
       })
       .catch(erro => {
@@ -263,13 +274,13 @@
   }
 
   function usarDadosSimulados() {
-    document.getElementById('span_dataHora').textContent = formatarDataHora(new Date());
+
+    atualizarUltimaAtualizacao();
 
     const spanBloco = document.getElementById('span_bloco_predio');
     const spanApto = document.getElementById('span_numero_apartamento');
     if (spanBloco) spanBloco.textContent = 'A';
     if (spanApto) spanApto.textContent = '101';
-
 
     atualizarKpisPorMaiorMedicao();
   }
@@ -345,6 +356,12 @@
     if (!dataHora) return 'N/A';
 
     const data = new Date(dataHora);
+    
+    
+    if (isNaN(data.getTime())) {
+      return 'N/A';
+    }
+    
     return data.toLocaleString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
@@ -354,6 +371,16 @@
     });
   }
 
+  function limitarDados(labels, valores) {
+    
+    if (labels.length > LIMITE_PONTOS) {
+      return {
+        labels: labels.slice(-LIMITE_PONTOS),
+        valores: valores.slice(-LIMITE_PONTOS)
+      };
+    }
+    return { labels, valores };
+  }
 
   function obterDadosGrafico(idSensor) {
     fetch(`/especifica/grafico/${idSensor}`)
@@ -363,18 +390,25 @@
           const dados = resultado.dados;
 
           if (dados && dados.length > 0) {
-            const labels = dados.map(item => formatarHora(item['Data e hora']));
-            const valores = dados.map(item => parseFloat(item['Nível de Gás']) || 0);
+            let labels = dados.map(item => formatarHora(item['Data e hora']));
+            let valores = dados.map(item => parseFloat(item['Nível de Gás']) || 0);
+
+           
+            const dadosLimitados = limitarDados(labels, valores);
+            labels = dadosLimitados.labels;
+            valores = dadosLimitados.valores;
 
             atualizarGraficoLinha(labels, valores);
             atualizarInfoSensorGrafico(idSensor);
-
 
             if (valores.length > 0) {
               dadosSensores[idSensor].medicao = valores[valores.length - 1];
               atualizarDisplaySensores();
               atualizarKpisPorMaiorMedicao();
             }
+            
+            
+            atualizarUltimaAtualizacao();
           }
         } else {
           console.error('Erro ao carregar gráfico:', resultado.mensagem);
@@ -390,6 +424,9 @@
         if (dados.valores.length > 0) {
           dadosSensores[idSensor].medicao = dados.valores[dados.valores.length - 1];
         }
+        
+        
+        atualizarUltimaAtualizacao();
       });
   }
 
@@ -399,13 +436,12 @@
     const labels = [];
     const valores = [];
 
-
-    for (let i = 19; i >= 0; i--) {
+    
+    for (let i = LIMITE_PONTOS - 1; i >= 0; i--) {
       const tempo = new Date(agora.getTime() - (i * 6 * 60000));
       labels.push(formatarHora(tempo));
 
       let valor;
-
 
       if (nomeSensor === 'Sala' || nomeSensor === 'Banheiro') {
         valor = Math.random() * 2.3 + 0.1;
@@ -429,28 +465,23 @@
     let novoValor;
     const nomeSensor = dadosSensores[idSensor].nome;
 
-
     if (nomeSensor === 'Sala' || nomeSensor === 'Banheiro') {
-
       novoValor = parseFloat((Math.random() * 2.3 + 0.1).toFixed(2));
     } else {
-
       let valorBase = 14;
       let variacao = 5;
       novoValor = parseFloat((Math.random() * variacao + valorBase).toFixed(2));
     }
 
-
     const dadosHistoricos = dadosHistoricosSensores[idSensor];
     dadosHistoricos.labels.push(novoLabel);
     dadosHistoricos.valores.push(novoValor);
 
-
-    if (dadosHistoricos.labels.length > 20) {
+   
+    if (dadosHistoricos.labels.length > LIMITE_PONTOS) {
       dadosHistoricos.labels.shift();
       dadosHistoricos.valores.shift();
     }
-
 
     dadosSensores[idSensor].medicao = novoValor;
 
@@ -590,7 +621,6 @@
     document.getElementById('btn_sensor2').addEventListener('click', function () {
       sensorAtualGrafico = 2;
 
-
       if (dadosHistoricosSensores[2].labels.length === 0) {
         const dados = gerarDadosAleatorios('Sala');
         dadosHistoricosSensores[2].labels = dados.labels;
@@ -603,12 +633,13 @@
       atualizarDisplaySensores();
       atualizarKpisPorMaiorMedicao();
       atualizarAlertaRiscoPorSensorSelecionado();
+      
+      atualizarUltimaAtualizacao();
     });
 
 
     document.getElementById('btn_sensor3').addEventListener('click', function () {
       sensorAtualGrafico = 3;
-
 
       if (dadosHistoricosSensores[3].labels.length === 0) {
         const dados = gerarDadosAleatorios('Banheiro');
@@ -622,12 +653,14 @@
       atualizarDisplaySensores();
       atualizarKpisPorMaiorMedicao();
       atualizarAlertaRiscoPorSensorSelecionado();
+      
+      atualizarUltimaAtualizacao();
     });
   }
 
 
   function inicializarSensoresAutomaticos() {
-
+    
     const dadosSala = gerarDadosAleatorios('Sala');
     dadosHistoricosSensores[2].labels = dadosSala.labels;
     dadosHistoricosSensores[2].valores = dadosSala.valores;
@@ -644,38 +677,33 @@
 
     inicializarSensoresAutomaticos();
 
+    
+    atualizarUltimaAtualizacao();
 
     obterDadosKpi(1);
     obterDadosGrafico(1);
 
-
     configurarBotoesSensores();
-
 
     setTimeout(() => {
       atualizarDisplaySensores();
       atualizarKpisPorMaiorMedicao();
     }, 1000);
 
-
     setInterval(() => {
-
       obterDadosKpi(1);
 
-
       if (sensorAtualGrafico === 1) {
-
         obterDadosGrafico(1);
       } else if (sensorAtualGrafico === 2) {
-
         const novosData = atualizarDadosSensoresAutomaticos(2);
         atualizarGraficoLinha(novosData.labels, novosData.valores);
+        atualizarUltimaAtualizacao();
       } else if (sensorAtualGrafico === 3) {
-
         const novosData = atualizarDadosSensoresAutomaticos(3);
         atualizarGraficoLinha(novosData.labels, novosData.valores);
+        atualizarUltimaAtualizacao();
       }
-
 
       if (sensorAtualGrafico !== 2) {
         atualizarDadosSensoresAutomaticos(2);
@@ -683,7 +711,6 @@
       if (sensorAtualGrafico !== 3) {
         atualizarDadosSensoresAutomaticos(3);
       }
-
 
       atualizarDisplaySensores();
       atualizarKpisPorMaiorMedicao();
