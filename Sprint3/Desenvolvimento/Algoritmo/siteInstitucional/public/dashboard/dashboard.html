@@ -319,7 +319,8 @@
                         <h1>Visualização do Condomínio</h1>
                     </div>
                     <div class="navbar-p" id="torresDiv">
-                        <button onclick="apartamentoStatus();" id="torreA" class="tab-p">Torre A</button>
+                        <button onclick="apartamentoStatus();aptoDinamico2();" id="torreA" class="tab-p">Torre
+                            A</button>
                         <button onclick="apartamentoSeguro();" id="torreB" class="tab-p">Torre B</button>
                         <button onclick="apartamentoSeguroC();" id="torreC" class="tab-p">Torre C</button>
 
@@ -395,7 +396,8 @@
 
             <div class="modal">
                 <div class="cabecalho-modal">
-                    <h2 class="titulo-modal">Apartamento <span id="numeroApto"></span>-A <span id="inatividade"></span>
+                    <h2 class="titulo-modal">Apartamento <span id="numeroApto"></span><span id="blocosModal">-A</span>
+                        <span id="inatividade"></span>
                     </h2>
                     <button class="botao-fechar" id="botaoFechar">&times;</button>
                 </div>
@@ -404,7 +406,7 @@
                     <div class="localizacao">
                         <span class="infoLoc">Localização:</span>
                         <div class="apto">
-                            Torre A, Apartamento <span id="numeroApto2">203</span>
+                            <span id="torresModal">Torre A</span>, Apartamento <span id="numeroApto2">203</span>
                         </div>
                     </div>
 
@@ -655,6 +657,27 @@
 
 
     }
+    // 101 dinamico
+    function aptoDinamico2() {
+        var coresBackGround = '';
+        if (dadosApartamentoGeral[0].Status_Alerta == 'Seguro') {
+            coresBackGround = "#00800038";
+
+        } else if (dadosApartamentoGeral[0].Status_Alerta == 'Atenção') {
+            coresBackGround = "#FFEB3B";
+
+        } else if (dadosApartamentoGeral[0].Status_Alerta == 'Perigo') {
+            coresBackGround = "#f83a3a";
+
+        } else {
+            coresBackGround = "black";
+
+        }
+
+        aptoDinamico.style.backgroundColor = coresBackGround;
+
+    }
+
 
     // notificações
 
@@ -687,8 +710,10 @@
 
                     if (dados[i].Descricao_Risco == "Nenhum risco") {
                         coresBackGround = "#00800038";
+
                     } else if (dados[i].Descricao_Risco == "Possível vazamento") {
                         coresBackGround = "#FFEB3B";
+
                         alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia" style="border-left:4px solid ${coresBackGround};">
                     <div class="informacao_notificacao">
                         <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
@@ -710,6 +735,7 @@
 
                     } else if (dados[i].Descricao_Risco == "Possibilidade de asfixia") {
                         coresBackGround = "black";
+
                         alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};">
                     <div class="informacao_notificacao">
                         <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
@@ -733,6 +759,7 @@
                         totalNotificacoes++;
 
                         coresBackGround = "#f83a3a";
+
                         alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};">
                     <div class="informacao_notificacao">
                         <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
@@ -752,10 +779,11 @@
                 `
                     }
                     qtd_totalNotificacoes.innerHTML = ` ${totalNotificacoes} alertas`;
+                    aptoDinamico2();
                 }
             })
             .catch(function (resposta) {
-                console.error(resposta); 
+                console.error(resposta);
 
             });
     }
@@ -786,6 +814,17 @@
 
     // APARTAMENTOS
     function apartamentoStatus() {
+
+        torreA.style.backgroundColor = 'green';
+
+        torreB.style.backgroundColor = 'WHITE';
+
+        torreC.style.backgroundColor = 'WHITE';
+
+        torreA.style.color = 'white';
+        torreB.style.color = 'black';
+        torreC.style.color = 'black';
+
         var numApto = 102;
         var corSelecionada = "#00800038";
         aptoLista.innerHTML = `<div class="andar-p" id="aptoDinamico" style="background: #00800038" onclick="abrirModal(); obterNumero(this)">101</div>`;
@@ -824,11 +863,19 @@
 
 
     function apartamentoSeguro() {
+        torresModal.innerHTML = 'Torre B'
+        blocosModal.innerHTML = '-B'
+
         torreA.style.backgroundColor = 'WHITE';
 
         torreB.style.backgroundColor = 'green';
 
         torreC.style.backgroundColor = 'WHITE';
+
+        torreA.style.color = 'black';
+        torreB.style.color = 'white';
+        torreC.style.color = 'black';
+
         var numApto = 101;
         var corSelecionada = "#00800038";
         aptoLista.innerHTML = ``;
@@ -857,11 +904,18 @@
     }
 
     function apartamentoSeguroC() {
+        torresModal.innerHTML = 'Torre C'
+        blocosModal.innerHTML = '-C'
         torreA.style.backgroundColor = 'WHITE';
 
         torreB.style.backgroundColor = 'WHITE';
 
         torreC.style.backgroundColor = 'green';
+
+        torreA.style.color = 'black';
+        torreB.style.color = 'black';
+        torreC.style.color = 'white';
+
         var numApto = 101;
         var corSelecionada = "#00800038";
         aptoLista.innerHTML = ``;
@@ -871,6 +925,8 @@
             // corSelecionada = '#F44336'; // vermelho
             // corSelecionada = 'black'; // preto
             // cinza = d1d5db
+
+
 
             aptoLista.innerHTML += `<div class="andar-p" style="background: ${corSelecionada}" onclick="segundoModal(); obterNumero(this)">${numApto}</div>`;
             numApto++;
