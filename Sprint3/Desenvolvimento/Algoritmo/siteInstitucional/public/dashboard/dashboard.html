@@ -448,7 +448,9 @@
 
                     <div class="botoes-acoes">
                         <a class="botao-azul" href="./dash_especifica.html">Verificar Apartamento</a>
-                        <button class="botao-amarelo"><a href="https://safegasteam.atlassian.net/servicedesk/customer/portal/3">Agendar Manutenção</a></button>
+                        <button class="botao-amarelo"><a
+                                href="https://safegasteam.atlassian.net/servicedesk/customer/portal/3">Agendar
+                                Manutenção</a></button>
                     </div>
                 </div>
             </div>
@@ -459,7 +461,7 @@
 </body>
 
 <script
-  src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0/dist/chartjs-plugin-annotation.min.js"></script>
+    src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0/dist/chartjs-plugin-annotation.min.js"></script>
 
 </html>
 
@@ -718,11 +720,11 @@
                     } else if (dados[i].Descricao_Risco == "Possível vazamento") {
                         coresBackGround = "#FFEB3B";
 
-                        alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia" style="border-left:4px solid ${coresBackGround};">
-                    <div class="informacao_notificacao">
+                        alertasDash.innerHTML += `<a class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};" href="./dash_especifica.html">
+                  <div class="informacao_notificacao" href="./dash_especifica.html">
                         <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
                         <div class="nivel_gas">${dados[i].Descricao_Risco}</div>
-                        <a class="btn_verificar" onclick="verificarApto('${dados[i].Numero_Apartamento}')"  href="./dash_especifica.html" >Verificar</a>
+                        
                     </div>
                   <div class="horario_notificacao">
                     ${new Date(dados[i].Hora_da_ultima_Medicao).toLocaleString('pt-BR', {
@@ -740,11 +742,11 @@
                     } else if (dados[i].Descricao_Risco == "Possibilidade de asfixia") {
                         coresBackGround = "black";
 
-                        alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};">
-                    <div class="informacao_notificacao">
+                        alertasDash.innerHTML += ` <a class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};" href="./dash_especifica.html">
+                  <div class="informacao_notificacao" href="./dash_especifica.html">
                         <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
                         <div class="nivel_gas">${dados[i].Descricao_Risco}</div>
-                        <a class="btn_verificar" onclick="verificarApto('${dados[i].Numero_Apartamento}')"  href="./dash_especifica.html" >Verificar</a>
+                        
                     </div>
                   <div class="horario_notificacao">
                     ${new Date(dados[i].Hora_da_ultima_Medicao).toLocaleString('pt-BR', {
@@ -764,11 +766,11 @@
 
                         coresBackGround = "#f83a3a";
 
-                        alertasDash.innerHTML += ` <div class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};">
-                    <div class="informacao_notificacao">
+                        alertasDash.innerHTML += ` <a class="div_notificacoes_emergencia" id="notificacoes_emergencia"style="border-left:4px solid ${coresBackGround};" href="./dash_especifica.html">
+                        <div class="informacao_notificacao" >
                         <div class="informacao_emergencia">Torre ${dados[i].Bloco_Predio} Apto ${dados[i].Numero_Apartamento}</div>
                         <div class="nivel_gas">${dados[i].Descricao_Risco}</div>
-                        <a class="btn_verificar" onclick="verificarApto('${dados[i].Numero_Apartamento}')"  href="./dash_especifica.html" >Verificar</a>
+                      
                     </div>
                   <div class="horario_notificacao">
                     ${new Date(dados[i].Hora_da_ultima_Medicao).toLocaleString('pt-BR', {
@@ -779,7 +781,7 @@
 
                 </div>
 
-                </div>
+                </a>
                 `
                     }
                     qtd_totalNotificacoes.innerHTML = ` ${totalNotificacoes} alertas`;
@@ -1046,93 +1048,121 @@
 
 
     function atualizarGrafico() {
-    if (window.chartInstance) {
-        window.chartInstance.destroy();
-    }
+        if (window.chartInstance) {
+            window.chartInstance.destroy();
+        }
 
-    const ctx = document.getElementById('graficoGasSeguro').getContext('2d');
-    window.chartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labelList,
-            datasets: [{
-                data: medicaoList,
-                borderColor: '#e53935',
-                backgroundColor: 'rgba(229, 57, 53, 0.1)',
-                borderWidth: 2,
-                pointRadius: 2,
-                tension: 0.4,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: { enabled: true },
-                annotation: {
-                    annotations: {
-                        linhaAmarela: {
-                            type: 'line',
-                            yMin: 2.5,
-                            yMax: 2.5,
-                            borderColor: 'yellow',
-                            borderWidth: 2,
-                            label: {
-                                content: 'Atenção (2.5%)',
-                                enabled: true,
-                                position: 'start',
-                                color: 'white'
-                            }
-                        },
-                        linhaVermelha: {
-                            type: 'line',
-                            yMin: 5,
-                            yMax: 5,
-                            borderColor: 'red',
-                            borderWidth: 2,
-                            label: {
-                                content: 'Perigo (5%)',
-                                enabled: true,
-                                position: 'start',
-                                color: 'white'
-                            }
-                        },
-                        linhaPreta: {
-                            type: 'line',
-                            yMin: 15,
-                            yMax: 15,
-                            borderColor: 'black',
-                            borderWidth: 2,
-                            label: {
-                                content: 'Emergência (15%)',
-                                enabled: true,
-                                position: 'start',
-                                color: 'white'
+        var corStatus = '';
+        if (medicaoList[medicaoList.length - 1] < 2.5) {
+            corStatus = "green";
+        } else if (medicaoList[medicaoList.length - 1] >= 2.5 && medicaoList[medicaoList.length - 1] < 4.9) {
+            corStatus = "#FFEB3B";
+
+        } else if (medicaoList[medicaoList.length - 1] >= 4.9 && medicaoList[medicaoList.length - 1] < 15) {
+            corStatus = "#F44336";
+
+        } else if (medicaoList[medicaoList.length - 1] >= 15) {
+            corStatus = "black";
+
+        }
+
+        // 
+        if (medicaoList[medicaoList.length - 1] < 2.5) {
+            corChart = "#00800066";
+        } else if (medicaoList[medicaoList.length - 1] >= 2.5 && medicaoList[medicaoList.length - 1] < 4.9) {
+            corChart = "#ffea007a";
+
+        } else if (medicaoList[medicaoList.length - 1] >= 4.9 && medicaoList[medicaoList.length - 1] < 15) {
+            corChart = "#f443364f";
+
+        } else if (medicaoList[medicaoList.length - 1] >= 15) {
+            corChart = "#0000007a";
+
+        }
+
+        const ctx = document.getElementById('graficoGasSeguro').getContext('2d');
+        window.chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labelList,
+                datasets: [{
+                    data: medicaoList,
+                    borderColor: corStatus,
+                    backgroundColor: corChart,
+                    borderWidth: 2,
+                    pointRadius: 2,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: true },
+                    annotation: {
+                        annotations: {
+                            linhaAmarela: {
+                                type: 'line',
+                                yMin: 2.5,
+                                yMax: 2.5,
+                                borderColor: 'yellow',
+                                borderWidth: 2,
+                                label: {
+                                    content: 'Atenção (2.5%)',
+                                    enabled: true,
+                                    position: 'start',
+                                    color: 'white'
+                                }
+                            },
+                            linhaVermelha: {
+                                type: 'line',
+                                yMin: 5,
+                                yMax: 5,
+                                borderColor: 'red',
+                                borderWidth: 2,
+                                label: {
+                                    content: 'Perigo (5%)',
+                                    enabled: true,
+                                    position: 'start',
+                                    color: 'white'
+                                }
+                            },
+                            linhaPreta: {
+                                type: 'line',
+                                yMin: 15,
+                                yMax: 15,
+                                borderColor: 'black',
+                                borderWidth: 2,
+                                label: {
+                                    content: 'Emergência (15%)',
+                                    enabled: true,
+                                    position: 'start',
+                                    color: 'white'
+                                }
                             }
                         }
                     }
-                }
-            },
-            scales: {
-                x: {
-                    grid: { display: false },
-                    ticks: { font: { size: 8 }, maxRotation: 0 }
                 },
-                y: {
-                    min: 0,
-                    max: nivelView,
-                    ticks: { stepSize: 5, font: { size: 8 } }
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 8 }, maxRotation: 0 }
+                    },
+                    y: {
+                        min: 0,
+                        max: nivelView,
+                        ticks: { stepSize: 5, font: { size: 8 } }
+                    }
+                },
+                elements: {
+                    point: { radius: 1 }
                 }
             },
-            elements: {
-                point: { radius: 1 }
-            }
-        },
-        plugins: [Chart.registry.getPlugin('annotation')]
-    });
-}
+            plugins: [Chart.registry.getPlugin('annotation')]
+        });
+    }
 
 
     function inicializarGrafico() {
