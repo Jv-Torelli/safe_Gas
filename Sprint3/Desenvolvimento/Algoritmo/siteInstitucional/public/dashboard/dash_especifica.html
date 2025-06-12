@@ -154,10 +154,13 @@
 
 </body>
 
+<script
+  src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0/dist/chartjs-plugin-annotation.min.js"></script>
+
 </html>
 <script>
 
-    let chart;
+  let chart;
   const idSensor = 1;
   let ultimaAtualizacao = new Date(); // Variável para armazenar a última atualização
 
@@ -249,7 +252,7 @@
 
             atualizarKpisPorMaiorMedicao();
 
-            
+
             if (ultimoDado['Data e hora da medição']) {
               ultimaAtualizacao = new Date(ultimoDado['Data e hora da medição']);
             } else {
@@ -356,12 +359,12 @@
     if (!dataHora) return 'N/A';
 
     const data = new Date(dataHora);
-    
-    
+
+
     if (isNaN(data.getTime())) {
       return 'N/A';
     }
-    
+
     return data.toLocaleString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
@@ -372,7 +375,7 @@
   }
 
   function limitarDados(labels, valores) {
-    
+
     if (labels.length > LIMITE_PONTOS) {
       return {
         labels: labels.slice(-LIMITE_PONTOS),
@@ -393,7 +396,7 @@
             let labels = dados.map(item => formatarHora(item['Data e hora']));
             let valores = dados.map(item => parseFloat(item['Nível de Gás']) || 0);
 
-           
+
             const dadosLimitados = limitarDados(labels, valores);
             labels = dadosLimitados.labels;
             valores = dadosLimitados.valores;
@@ -406,8 +409,8 @@
               atualizarDisplaySensores();
               atualizarKpisPorMaiorMedicao();
             }
-            
-            
+
+
             atualizarUltimaAtualizacao();
           }
         } else {
@@ -424,8 +427,8 @@
         if (dados.valores.length > 0) {
           dadosSensores[idSensor].medicao = dados.valores[dados.valores.length - 1];
         }
-        
-        
+
+
         atualizarUltimaAtualizacao();
       });
   }
@@ -436,7 +439,7 @@
     const labels = [];
     const valores = [];
 
-    
+
     for (let i = LIMITE_PONTOS - 1; i >= 0; i--) {
       const tempo = new Date(agora.getTime() - (i * 6 * 60000));
       labels.push(formatarHora(tempo));
@@ -457,39 +460,6 @@
     return { labels, valores };
   }
 
-
-  function atualizarDadosSensoresAutomaticos(idSensor) {
-    const agora = new Date();
-    const novoLabel = formatarHora(agora);
-
-    let novoValor;
-    const nomeSensor = dadosSensores[idSensor].nome;
-
-    if (nomeSensor === 'Sala' || nomeSensor === 'Banheiro') {
-      novoValor = parseFloat((Math.random() * 2.3 + 0.1).toFixed(2));
-    } else {
-      let valorBase = 14;
-      let variacao = 5;
-      novoValor = parseFloat((Math.random() * variacao + valorBase).toFixed(2));
-    }
-
-    const dadosHistoricos = dadosHistoricosSensores[idSensor];
-    dadosHistoricos.labels.push(novoLabel);
-    dadosHistoricos.valores.push(novoValor);
-
-   
-    if (dadosHistoricos.labels.length > LIMITE_PONTOS) {
-      dadosHistoricos.labels.shift();
-      dadosHistoricos.valores.shift();
-    }
-
-    dadosSensores[idSensor].medicao = novoValor;
-
-    return {
-      labels: [...dadosHistoricos.labels],
-      valores: [...dadosHistoricos.valores]
-    };
-  }
 
   function atualizarGraficoLinha(labels, valores) {
     const ctx = document.getElementById('canvas_grafico').getContext('2d');
@@ -525,9 +495,53 @@
         plugins: {
           legend: {
             display: true
+          },
+          annotation: {
+            annotations: {
+              linhaAmarela: {
+                type: 'line',
+                yMin: 2.5,
+                yMax: 2.5,
+                borderColor: 'yellow',
+                borderWidth: 2,
+                label: {
+                  content: 'Atenção (2.5%)',
+                  enabled: true,
+                  position: 'start',
+                  color: 'white'
+                }
+              },
+              linhaVermelha: {
+                type: 'line',
+                yMin: 5,
+                yMax: 5,
+                borderColor: 'red',
+                borderWidth: 2,
+                label: {
+                  content: 'Perigo (5%)',
+                  enabled: true,
+                  position: 'start',
+                  color: 'white'
+                }
+              },
+              linhaPreta: {
+                type: 'line',
+                yMin: 15,
+                yMax: 15,
+                borderColor: 'black',
+                borderWidth: 2,
+                label: {
+                  content: 'Emergência (15%)',
+                  enabled: true,
+                  position: 'start',
+                  color: 'white'
+                }
+              }
+            }
           }
         }
-      }
+      },
+      plugins: [Chart.registry.getPlugin('annotation')]
     };
 
     chart = new Chart(ctx, config);
@@ -633,7 +647,7 @@
       atualizarDisplaySensores();
       atualizarKpisPorMaiorMedicao();
       atualizarAlertaRiscoPorSensorSelecionado();
-      
+
       atualizarUltimaAtualizacao();
     });
 
@@ -653,14 +667,14 @@
       atualizarDisplaySensores();
       atualizarKpisPorMaiorMedicao();
       atualizarAlertaRiscoPorSensorSelecionado();
-      
+
       atualizarUltimaAtualizacao();
     });
   }
 
 
   function inicializarSensoresAutomaticos() {
-    
+
     const dadosSala = gerarDadosAleatorios('Sala');
     dadosHistoricosSensores[2].labels = dadosSala.labels;
     dadosHistoricosSensores[2].valores = dadosSala.valores;
@@ -677,7 +691,7 @@
 
     inicializarSensoresAutomaticos();
 
-    
+
     atualizarUltimaAtualizacao();
 
     obterDadosKpi(1);
