@@ -169,7 +169,7 @@
 
   const dadosSensores = {
     1: { nome: 'Cozinha', medicao: 0, local: 'Torre A, Apto 101' },
-    2: { nome: 'Quarta', medicao: 0, local: 'Torre A, Apto 101' },
+    2: { nome: 'Quarto', medicao: 0, local: 'Torre A, Apto 101' },
     3: { nome: 'Banheiro', medicao: 0, local: 'Torre A, Apto 101' }
   };
 
@@ -238,7 +238,7 @@
     let novoValor;
     const nomeSensor = dadosSensores[idSensor].nome;
 
-    if (nomeSensor === 'Sala' || nomeSensor === 'Banheiro') {
+    if (nomeSensor === 'Quarto' || nomeSensor === 'Banheiro') {
       novoValor = parseFloat((Math.random() * 2.3 + 0.1).toFixed(2));
     } else {
       let valorBase = 14;

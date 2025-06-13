@@ -466,6 +466,8 @@
 </html>
 
 <script>
+    setInterval(buscarKpis, 2000)
+
     setInterval(buscarDados, 2000)
     var torreSelecionada = 'A';
     var idModalGrafico = 1;
@@ -825,7 +827,7 @@
     // APARTAMENTOS
     function apartamentoStatus() {
 
-        torreA.style.backgroundColor = 'green';
+        torreA.style.backgroundColor = '#3b82f6';
         torreB.style.backgroundColor = 'WHITE';
         torreC.style.backgroundColor = 'WHITE';
 
@@ -875,7 +877,7 @@
 
         torreA.style.backgroundColor = 'WHITE';
 
-        torreB.style.backgroundColor = 'green';
+        torreB.style.backgroundColor = '#3b82f6';
 
         torreC.style.backgroundColor = 'WHITE';
 
@@ -918,7 +920,7 @@
 
         torreB.style.backgroundColor = 'WHITE';
 
-        torreC.style.backgroundColor = 'green';
+        torreC.style.backgroundColor = '#3b82f6';
 
         torreA.style.color = 'black';
         torreB.style.color = 'black';
