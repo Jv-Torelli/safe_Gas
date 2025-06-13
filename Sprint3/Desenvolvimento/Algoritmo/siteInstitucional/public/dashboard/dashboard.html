@@ -271,7 +271,7 @@
                 <div class="item-cabecalho" style="border-left: solid #f8b739 5px;">
                     <div class="icone-container">
                         <span class="descricao">Em Manutenção</span>
-                        <span class="valor-principal" id="qtd_manutencao">1</span>
+                        <span class="valor-principal" >1</span>
                     </div>
 
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100"
@@ -652,7 +652,7 @@
                 console.log("Dados recebidos: ", JSON.stringify(dadosKpi));
 
                 qtd_alerta.innerHTML = dadosKpi[0].Sensores_Alarmantes;
-                qtd_manutencao.innerHTML = dadosKpi[0].Sensores_Inativos + 1;
+                // qtd_manutencao.innerHTML = dadosKpi[0].Sensores_Inativos + 1;
                 var dataDia = new Date();
 
                 ultimaAtualizacao_div.innerHTML = `${dataDia.getDate()}/${(dataDia.getMonth() + 1).toString().padStart(2, '0')}/${dataDia.getFullYear()}, ${dataDia.getHours()}:${dataDia.getMinutes().toString().padStart(2, '0')}`;

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/dash_especifica.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@4.1.1/dist/chartjs-plugin-annotation.min.js"></script>
+  <title>Dashboard Específica</title>
+</head>
+
+<body onload="grafico_de_linha(); configurarNavbarPorTipoUsuario();">
+
+  <div class="main">
+    <div class="navbar">
+      <div class="welcome_navbar">
+        <img src="../assets/img_site_institucional/logoSafeGas.png" alt="">
+      </div>
+
+      <div class="container_btn">
+        <a href="./DashboardOFC.html" class="btnNavbar">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+            fill="currentcolor">
+            <path
+              d="M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z" />
+          </svg>
+
+          Dashboard geral
+        </a>
+        <a href="./dash_portarias.html" class="btnNavbar" id="portaria">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+            fill="currentcolor">
+            <path
+              d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q14-36 44-58t68-22q38 0 68 22t44 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm280-670q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790ZM200-246q54-53 125.5-83.5T480-360q83 0 154.5 30.5T760-246v-514H200v514Zm280-194q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41ZM280-200h400v-10q-42-35-93-52.5T480-280q-56 0-107 17.5T280-210v10Zm200-320q-25 0-42.5-17.5T420-580q0-25 17.5-42.5T480-640q25 0 42.5 17.5T540-580q0 25-17.5 42.5T480-520Zm0 17Z" />
+          </svg>
+
+          Portaria
+        </a>
+      </div>
+
+      <div class="btnNavbar" id="logout"> <img src="../assets/icons_navbar/Logout.png"> Logout</div>
+
+    </div>
+
+    <main class="painel">
+      <div class="container_superior">
+        <div class="div_kpi indicador_acao">
+          <div class="div_icon">
+            <img src="../assets/dashEspecifica/icon_acao.png" alt="">
+          </div>
+          <div class="div_informacao">
+            <span class="span_titulo">Ação Rápida</span>
+            <span class="span_resposta" id="span_alerta_acao"></span>
+          </div>
+        </div>
+
+        <div class="div_kpi indicador_status">
+          <div class="div_icon">
+            <img src="../assets/dashEspecifica/icon_status.png" alt="">
+          </div>
+          <div class="div_informacao">
+            <span class="span_titulo">Status de Alerta</span>
+            <span class="span_resposta span_alerta_status"></span>
+          </div>
+        </div>
+
+        <div class="div_kpi indicador_local">
+          <div class="div_icon">
+            <img src="../assets/dashEspecifica/icon_local.png" alt="">
+          </div>
+          <div class="div_informacao">
+            <span class="span_titulo">Local com maior risco</span>
+            <span class="span_resposta" id="span_local_medicaoMaior"></span>
+          </div>
+        </div>
+
+        <div class="div_kpi indicador_hora">
+          <div class="div_icon">
+            <img src="../assets/dashEspecifica/icon_atualizacao.png" alt="">
+          </div>
+          <div class="div_informacao">
+            <span class="span_titulo">Última Atualização</span>
+
+            <span class="span_resposta" id="span_dataHora"></span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="container_inferior">
+        <div class="div_grafico">
+          <div class="div_nivel">
+            <span class="span_titulo">Nivel de Gás</span>
+            <span class="span_identificacao">Torre <span id="span_bloco_predio"></span>, Apto <span
+                id="span_numero_apartamento"></span>, <span id="span_sensor_local_selecionado"></span></span>
+            <hr>
+            <canvas id="canvas_grafico"></canvas>
+          </div>
+        </div>
+
+        <div class="div_sensores">
+          <div class="div_alerta">
+
+            <div class="div_status_alerta">
+              <div class="div_img_alerta">
+                <img src="../assets/dashEspecifica/icon_alerta.png" alt="">
+              </div>
+              <div class="div_sobre_alerta">
+                <span class="span_titulo">Alerta de Risco<span class="span_alerta_status"></span></span>
+
+                <span class="span_subtitulo" id="span_alerta_risco"></span>
+              </div>
+            </div>
+
+          </div>
+          <div class="div_medicao">
+            <div class="div_titulo_medicao">
+              <span class="span_titulo">Sensores</span>
+              <span class="span_subtitulo">NIVEL DE GÁS (%)</span>
+            </div>
+            <hr>
+
+            <div class="div_sensores_medicao">
+              <div class="div_opcao_sensor">
+                <span class="span_sensor" id="span_local_sensor1">--------</span>
+                <span class="span_medicao" id="span_medicao1">--------</span>
+                <button class="btn_sensor" id="btn_sensor1">Ver Gráfico</button>
+              </div>
+              <hr>
+
+              <div class="div_opcao_sensor">
+                <span class="span_sensor" id="span_local_sensor2">--------</span>
+                <span class="span_medicao" id="span_medicao2">--------</span>
+                <button class="btn_sensor" id="btn_sensor2">Ver Gráfico</button>
+              </div>
+              <hr>
+
+              <div class="div_opcao_sensor">
+                <span class="span_sensor" id="span_local_sensor3">--------</span>
+                <span class="span_medicao" id="span_medicao3">--------</span>
+                <button class="btn_sensor" id="btn_sensor3">Ver Gráfico</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+  </main>
+
+</body>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0/dist/chartjs-plugin-annotation.min.js"></script>
+
+</html>
+<script>
+
+  let chart;
+  const idSensor = 1;
+  let ultimaAtualizacao = new Date();
+
+  const dadosSensores = {
+    1: { nome: 'Cozinha', medicao: 0, local: 'Torre A, Apto 101' },
+    2: { nome: 'Sala', medicao: 0, local: 'Torre A, Apto 101' },
+    3: { nome: 'Banheiro', medicao: 0, local: 'Torre A, Apto 101' }
+  };
+
+
+  const dadosHistoricosSensores = {
+    1: { labels: [], valores: [] },
+    2: { labels: [], valores: [] },
+    3: { labels: [], valores: [] }
+  };
+
+  let sensorAtualGrafico = 1;
+
+
+  const niveisAlerta = {
+    'Seguro': {
+      status: 'Seguro',
+      risco: 'Nenhum risco',
+      acao: 'Nenhuma ação necessária'
+    },
+    'Atenção': {
+      status: 'Atenção',
+      risco: 'Possível vazamento',
+      acao: 'Ventilar o apartamento'
+    },
+    'Perigo': {
+      status: 'Perigo',
+      risco: 'Possibilidade de explosão',
+      acao: 'Evacuar o local imediatamente'
+    },
+    'Emergência': {
+      status: 'Emergência',
+      risco: 'Possibilidade de asfixia',
+      acao: 'Ligar para os bombeiros'
+    }
+  };
+
+  function configurarNavbarPorTipoUsuario() {
+    const tipoUsuario = sessionStorage.getItem('TIPO_USUARIO');
+
+    if (!tipoUsuario) {
+      console.warn('Tipo de usuário não encontrado na sessão - usando modo demo');
+      return;
+    }
+
+    console.log('Tipo de usuário logado:', tipoUsuario);
+
+    const btnPortaria = document.getElementById('portaria');
+    if (!btnPortaria) {
+      console.warn('Elemento portaria não encontrado');
+      return;
+    }
+
+    if (tipoUsuario === 'porteiro') {
+      btnPortaria.style.setProperty('display', 'none', 'important');
+    } else if (tipoUsuario === 'sindico') {
+      btnPortaria.style.setProperty('display', 'flex', 'important');
+    }
+  }
+
+
+  function atualizarUltimaAtualizacao() {
+    ultimaAtualizacao = new Date();
+    const spanDataHora = document.getElementById('span_dataHora');
+    if (spanDataHora) {
+      spanDataHora.textContent = formatarDataHora(ultimaAtualizacao);
+    }
+  }
+
+  // Função para gerar valores seguros (até 2.4% com variação de 0.2%)
+  function gerarValorSeguro() {
+    // Valor base entre 0.1 e 2.2, para que com a variação de 0.2% não ultrapasse 2.4%
+    const valorBase = Math.random() * 2.1 + 0.1;
+    const variacao = (Math.random() - 0.5) * 0.4; // variação de -0.2% a +0.2%
+    const valorFinal = Math.max(0.1, Math.min(2.4, valorBase + variacao));
+    return parseFloat(valorFinal.toFixed(2));
+  }
+
+  function obterSensorComMaiorMedicao() {
+    let maiorMedicao = -1;
+    let sensorComMaiorMedicao = 1;
+
+    for (let i = 1; i <= 3; i++) {
+      if (dadosSensores[i].medicao > maiorMedicao) {
+        maiorMedicao = dadosSensores[i].medicao;
+        sensorComMaiorMedicao = i;
+      }
+    }
+
+    return {
+      id: sensorComMaiorMedicao,
+      medicao: maiorMedicao,
+      sensor: dadosSensores[sensorComMaiorMedicao]
+    };
+  }
+
+  function atualizarKpisPorMaiorMedicao() {
+    const sensorMaior = obterSensorComMaiorMedicao();
+    const nivelStatus = obterStatusPorMedicao(sensorMaior.medicao);
+    const alertaInfo = niveisAlerta[nivelStatus];
+
+    const spansStatus = document.querySelectorAll('.span_alerta_status');
+    spansStatus.forEach(span => {
+      span.textContent = ` ${alertaInfo.status}`;
+    });
+
+
+    const spanAcao = document.getElementById('span_alerta_acao');
+    if (spanAcao) {
+      spanAcao.textContent = alertaInfo.acao;
+    }
+
+
+    const spanLocal = document.getElementById('span_local_medicaoMaior');
+    if (spanLocal) {
+      spanLocal.textContent = sensorMaior.sensor.nome;
+    }
+
+    // Atualizar informações do apartamento
+    const spanBloco = document.getElementById('span_bloco_predio');
+    const spanApto = document.getElementById('span_numero_apartamento');
+    if (spanBloco) spanBloco.textContent = 'A';
+    if (spanApto) spanApto.textContent = '101';
+
+    atualizarAlertaRiscoPorSensorSelecionado();
+  }
+
+  function atualizarAlertaRiscoPorSensorSelecionado() {
+    const sensorSelecionado = dadosSensores[sensorAtualGrafico];
+    const nivelStatus = obterStatusPorMedicao(sensorSelecionado.medicao);
+    const alertaInfo = niveisAlerta[nivelStatus];
+
+    const spanAlertaRisco = document.getElementById('span_alerta_risco');
+    if (spanAlertaRisco) {
+      spanAlertaRisco.textContent = `${alertaInfo.risco} - ${sensorSelecionado.nome} (${sensorSelecionado.medicao.toFixed(2)}%)`;
+    }
+  }
+
+  function obterStatusPorMedicao(medicao) {
+    if (medicao <= 2.4) {
+      return 'Seguro';
+    } else if (medicao <= 4.9) {
+      return 'Atenção';
+    } else if (medicao <= 14.9) {
+      return 'Perigo';
+    } else {
+      return 'Emergência';
+    }
+  }
+
+  function formatarDataHora(dataHora) {
+    if (!dataHora) return 'N/A';
+
+    const data = new Date(dataHora);
+    
+    // Verificar se a data é válida
+    if (isNaN(data.getTime())) {
+      return 'N/A';
+    }
+    
+    return data.toLocaleString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  // Função modificada para gerar dados seguros para todos os sensores
+  function gerarDadosAleatorios(nomeSensor) {
+    const agora = new Date();
+    const labels = [];
+    const valores = [];
+
+    // Gerar 20 pontos de dados (últimas 2 horas, a cada 6 minutos)
+    for (let i = 19; i >= 0; i--) {
+      const tempo = new Date(agora.getTime() - (i * 6 * 60000));
+      labels.push(formatarHora(tempo));
+
+      // Todos os sensores agora geram valores seguros
+      const valor = gerarValorSeguro();
+      valores.push(valor);
+    }
+
+    return { labels, valores };
+  }
+
+  // Função modificada para atualização automática com valores seguros
+  function atualizarDadosSensoresAutomaticos(idSensor) {
+    const agora = new Date();
+    const novoLabel = formatarHora(agora);
+
+    // Todos os sensores agora geram valores seguros
+    const novoValor = gerarValorSeguro();
+
+    // Atualizar histórico
+    const dadosHistoricos = dadosHistoricosSensores[idSensor];
+    dadosHistoricos.labels.push(novoLabel);
+    dadosHistoricos.valores.push(novoValor);
+
+    // Manter apenas os últimos 20 pontos
+    if (dadosHistoricos.labels.length > 20) {
+      dadosHistoricos.labels.shift();
+      dadosHistoricos.valores.shift();
+    }
+
+    // Atualizar medição atual
+    dadosSensores[idSensor].medicao = novoValor;
+
+    return {
+      labels: [...dadosHistoricos.labels],
+      valores: [...dadosHistoricos.valores]
+    };
+  }
+
+  function atualizarGraficoLinha(labels, valores) {
+    const ctx = document.getElementById('canvas_grafico').getContext('2d');
+
+    if (chart) {
+      chart.destroy();
+    }
+
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'Nível de Gás (%)',
+        data: valores,
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3
+      }]
+    };
+
+    const config = {
+      type: 'line',
+      data: data,
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: Math.max(Math.max(...valores) + 0.5, 3) 
+          }
+        },
+        plugins: {
+          legend: {
+            display: true
+          },
+          annotation: {
+            annotations: {
+              linhaAmarela: {
+                type: 'line',
+                yMin: 2.5,
+                yMax: 2.5,
+                borderColor: 'yellow',
+                borderWidth: 2,
+                label: {
+                  content: 'Atenção (2.5%)',
+                  enabled: true,
+                  position: 'start',
+                  color: 'white'
+                }
+              },
+              linhaVermelha: {
+                type: 'line',
+                yMin: 5,
+                yMax: 5,
+                borderColor: 'red',
+                borderWidth: 2,
+                label: {
+                  content: 'Perigo (5%)',
+                  enabled: true,
+                  position: 'start',
+                  color: 'white'
+                }
+              },
+              linhaPreta: {
+                type: 'line',
+                yMin: 15,
+                yMax: 15,
+                borderColor: 'black',
+                borderWidth: 2,
+                label: {
+                  content: 'Emergência (15%)',
+                  enabled: true,
+                  position: 'start',
+                  color: 'white'
+                }
+              }
+            }
+          }
+        }
+      },
+      plugins: [Chart.registry.getPlugin('annotation')]
+    };
+
+    chart = new Chart(ctx, config);
+  }
+
+  function atualizarInfoSensorGrafico(idSensor) {
+    const spanSensorLocal = document.getElementById('span_sensor_local_selecionado');
+    if (spanSensorLocal) {
+      spanSensorLocal.textContent = dadosSensores[idSensor].nome;
+    }
+    sensorAtualGrafico = idSensor;
+    atualizarKpisPorMaiorMedicao();
+    atualizarAlertaRiscoPorSensorSelecionado();
+  }
+
+  function definirCorBotao(medicao) {
+    if (medicao <= 2.4) {
+      return 'verde';
+    } else if (medicao <= 4.9) {
+      return 'amarelo';
+    } else if (medicao <= 14.9) {
+      return 'vermelho';
+    } else {
+      return 'preto';
+    }
+  }
+
+  function aplicarCorBotao(elemento, cor) {
+    switch (cor) {
+      case 'verde':
+        elemento.style.backgroundColor = '#28a745';
+        elemento.style.color = 'white';
+        elemento.style.border = '2px solid #28a745';
+        break;
+      case 'amarelo':
+        elemento.style.backgroundColor = '#ffc107';
+        elemento.style.color = 'black';
+        elemento.style.border = '2px solid #ffc107';
+        break;
+      case 'vermelho':
+        elemento.style.backgroundColor = '#dc3545';
+        elemento.style.color = 'white';
+        elemento.style.border = '2px solid #dc3545';
+        break;
+      case 'preto':
+        elemento.style.backgroundColor = '#000000';
+        elemento.style.color = 'white';
+        elemento.style.border = '2px solid #000000';
+        break;
+    }
+  }
+
+  function atualizarDisplaySensores() {
+    for (let i = 1; i <= 3; i++) {
+      const spanLocal = document.getElementById(`span_local_sensor${i}`);
+      const spanMedicao = document.getElementById(`span_medicao${i}`);
+      const btnSensor = document.getElementById(`btn_sensor${i}`);
+
+      if (spanLocal && spanMedicao && btnSensor) {
+        const sensor = dadosSensores[i];
+
+        spanLocal.textContent = sensor.nome;
+        spanMedicao.textContent = `${sensor.medicao.toFixed(2)}%`;
+
+        const cor = definirCorBotao(sensor.medicao);
+        aplicarCorBotao(btnSensor, cor);
+
+        btnSensor.classList.remove('ativo');
+
+        if (i === sensorAtualGrafico) {
+          btnSensor.classList.add('ativo');
+          btnSensor.textContent = 'Gráfico Atual';
+        } else {
+          btnSensor.textContent = 'Ver Gráfico';
+        }
+      }
+    }
+  }
+
+  function configurarBotoesSensores() {
+    // Configurar botão do sensor 1 (Cozinha)
+    document.getElementById('btn_sensor1').addEventListener('click', function () {
+      sensorAtualGrafico = 1;
+      atualizarGraficoLinha(dadosHistoricosSensores[1].labels, dadosHistoricosSensores[1].valores);
+      atualizarInfoSensorGrafico(1);
+      atualizarDisplaySensores();
+      atualizarUltimaAtualizacao();
+    });
+
+    // Configurar botão do sensor 2 (Sala)
+    document.getElementById('btn_sensor2').addEventListener('click', function () {
+      sensorAtualGrafico = 2;
+      atualizarGraficoLinha(dadosHistoricosSensores[2].labels, dadosHistoricosSensores[2].valores);
+      atualizarInfoSensorGrafico(2);
+      atualizarDisplaySensores();
+      atualizarUltimaAtualizacao();
+    });
+
+    // Configurar botão do sensor 3 (Banheiro)
+    document.getElementById('btn_sensor3').addEventListener('click', function () {
+      sensorAtualGrafico = 3;
+      atualizarGraficoLinha(dadosHistoricosSensores[3].labels, dadosHistoricosSensores[3].valores);
+      atualizarInfoSensorGrafico(3);
+      atualizarDisplaySensores();
+      atualizarUltimaAtualizacao();
+    });
+  }
+
+  // Função modificada para inicializar todos os sensores com valores seguros
+  function inicializarTodosSensores() {
+    // Inicializar dados históricos para todos os sensores
+    for (let i = 1; i <= 3; i++) {
+      const dados = gerarDadosAleatorios(dadosSensores[i].nome);
+      dadosHistoricosSensores[i].labels = dados.labels;
+      dadosHistoricosSensores[i].valores = dados.valores;
+      dadosSensores[i].medicao = dados.valores[dados.valores.length - 1];
+    }
+  }
+
+  function iniciarAtualizacaoCompleta() {
+    // Inicializar todos os sensores com valores seguros
+    inicializarTodosSensores();
+
+    // Inicializar o horário da última atualização
+    atualizarUltimaAtualizacao();
+
+    // Mostrar gráfico do sensor 1 inicialmente
+    atualizarGraficoLinha(dadosHistoricosSensores[1].labels, dadosHistoricosSensores[1].valores);
+    atualizarInfoSensorGrafico(1);
+
+    // Configurar botões dos sensores
+    configurarBotoesSensores();
+
+    // Atualizar displays iniciais
+    setTimeout(() => {
+      atualizarDisplaySensores();
+      atualizarKpisPorMaiorMedicao();
+    }, 500);
+
+    // Configurar atualização automática a cada 5 segundos
+    setInterval(() => {
+      // Atualizar dados de todos os sensores
+      for (let i = 1; i <= 3; i++) {
+        atualizarDadosSensoresAutomaticos(i);
+      }
+
+      // Atualizar gráfico do sensor atual
+      atualizarGraficoLinha(
+        dadosHistoricosSensores[sensorAtualGrafico].labels, 
+        dadosHistoricosSensores[sensorAtualGrafico].valores
+      );
+
+      // Atualizar displays
+      atualizarDisplaySensores();
+      atualizarKpisPorMaiorMedicao();
+      atualizarAlertaRiscoPorSensorSelecionado();
+      atualizarUltimaAtualizacao();
+    }, 5000);
+  }
+
+  function formatarHora(dataHora) {
+    const data = new Date(dataHora);
+    return data.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  function grafico_de_linha() {
+    iniciarAtualizacaoCompleta();
+  }
+
+</script>
